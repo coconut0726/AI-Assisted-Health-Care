@@ -25,6 +25,10 @@ namespace AHC.VR
         [Tooltip("Assets/_Project/Data/BurnDressingDemo.json")]
         public TextAsset demoJson;
 
+        [Tooltip("The AI's character (Assets/_Project/Art/Ghost/Ghost.fbx). When set, it floats beside the panels " +
+                 "and speaks the instructions instead of the voice bar.")]
+        public GameObject ghostModel;
+
         [Header("Placement")]
         [Tooltip("Distance of the floating panels from the eyes, in metres.")]
         public float hudDistance = 1.0f;
@@ -53,6 +57,7 @@ namespace AHC.VR
         RectTransform _hud;
         Transform _workspace;
         WorkspaceOverlays _overlays;
+        GhostCompanion _ghost;
         TextMeshProUGUI _timer, _transcript;
         RectTransform _voiceBar;
 
@@ -77,6 +82,7 @@ namespace AHC.VR
             EnsureEventSystem();
             BuildHud();
             BuildWorkspace();
+            if (ghostModel != null) _ghost = GhostCompanion.Spawn(ghostModel, transform, _head);
             SetView(View.RoleSelect);
         }
 
@@ -213,9 +219,22 @@ namespace AHC.VR
 
         void Repeat()
         {
-            // No text-to-speech yet: replaying is shown by a pulse on the voice bar.
+            // No text-to-speech yet: replaying is shown by the ghost "talking" again, or a pulse on the voice bar.
+            if (_ghost != null) _ghost.Repeat();
             if (_voiceBar != null) StartCoroutine(PulseRoutine(_voiceBar));
         }
+
+        string GhostLine(View v) => v switch
+        {
+            View.RoleSelect => "Hi! I'm your care guide. Who's wearing the headset today?",
+            View.PatientStart => "Let's change your dressing together. First, check that your supplies are in view.",
+            View.PatientStep => _data.steps[_flat[_cursor].step].actions[_flat[_cursor].action].voice,
+            View.PatientComplete => $"All done, great job! I'll share this session with {_data.nurseName}.",
+            View.NurseStart => "Show me how it's done and explain each step out loud. I'll turn it into a guide.",
+            View.NurseRecording => "I'm watching and listening…",
+            View.NurseSaved => "Got it! I'm breaking your recording into steps now.",
+            _ => "",
+        };
 
         System.Collections.IEnumerator PulseRoutine(Transform t)
         {
@@ -249,6 +268,7 @@ namespace AHC.VR
                 case View.NurseSaved: BuildNurseSaved(); break;
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(_hud);
+            if (_ghost != null) _ghost.Say(GhostLine(v));
         }
 
         Image CenterPanel(float y = 0)
@@ -346,7 +366,7 @@ namespace AHC.VR
             Ui.Divider(panel.transform);
             Ui.Text(panel.transform, "Done when: " + step.expectedState, 16, Theme.Muted);
 
-            BuildVoiceBar(action.voice);
+            if (_ghost == null) BuildVoiceBar(action.voice); // otherwise the ghost speaks it
             bool last = _cursor == _flat.Count - 1;
             BuildControls(("Back", false, (UnityEngine.Events.UnityAction)Back, "B"),
                           ("Repeat", false, Repeat, "X"),

@@ -3665,6 +3665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AHC.VR.VRDemoController
   demoJson: {fileID: 4900000, guid: e4e3e20ef1114f540a11879dd03098a4, type: 3}
+  ghostModel: {fileID: 919132149155446097, guid: 8bbe955911482f14ca91d7c5413fe150, type: 3}
   hudDistance: 1
   hudHeight: 0.08
   workspaceStart: {x: 0.5, y: -0.5}

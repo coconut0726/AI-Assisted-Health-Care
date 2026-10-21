@@ -8,6 +8,7 @@ namespace AHC.VR.EditorTools
     public static class VRDemoMenu
     {
         const string DataPath = "Assets/_Project/Data/BurnDressingDemo.json";
+        const string GhostPath = "Assets/_Project/Art/Ghost/Ghost.fbx";
 
         [MenuItem("AHC/Add VR Demo to Scene")]
         static void AddToScene()
@@ -27,6 +28,7 @@ namespace AHC.VR.EditorTools
             var controller = go.AddComponent<VRDemoController>();
             controller.demoJson = AssetDatabase.LoadAssetAtPath<TextAsset>(DataPath);
             if (controller.demoJson == null) Debug.LogError("[AHC] Could not find " + DataPath);
+            controller.ghostModel = AssetDatabase.LoadAssetAtPath<GameObject>(GhostPath);
 
             Undo.RegisterCreatedObjectUndo(go, "Add AHC VR Demo");
             Selection.activeGameObject = go;

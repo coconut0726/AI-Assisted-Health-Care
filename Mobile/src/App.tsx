@@ -1,4 +1,6 @@
+import { useCallback, useEffect, useState } from 'react';
 import { HashRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import Splash, { splashSeen } from './components/Splash';
 import Home from './pages/Home';
 import Report from './pages/Report';
 import EditRequirement from './pages/nurse/EditRequirement';
@@ -42,12 +44,21 @@ function DemoPanel() {
 }
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(() => !splashSeen());
+  const hideSplash = useCallback(() => setShowSplash(false), []);
+  useEffect(() => {
+    const show = () => setShowSplash(true);
+    window.addEventListener('ahc-show-splash', show);
+    return () => window.removeEventListener('ahc-show-splash', show);
+  }, []);
+
   return (
     <DemoProvider>
       <HashRouter>
         <div className="stage">
           <DemoPanel />
           <div className="phone">
+            {showSplash && <Splash onDone={hideSplash} />}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/nurse" element={<Patients />} />

@@ -215,3 +215,52 @@ p, h1, h2, h3, h4 { margin: 0; }
 .btab.active { color: var(--primary); font-weight: 600; }
 .btab-icon { position: relative; display: grid; }
 .dot { position: absolute; top: -2px; right: -4px; width: 9px; height: 9px; border-radius: 999px; background: var(--red); border: 2px solid var(--surface); }
+
+/* ---------- first-launch splash (Figma: "S0 Splash · First launch", 3.2 s timeline) ---------- */
+.splash {
+  position: absolute; inset: 0; z-index: 50; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px; cursor: pointer; transition: opacity 0.4s ease-out;
+}
+.splash.leaving { opacity: 0; pointer-events: none; }
+.splash-art { position: relative; width: 260px; height: 260px; margin-bottom: 36px; }
+.splash-halo {
+  position: absolute; inset: 0; border-radius: 999px; background: #e8f0e4;
+  animation: splash-halo 0.7s ease-out both;
+}
+.splash-mascot {
+  position: absolute; left: 30px; top: 8px;
+  animation: splash-pop 0.6s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.splash-title { font-size: 26px; font-weight: 600; animation: splash-up 0.4s 0.5s ease-out both; }
+.splash-sub { margin-top: 10px; color: var(--muted); font-size: 16px; animation: splash-up 0.4s 0.65s ease-out both; }
+.splash-dots { display: flex; gap: 6px; margin-top: 34px; animation: splash-fade 0.1s 0.9s ease-out both; }
+.splash-dots span { width: 12px; height: 12px; border-radius: 999px; background: var(--primary); animation: splash-hop 1s 1s infinite; }
+.splash-dots span:nth-child(2) { animation-delay: 1.14s; }
+.splash-dots span:nth-child(3) { animation-delay: 1.28s; }
+.splash-foot { position: absolute; bottom: max(48px, env(safe-area-inset-bottom)); font-size: 13px; font-weight: 500; color: var(--muted); opacity: 0.8; }
+.splash-skip { position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); font-size: 11px; color: var(--muted); opacity: 0.6; }
+
+/* Mascot motion (SVG groups transform around their own boxes). */
+.mascot g, .mascot ellipse { transform-box: fill-box; }
+.mascot.animated .m-ghost { animation: mascot-float 1.6s 0.7s ease-in-out infinite alternate; }
+.mascot.animated .m-shadow { transform-origin: center; animation: mascot-shadow 1.6s 0.7s ease-in-out infinite alternate; }
+.mascot.animated .m-ear { transform-origin: 50% 100%; }
+.mascot.animated .m-ear-l { animation: mascot-ear-l 3.2s infinite; }
+.mascot.animated .m-ear-r { animation: mascot-ear-r 3.2s infinite; }
+.mascot.animated .m-eyes { transform-origin: center; animation: mascot-blink 3.2s infinite; }
+
+@keyframes splash-halo { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes splash-pop { from { transform: scale(0.55); opacity: 0; } 50% { opacity: 1; } to { transform: scale(1); opacity: 1; } }
+@keyframes splash-up { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes splash-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes splash-hop { 0% { transform: translateY(0); } 18% { transform: translateY(-9px); } 36%, 100% { transform: translateY(0); } }
+@keyframes mascot-float { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+@keyframes mascot-shadow { from { transform: scaleX(1); opacity: 0.14; } to { transform: scaleX(0.78); opacity: 0.08; } }
+@keyframes mascot-ear-l { 0%, 40.6% { transform: rotate(0); } 44.4% { transform: rotate(-14deg); } 48.8% { transform: rotate(6deg); } 53%, 100% { transform: rotate(0); } }
+@keyframes mascot-ear-r { 0%, 75% { transform: rotate(0); } 78.8% { transform: rotate(14deg); } 83.1% { transform: rotate(-6deg); } 87.5%, 100% { transform: rotate(0); } }
+@keyframes mascot-blink { 0%, 59.4% { transform: scaleY(1); } 61.3% { transform: scaleY(0.1); } 63.8%, 100% { transform: scaleY(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash *, .mascot * { animation: none !important; }
+}

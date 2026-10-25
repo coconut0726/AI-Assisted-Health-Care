@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { resetSplash } from './components/Splash';
 import { initialState } from './data/demo';
 import type { DemoState, Message, Requirement, Step } from './types';
 
@@ -99,7 +100,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
           ...s,
           messages: [...s.messages, { id: 'm' + Date.now(), kind: 'text', text, day: 'Today', at: now() }],
         })),
-      reset: () => update(() => initialState()),
+      reset: () => {
+        update(() => initialState());
+        resetSplash(); // replay the first-launch screen too
+      },
     };
   }, [state, update]);
 

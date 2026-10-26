@@ -6,11 +6,11 @@ using UnityEngine.UI;
 namespace AHC.VR
 {
     /// <summary>
-    /// The AI as a character: the ghost from Blender hovers at a fixed spot next to the burn on
-    /// the table (it does not follow the user's gaze), bobs and blinks like its Blender loop,
+    /// The AI as a character: the ghost from Blender appears where the user is first looking
+    /// (a little to the right of straight ahead, near eye height) and then stays at that spot in
+    /// the room — it does not follow the user's gaze. It bobs and blinks like its Blender loop,
     /// turns to face the user, and speaks each instruction in a speech bubble.
-    /// Spawned by <see cref="VRDemoController"/> under the workspace when it has a ghost model,
-    /// so it moves only when the user repositions the workspace (hold right trigger).
+    /// <see cref="Recenter"/> brings it back in front of the user.
     /// </summary>
     public class GhostCompanion : MonoBehaviour
     {
@@ -18,26 +18,56 @@ namespace AHC.VR
 
         [Tooltip("Height of the ghost in metres.")]
         public float height = 0.24f;
-        [Tooltip("Fixed spot relative to the workspace origin (the burn), in metres: " +
-                 "+X to the user's right, +Y up from the table, +Z away from the user.")]
-        public Vector3 anchorOffset = new(0.55f, 0.32f, 0.12f);
+        [Tooltip("Where it appears relative to the user's first view, in metres: right, up (from the eyes), forward.")]
+        public Vector3 spawnOffset = new(0.42f, -0.08f, 0.9f);
+        [Tooltip("Wait this long for head tracking to settle before placing the ghost.")]
+        public float settleTime = 0.5f;
 
         Transform _head;
         Transform _pivot, _anim, _model;
         Transform[] _eyes;
         Vector3[] _eyeScales;
-        float _nextBlink, _talkUntil, _hop;
+        float _nextBlink, _talkUntil, _hop, _spawnTime;
+        bool _placed;
         TextMeshProUGUI _bubbleText;
         GameObject _bubble;
 
-        public static GhostCompanion Spawn(GameObject modelPrefab, Transform workspace, Transform head)
+        public static GhostCompanion Spawn(GameObject modelPrefab, Transform parent, Transform head)
         {
             var root = new GameObject("AI Ghost").AddComponent<GhostCompanion>();
-            root.transform.SetParent(workspace, false);
-            root.transform.localPosition = root.anchorOffset;
+            root.transform.SetParent(parent, false);
             root._head = head;
+            root._spawnTime = Time.time;
             root.Build(modelPrefab);
+            root._pivot.gameObject.SetActive(false); // hidden until placed in view
+            root._bubble.SetActive(false);
             return root;
+        }
+
+        /// <summary>Place the ghost in front of where the user is looking now.</summary>
+        public void Recenter()
+        {
+            _placed = false;
+            _spawnTime = Time.time - settleTime; // place on the next frame
+        }
+
+        bool TryPlace()
+        {
+            // On the headset the first frames can report an untracked head (an all-zero local pose);
+            // wait until tracking has had a moment and the head has a real pose.
+            float waited = Time.time - _spawnTime;
+            if (waited < settleTime) return false;
+            bool untracked = _head.localPosition == Vector3.zero && _head.localRotation == Quaternion.identity;
+            if (untracked && waited < settleTime + 1.5f) return false; // no headset (Editor): place anyway after 2 s
+            Vector3 fwd = Vector3.ProjectOnPlane(_head.forward, Vector3.up);
+            if (fwd.sqrMagnitude < 1e-4f) fwd = Vector3.ProjectOnPlane(_head.up, Vector3.up);
+            fwd.Normalize();
+            Vector3 right = Vector3.Cross(Vector3.up, fwd);
+            transform.position = _head.position + right * spawnOffset.x + Vector3.up * spawnOffset.y + fwd * spawnOffset.z;
+            _pivot.gameObject.SetActive(true);
+            _bubble.SetActive(!string.IsNullOrEmpty(_bubbleText.text));
+            _hop = 1f; // little "hello" hop as it appears
+            return true;
         }
 
         void Build(GameObject modelPrefab)
@@ -91,7 +121,7 @@ namespace AHC.VR
         public void Say(string text)
         {
             if (_bubbleText == null) return;
-            _bubble.SetActive(!string.IsNullOrEmpty(text));
+            _bubble.SetActive(_placed && !string.IsNullOrEmpty(text)); // shown on placement otherwise
             _bubbleText.text = text ?? "";
             _hop = 1f;
             _talkUntil = Time.time + Mathf.Clamp(text?.Length * 0.06f ?? 0f, 1f, 5f);
@@ -110,8 +140,8 @@ namespace AHC.VR
             if (_head == null) return;
             float t = Time.time;
 
-            // Stay put at the anchor (editable live in the Inspector); only turn to face the user.
-            transform.localPosition = anchorOffset;
+            // Appear once in front of the user's first view, then stay put; only turn to face them.
+            if (!_placed) { _placed = TryPlace(); if (!_placed) return; }
             Vector3 look = Vector3.ProjectOnPlane(_head.position - transform.position, Vector3.up);
             if (look.sqrMagnitude > 1e-4f) transform.rotation = Quaternion.LookRotation(look, Vector3.up);
             if (_bubble != null) _bubble.transform.rotation = Quaternion.LookRotation(-look, Vector3.up);

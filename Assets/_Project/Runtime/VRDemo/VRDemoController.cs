@@ -25,8 +25,8 @@ namespace AHC.VR
         [Tooltip("Assets/_Project/Data/BurnDressingDemo.json")]
         public TextAsset demoJson;
 
-        [Tooltip("The AI's character (Assets/_Project/Art/Ghost/Ghost.fbx). When set, it hovers at a fixed spot " +
-                 "beside the burn and speaks the instructions instead of the voice bar.")]
+        [Tooltip("The AI's character (Assets/_Project/Art/Ghost/Ghost.fbx). When set, it appears in front of the " +
+                 "user's first view, stays at that spot, and speaks the instructions instead of the voice bar.")]
         public GameObject ghostModel;
 
         [Header("Placement")]
@@ -82,7 +82,7 @@ namespace AHC.VR
             EnsureEventSystem();
             BuildHud();
             BuildWorkspace();
-            if (ghostModel != null) _ghost = GhostCompanion.Spawn(ghostModel, _workspace, _head); // fixed beside the burn
+            if (ghostModel != null) _ghost = GhostCompanion.Spawn(ghostModel, transform, _head); // appears in the first view, then stays
             SetView(View.RoleSelect);
         }
 
@@ -138,7 +138,11 @@ namespace AHC.VR
             if (Pressed(OVRInput.Button.One, Key.RightArrow, Key.Space, Key.Enter)) Next();
             else if (Pressed(OVRInput.Button.Two, Key.LeftArrow, Key.Backspace)) Back();
             else if (Pressed(OVRInput.Button.Three, Key.R)) Alt();
-            else if (Pressed(OVRInput.Button.Four, Key.H, Key.Escape)) SetView(View.RoleSelect);
+            else if (Pressed(OVRInput.Button.Four, Key.H, Key.Escape))
+            {
+                SetView(View.RoleSelect);
+                if (_ghost != null) _ghost.Recenter(); // also brings the guide back in front of you
+            }
             else if (_view == View.RoleSelect && KeyDown(Key.Digit1)) SetView(View.PatientStart);
             else if (_view == View.RoleSelect && KeyDown(Key.Digit2)) SetView(View.NurseStart);
 

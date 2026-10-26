@@ -25,8 +25,8 @@ namespace AHC.VR
         [Tooltip("Assets/_Project/Data/BurnDressingDemo.json")]
         public TextAsset demoJson;
 
-        [Tooltip("The AI's character (Assets/_Project/Art/Ghost/Ghost.fbx). When set, it floats beside the panels " +
-                 "and speaks the instructions instead of the voice bar.")]
+        [Tooltip("The AI's character (Assets/_Project/Art/Ghost/Ghost.fbx). When set, it hovers at a fixed spot " +
+                 "beside the burn and speaks the instructions instead of the voice bar.")]
         public GameObject ghostModel;
 
         [Header("Placement")]
@@ -82,7 +82,7 @@ namespace AHC.VR
             EnsureEventSystem();
             BuildHud();
             BuildWorkspace();
-            if (ghostModel != null) _ghost = GhostCompanion.Spawn(ghostModel, transform, _head);
+            if (ghostModel != null) _ghost = GhostCompanion.Spawn(ghostModel, _workspace, _head); // fixed beside the burn
             SetView(View.RoleSelect);
         }
 

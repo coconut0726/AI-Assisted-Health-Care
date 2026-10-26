@@ -6,34 +6,35 @@ using UnityEngine.UI;
 namespace AHC.VR
 {
     /// <summary>
-    /// The AI as a character: the ghost from Blender floats beside the user's panels, bobs and
-    /// blinks like its Blender loop, turns toward the user, and speaks each instruction in a
-    /// speech bubble. Spawned by <see cref="VRDemoController"/> when it has a ghost model.
+    /// The AI as a character: the ghost from Blender hovers at a fixed spot next to the burn on
+    /// the table (it does not follow the user's gaze), bobs and blinks like its Blender loop,
+    /// turns to face the user, and speaks each instruction in a speech bubble.
+    /// Spawned by <see cref="VRDemoController"/> under the workspace when it has a ghost model,
+    /// so it moves only when the user repositions the workspace (hold right trigger).
     /// </summary>
     public class GhostCompanion : MonoBehaviour
     {
-        const float BubbleScale = 0.0008f;
+        const float BubbleScale = 0.0006f;
 
         [Tooltip("Height of the ghost in metres.")]
         public float height = 0.24f;
-        [Tooltip("Where it floats relative to the eyes: right, up, forward (metres).")]
-        public Vector3 offset = new(0.62f, 0.0f, 0.9f);
-        public float followSmoothTime = 0.45f;
+        [Tooltip("Fixed spot relative to the workspace origin (the burn), in metres: " +
+                 "+X to the user's right, +Y up from the table, +Z away from the user.")]
+        public Vector3 anchorOffset = new(0.55f, 0.32f, 0.12f);
 
         Transform _head;
         Transform _pivot, _anim, _model;
         Transform[] _eyes;
         Vector3[] _eyeScales;
-        Vector3 _velocity;
         float _nextBlink, _talkUntil, _hop;
-        bool _placed;
         TextMeshProUGUI _bubbleText;
         GameObject _bubble;
 
-        public static GhostCompanion Spawn(GameObject modelPrefab, Transform parent, Transform head)
+        public static GhostCompanion Spawn(GameObject modelPrefab, Transform workspace, Transform head)
         {
             var root = new GameObject("AI Ghost").AddComponent<GhostCompanion>();
-            root.transform.SetParent(parent, false);
+            root.transform.SetParent(workspace, false);
+            root.transform.localPosition = root.anchorOffset;
             root._head = head;
             root.Build(modelPrefab);
             return root;
@@ -109,16 +110,8 @@ namespace AHC.VR
             if (_head == null) return;
             float t = Time.time;
 
-            // Follow: stay to the side of where the user is facing, lagging behind a little.
-            Vector3 fwd = Vector3.ProjectOnPlane(_head.forward, Vector3.up);
-            if (fwd.sqrMagnitude < 1e-4f) fwd = Vector3.forward;
-            fwd.Normalize();
-            Vector3 right = Vector3.Cross(Vector3.up, fwd);
-            Vector3 target = _head.position + right * offset.x + Vector3.up * offset.y + fwd * offset.z;
-            if (!_placed) { transform.position = target; _placed = true; }
-            else transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, followSmoothTime);
-
-            // Face the user.
+            // Stay put at the anchor (editable live in the Inspector); only turn to face the user.
+            transform.localPosition = anchorOffset;
             Vector3 look = Vector3.ProjectOnPlane(_head.position - transform.position, Vector3.up);
             if (look.sqrMagnitude > 1e-4f) transform.rotation = Quaternion.LookRotation(look, Vector3.up);
             if (_bubble != null) _bubble.transform.rotation = Quaternion.LookRotation(-look, Vector3.up);

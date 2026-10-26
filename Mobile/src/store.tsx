@@ -42,24 +42,33 @@ interface Store {
 
 const Ctx = createContext<Store | null>(null);
 
-export function DemoProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<DemoState>(load);
+/**
+ * `initial` pins the state (used by the demo video to show exact screens); it is then
+ * neither read from nor written to localStorage.
+ */
+export function DemoProvider({ children, initial }: { children: ReactNode; initial?: DemoState }) {
+  const [state, setState] = useState<DemoState>(() => initial ?? load());
+  const pinned = initial !== undefined;
 
   useEffect(() => {
+    if (pinned) return;
     const onStorage = (e: StorageEvent) => {
       if (e.key === KEY || e.key === null) setState(load());
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
-  }, []);
+  }, [pinned]);
 
-  const update = useCallback((fn: (s: DemoState) => DemoState) => {
-    setState((prev) => {
-      const next = fn(prev);
-      if (next !== prev) save(next);
-      return next;
-    });
-  }, []);
+  const update = useCallback(
+    (fn: (s: DemoState) => DemoState) => {
+      setState((prev) => {
+        const next = fn(prev);
+        if (next !== prev && !pinned) save(next);
+        return next;
+      });
+    },
+    [pinned],
+  );
 
   const store = useMemo<Store>(() => {
     const now = () => new Date().toISOString();

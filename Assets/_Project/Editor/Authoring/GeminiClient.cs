@@ -1,12 +1,10 @@
-// Assets/_Project/Editor/Authoring/GeminiClient.cs
-// Editor-only Gemini client (Interactions API). Runs in the Unity Editor, never on the headset.
-// API key: set environment variable GEMINI_API_KEY before launching Unity Hub. Never commit the key.
-// Uses the ILLMClient interface defined in ClaudeClient.cs.
-
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using HomeCare.Procedures;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -15,7 +13,9 @@ namespace HomeCare.Authoring
     public class GeminiClient : ILLMClient
     {
         const string Endpoint = "https://generativelanguage.googleapis.com/v1beta/interactions";
-        const long MaxInlineVideoBytes = 90L * 1024 * 1024; // API limit is under 100 MB; keep a margin
+        const long MaxInlineVideoBytes = 90L * 1024 * 1024;
+        // Conservative local budget for inline uploads (before base64 expansion).
+        public const long MaxInlineMediaBytes = 18L * 1024 * 1024;
 
         readonly string _model;
 
@@ -31,7 +31,7 @@ namespace HomeCare.Authoring
             return SendAsync(systemPrompt, input, jsonSchema);
         }
 
-        // Text + short video (inline base64). For videos over ~90 MB, use the Files API instead.
+        // Text + short video (inline base64). Larger files need a separate Files API workflow.
         public Task<string> DecomposeWithVideoAsync(string systemPrompt, string userContent, string videoPath, string jsonSchema)
         {
             var info = new FileInfo(videoPath);
@@ -48,6 +48,57 @@ namespace HomeCare.Authoring
             return SendAsync(systemPrompt, input, jsonSchema);
         }
 
+        // Same structured-output transport for requirement-guided VQA.
+        public Task<string> GenerateWithEvidenceAsync(string systemPrompt, string userContent,
+            EvidenceAttachment[] attachments, string jsonSchema)
+        {
+            ValidateEvidence(attachments);
+            var parts = new List<object> { new { type = "text", text = userContent } };
+            foreach (var attachment in attachments)
+            {
+                parts.Add(new { type = "text", text = "Evidence scope: " + attachment.scope +
+                    "; filename: " + Path.GetFileName(attachment.path) });
+                bool video = attachment.scope == "whole_step";
+                parts.Add(new { type = video ? "video" : "image",
+                    data = Convert.ToBase64String(File.ReadAllBytes(attachment.path)),
+                    mime_type = video ? "video/mp4" :
+                        (Path.GetExtension(attachment.path).ToLowerInvariant() == ".png" ? "image/png" : "image/jpeg") });
+            }
+            return SendAsync(systemPrompt, JsonConvert.SerializeObject(parts), jsonSchema);
+        }
+
+        public static void ValidateEvidence(EvidenceAttachment[] attachments)
+        {
+            if (attachments == null || attachments.Length == 0)
+                throw new ArgumentException("Attach at least one execution image or video.");
+            long total = 0;
+            var scopes = new HashSet<string>();
+            foreach (var attachment in attachments)
+            {
+                if (attachment == null || string.IsNullOrWhiteSpace(attachment.path))
+                    throw new ArgumentException("An evidence attachment has no path.");
+                if (!scopes.Add(attachment.scope ?? ""))
+                    throw new ArgumentException("Only one attachment per evidence scope is supported.");
+                string extension = Path.GetExtension(attachment.path).ToLowerInvariant();
+                if (attachment.scope == "whole_step")
+                {
+                    if (extension != ".mp4") throw new ArgumentException("Whole-step evidence must be an MP4 video.");
+                }
+                else if (attachment.scope == "before_step" || attachment.scope == "after_step")
+                {
+                    if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
+                        throw new ArgumentException("Before/after evidence must be a PNG or JPEG image.");
+                }
+                else throw new ArgumentException("Invalid evidence scope: " + attachment.scope);
+                var file = new FileInfo(attachment.path);
+                if (!file.Exists) throw new FileNotFoundException("Evidence file not found.", attachment.path);
+                if (file.Length == 0) throw new ArgumentException("Evidence file is empty: " + file.Name);
+                total += file.Length;
+            }
+            if (total > MaxInlineMediaBytes)
+                throw new ArgumentException("Evidence exceeds the prototype's 18 MiB total inline upload budget. Use smaller images or a shorter/compressed video.");
+        }
+
         async Task<string> SendAsync(string systemPrompt, string inputJson, string jsonSchema)
         {
             string apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
@@ -56,7 +107,8 @@ namespace HomeCare.Authoring
 
             string body =
                 "{" +
-                $"\"model\":\"{_model}\"," +
+                $"\"model\":{JsonString(_model)}," +
+                "\"store\":false," +
                 $"\"system_instruction\":{JsonString(systemPrompt)}," +
                 $"\"input\":{inputJson}," +
                 "\"response_format\":{\"type\":\"text\",\"mime_type\":\"application/json\",\"schema\":" + jsonSchema + "}" +
@@ -77,6 +129,8 @@ namespace HomeCare.Authoring
 
             // Response: { "steps": [ { "type": "model_output", "content": [ { "type": "text", "text": "..." } ] } ] }
             var resp = JsonUtility.FromJson<InteractionResponse>(req.downloadHandler.text);
+            if (resp == null || resp.status != "completed")
+                throw new Exception("Gemini interaction did not complete: " + (resp?.status ?? "missing status"));
             if (resp?.steps != null)
             {
                 for (int i = resp.steps.Length - 1; i >= 0; i--)
@@ -113,7 +167,7 @@ namespace HomeCare.Authoring
             return sb.Append('"').ToString();
         }
 
-        [Serializable] class InteractionResponse { public Step[] steps; }
+        [Serializable] class InteractionResponse { public string status; public Step[] steps; }
         [Serializable] class Step { public string type; public ContentPart[] content; }
         [Serializable] class ContentPart { public string type; public string text; }
     }

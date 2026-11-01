@@ -1,0 +1,66 @@
+{
+  "procedure_title": "Pad block and strap verification demo",
+  "instruction": "Place the blue pad on the tray. Put the red block on the blue pad. Keep the block on the pad while wrapping the yellow strap around it.",
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Place the pad",
+      "instruction": "Place the blue pad on the tray.",
+      "source_span": "Place the blue pad on the tray.",
+      "requirements": [
+        {
+          "id": "s1_r1",
+          "category": "postcondition",
+          "description": "The blue pad is on the tray.",
+          "source_span": "Place the blue pad on the tray.",
+          "vqa_question": "Is the blue pad on the tray?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Show the pad and tray together after placement, including their boundaries."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Place the block",
+      "instruction": "Put the red block on the blue pad.",
+      "source_span": "Put the red block on the blue pad.",
+      "requirements": [
+        {
+          "id": "s2_r1",
+          "category": "postcondition",
+          "description": "The red block is on the blue pad.",
+          "source_span": "Put the red block on the blue pad.",
+          "vqa_question": "Is the red block on the blue pad?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Show the red block and blue pad after placement with the contact relationship visible."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Wrap the strap",
+      "instruction": "Keep the block on the pad while wrapping the yellow strap around it.",
+      "source_span": "Keep the block on the pad while wrapping the yellow strap around it.",
+      "requirements": [
+        {
+          "id": "s3_r1",
+          "category": "execution_constraint",
+          "description": "The block remains on the pad throughout wrapping.",
+          "source_span": "Keep the block on the pad while wrapping the yellow strap around it.",
+          "vqa_question": "Does the block remain on the pad throughout the wrapping action?",
+          "evidence_scope": "whole_step",
+          "observation_hint": "A continuous video must show the block-pad relationship from the start to the end of wrapping. A final image alone is insufficient."
+        },
+        {
+          "id": "s3_r2",
+          "category": "postcondition",
+          "description": "The yellow strap is wrapped around the block.",
+          "source_span": "wrapping the yellow strap around it",
+          "vqa_question": "Is the yellow strap wrapped around the block?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Show the completed strap placement around the block, including the relevant sides; use unknown if occlusion prevents assessment."
+        }
+      ]
+    }
+  ]
+}

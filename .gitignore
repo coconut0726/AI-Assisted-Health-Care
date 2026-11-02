@@ -120,3 +120,6 @@ InitTestScene*.unity*
 
 # Local git worktrees
 .worktrees/
+
+# Python verification bridge cache
+/Tools/__pycache__/

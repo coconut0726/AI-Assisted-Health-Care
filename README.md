@@ -59,7 +59,7 @@ adb reverse --list
 3. Follow the AR instructions and click **Complete & Verify** to capture an image using Meta's Passthrough Camera.
 4. Review the results, then proceed or retry.
 
-### 1.4 Generate Custom Procedure Requirements
+### 4. Generate Custom Procedure Requirements
 
 1. **Tools → Home Care → Requirements Prototype**.
 2. Enter the nurse's instructions → **Generate Step Requirements**.

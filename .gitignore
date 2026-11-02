@@ -112,3 +112,11 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Android build outputs (Build And Run backups and packages)
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*.apk
+*.aab
+
+# Local git worktrees
+.worktrees/

@@ -11,6 +11,12 @@ namespace HomeCare.AR
     {
         public static async Task<VerificationResponse> VerifyAsync(string endpoint, string requestJson, CancellationToken cancellation)
         {
+            return GeminiVerificationProtocol.ParseInteraction(await PostAsync(endpoint, requestJson, cancellation));
+        }
+
+        // Sends any Interactions request through the PC bridge and returns the raw response JSON.
+        public static async Task<string> PostAsync(string endpoint, string requestJson, CancellationToken cancellation)
+        {
             if (!Uri.TryCreate(endpoint, UriKind.Absolute, out var uri) ||
                 (uri.Scheme != "http" && uri.Scheme != "https"))
                 throw new ArgumentException("Configure a valid verification bridge URL in the scene Inspector.");
@@ -33,7 +39,7 @@ namespace HomeCare.AR
             if (request.result != UnityWebRequest.Result.Success)
                 throw new InvalidOperationException("Verification bridge HTTP " + request.responseCode + ": " +
                     request.error + " " + request.downloadHandler.text);
-            return GeminiVerificationProtocol.ParseInteraction(request.downloadHandler.text);
+            return request.downloadHandler.text;
         }
     }
 }

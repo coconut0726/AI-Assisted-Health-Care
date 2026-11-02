@@ -13,6 +13,8 @@ namespace HomeCare.AR
     {
         [Tooltip("Optional explicit test input for Editor Play Mode. Never used in a headset build.")]
         public Texture2D editorTestImage;
+        [Tooltip("Editor only: without a test image, capture what the headset camera renders (the virtual scene). Turn off to use the passthrough camera over Link.")]
+        public bool captureViewCameraInEditor = true;
         public bool IsEditorTest { get; private set; }
         PassthroughCameraAccess _access;
         const string CameraPermission = "horizonos.permission.HEADSET_CAMERA";
@@ -25,6 +27,11 @@ namespace HomeCare.AR
             {
                 IsEditorTest = true;
                 return Encode(editorTestImage);
+            }
+            if (captureViewCameraInEditor)
+            {
+                IsEditorTest = true;
+                return RenderView();
             }
 #endif
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -72,6 +79,31 @@ namespace HomeCare.AR
             }
             throw new TimeoutException("No fresh headset camera frame arrived within 15 seconds.");
         }
+
+#if UNITY_EDITOR
+        static byte[] RenderView()
+        {
+            var rig = FindAnyObjectByType<OVRCameraRig>();
+            var camera = rig != null && rig.centerEyeAnchor != null ? rig.centerEyeAnchor.GetComponent<Camera>() : Camera.main;
+            if (camera == null) throw new InvalidOperationException("No camera to capture in the Editor.");
+            var target = RenderTexture.GetTemporary(1280, 960, 24, RenderTextureFormat.ARGB32);
+            var previousTarget = camera.targetTexture;
+            var previousColor = camera.backgroundColor;
+            try
+            {
+                camera.targetTexture = target;
+                camera.backgroundColor = new Color(0.55f, 0.55f, 0.55f, 1); // passthrough stand-in
+                camera.Render();
+                return Encode(target);
+            }
+            finally
+            {
+                camera.targetTexture = previousTarget;
+                camera.backgroundColor = previousColor;
+                RenderTexture.ReleaseTemporary(target);
+            }
+        }
+#endif
 
         static byte[] Encode(Texture source)
         {

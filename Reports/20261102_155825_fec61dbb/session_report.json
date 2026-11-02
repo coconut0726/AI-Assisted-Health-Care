@@ -1,0 +1,124 @@
+{
+  "report_version": "1",
+  "session_id": "20261102_155825_fec61dbb",
+  "procedure_title": "Minor burn dressing change",
+  "device": "Unity Editor",
+  "verification_model": "gemini-3.8-flash",
+  "started_at_utc": "2026-11-02T15:58:25.8125265Z",
+  "finished_at_utc": null,
+  "completed": false,
+  "nurse_instruction": "Wash your hands with soap and water, then put on clean gloves. Gently remove the old dressing. If it sticks, soak it with clean water before lifting it. Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters. Use a cotton swab to apply a thin layer of burn ointment to the burn. Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll. Secure the gauze with medical tape, keeping the tape off the burned skin. Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Clean hands and gloves",
+      "instruction": "Wash your hands with soap and water, then put on clean gloves.",
+      "started_at_utc": "2026-11-02T15:58:25.9450061Z",
+      "passed_at_utc": null,
+      "final_status": "not_verified",
+      "mentioned_items": [
+        {
+          "item_id": "soap",
+          "name": "Soap",
+          "found_in_scene": true
+        },
+        {
+          "item_id": "water",
+          "name": "Clean water",
+          "found_in_scene": true
+        },
+        {
+          "item_id": "gloves",
+          "name": "Gloves",
+          "found_in_scene": true
+        }
+      ],
+      "attempts": [
+        {
+          "at_utc": "2026-11-02T16:00:08.8582773Z",
+          "image_file": "editor_test_step1_fbed25f5c6.jpg",
+          "overall_status": "unknown",
+          "error": null,
+          "results": [
+            {
+              "requirement_id": "s1_r1",
+              "description": "Both hands are wearing gloves.",
+              "evidence_scope": "after_step",
+              "status": "unknown",
+              "evidence": "editor_test_step1_fbed25f5c6.jpg shows a virtual scene and interface, but neither of the user's hands is visible in the frame.",
+              "reason": "The user's hands are completely absent from the image, so it cannot be determined whether both hands are wearing gloves. An after-step image showing both hands clearly is required."
+            }
+          ]
+        }
+      ],
+      "guidance": [
+        {
+          "at_utc": "2026-11-02T15:59:46.9678004Z",
+          "held_item_id": "soap",
+          "held_item_name": "Soap",
+          "source": "gemini",
+          "item_used_in_step": true,
+          "guidance_text": "Use the soap with water to wash your hands. Then put on clean gloves.",
+          "caution": "",
+          "target_item_id": "water",
+          "visual_cue": "arrow_to_target"
+        }
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Remove the old dressing",
+      "instruction": "Gently remove the old dressing. If it sticks, soak it with clean water before lifting it.",
+      "started_at_utc": null,
+      "passed_at_utc": null,
+      "final_status": "not_started",
+      "mentioned_items": [],
+      "attempts": [],
+      "guidance": []
+    },
+    {
+      "step_id": "s3",
+      "title": "Rinse and pat dry",
+      "instruction": "Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters.",
+      "started_at_utc": null,
+      "passed_at_utc": null,
+      "final_status": "not_started",
+      "mentioned_items": [],
+      "attempts": [],
+      "guidance": []
+    },
+    {
+      "step_id": "s4",
+      "title": "Apply ointment",
+      "instruction": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+      "started_at_utc": null,
+      "passed_at_utc": null,
+      "final_status": "not_started",
+      "mentioned_items": [],
+      "attempts": [],
+      "guidance": []
+    },
+    {
+      "step_id": "s5",
+      "title": "Cover and wrap",
+      "instruction": "Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll.",
+      "started_at_utc": null,
+      "passed_at_utc": null,
+      "final_status": "not_started",
+      "mentioned_items": [],
+      "attempts": [],
+      "guidance": []
+    },
+    {
+      "step_id": "s6",
+      "title": "Secure with tape",
+      "instruction": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+      "started_at_utc": null,
+      "passed_at_utc": null,
+      "final_status": "not_started",
+      "mentioned_items": [],
+      "attempts": [],
+      "guidance": []
+    }
+  ]
+}

@@ -68,6 +68,27 @@ adb reverse --list
 5. Enter Play Mode to test the custom procedure.
 
 
+# V2: Hands-only care guidance (`VRGuidanceDemo_V2.unity`)
+
+Code: `Assets/_Project/Runtime/CareGuidance/`. Procedure: `Content/Procedures/burn_care_procedure.json` (minor burn dressing change). Rebuild the scene objects with **Tools → Home Care → Set Up Care Guidance V2 Scene**.
+
+| Gesture (headset) | Action |
+| --- | --- |
+| Point the hand ray at a panel button and pinch | Press it (the ray turns blue on a button) |
+| Touch a panel button with your index fingertip | Press it (up close, the ray hides) |
+| Pinch or make a fist next to an item | Pick it up (release by opening the hand) |
+| Left-hand pinch in empty air for ~1 s | Bring the panel in front of you |
+
+The dot on each index fingertip shows the hand is tracked. The top-right of the panel shows the hand-tracking state (`not seen` / `tracked` / `pinch` / `fist`), and the log prints finger curl and pinch distances every 3 s for tuning the thresholds in `HandTracking`.
+
+On the headset, start the PC bridge with USB forwarding before using **Complete & Verify** or item guidance: `powershell -File Tools/Start-VerificationBridge.ps1 -Usb -AdbPath <path to adb.exe>` (needs Python 3 and `GEMINI_API_KEY`).
+
+- Items that the current step mentions (keyword match on the step text against each `CareItem`) get a blue box; mentioned items missing from the scene are listed as "not found".
+- Picking up an item asks Gemini (through the same PC bridge) how to use it for this step: text on the panel, a green box on the held item, and an amber box + arrow to its target. Without the bridge, it falls back to the step text.
+- **Complete & Verify** runs the verification-test flow. In the Editor with no test image, it captures the virtual camera view.
+- Every session writes `session_report.json` and `session_report.md` (plus per-attempt images and JSON) to `Application.persistentDataPath/HomeCareSessions/<session>/`. **Save report** on the panel (or `S` in the Editor) saves it on demand.
+- Editor keys: `Enter` verify · `N` next · `R` restart · `C` recenter · `S` save report. The mouse clicks buttons and drags items.
+
 # Implementation
 ### 1. System Architecture
 

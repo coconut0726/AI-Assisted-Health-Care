@@ -30,6 +30,28 @@ namespace AHC.VR
             }), radius + 1);
         });
 
+        /// <summary>
+        /// Dashed rounded-rectangle outline. Use with <c>Image.Type.Tiled</c>: the corners stay solid arcs and
+        /// the straight edges repeat one dash + gap, so dashes keep their length at any size.
+        /// </summary>
+        public static Sprite DashedRoundedOutline(int radius, float thickness, int dash, int gap) => Get($"dashed{radius}_{thickness}_{dash}_{gap}", () =>
+        {
+            int border = radius + 2, period = dash + gap;
+            int size = border * 2 + period;
+            return Sliced(Draw(size, size, (x, y) =>
+            {
+                float outer = RoundRectCoverage(x, y, size, size, radius);
+                float inner = RoundRectCoverage(x, y, size, size, radius, thickness);
+                float ring = Mathf.Clamp01(outer - inner);
+                // In the repeating middle strip of each edge, keep only the dash part.
+                bool midX = x > border && x < size - border, midY = y > border && y < size - border;
+                if (midX == midY) return ring; // corners (and the unused centre)
+                float along = (midX ? x : y) - border;
+                float edge = Mathf.Min(along - gap * 0.5f, gap * 0.5f + dash - along);
+                return ring * Mathf.Clamp01(edge + 0.5f);
+            }), border);
+        });
+
         public static Sprite Circle() => Get("circle", () =>
         {
             const int size = 128;

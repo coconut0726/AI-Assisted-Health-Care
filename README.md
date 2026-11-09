@@ -68,6 +68,46 @@ adb reverse --list
 5. Enter Play Mode to test the custom procedure.
 
 
+# V2: Hands-only care guidance (`VRGuidanceDemo_V2.unity`)
+
+Code: `Assets/_Project/Runtime/CareGuidance/`. Procedure: `Content/Procedures/burn_care_procedure.json` (minor burn dressing change). Rebuild the scene objects with **Tools → Home Care → Set Up Care Guidance V2 Scene**.
+
+| Gesture (headset) | Action |
+| --- | --- |
+| Point the hand ray at a panel button and pinch | Press it (the ray turns blue on a button) |
+| Touch a panel button with your index fingertip | Press it (up close, the ray hides) |
+| Pinch or make a fist next to an item | Pick it up (release by opening the hand) |
+| Left-hand pinch in empty air for ~1 s | Bring the panel in front of you |
+
+The dot on each index fingertip shows the hand is tracked. The top-right of the panel shows the hand-tracking state (`not seen` / `tracked` / `pinch` / `fist`), and the log prints finger curl and pinch distances every 3 s for tuning the thresholds in `HandTracking`.
+
+On the headset, start the PC bridge with USB forwarding before using **Complete & Verify** or item guidance: `powershell -File Tools/Start-VerificationBridge.ps1 -Usb -AdbPath <path to adb.exe>` (needs Python 3 and `GEMINI_API_KEY`).
+
+- Items that the current step mentions (keyword match on the step text against each `CareItem`) get a blue box; mentioned items missing from the scene are listed as "not found".
+- Picking up an item asks Gemini (through the same PC bridge) how to use it for this step: text on the panel, a green box on the held item, and an amber box + arrow to its target. Without the bridge, it falls back to the step text.
+- **Complete & Verify** runs the verification-test flow. In the Editor with no test image, it captures the virtual camera view.
+- Every session writes `session_report.json` and `session_report.md` (plus per-attempt images and JSON) to `Application.persistentDataPath/HomeCareSessions/<session>/`. **Save report** on the panel (or `S` in the Editor) saves it on demand.
+- Editor keys: `Enter` verify · `N` next · `R` restart · `C` recenter · `S` save report. The mouse clicks buttons and drags items.
+
+## Real-object detection (Find items)
+
+Code: `Assets/_Project/Runtime/Detection/`. Added automatically to the V2 controller.
+
+1. **Find items** on the panel (or `F` in the Editor) captures the passthrough frame, its camera pose, and a grid of depth samples (Quest depth API via `EnvironmentRaycastManager`).
+2. Through the same PC bridge, Gemini rewrites the request into a short key-object phrase (prompt enhancement from the open-set detection study), returns `box_2d = [y_min, x_min, y_max, x_max]` (0–1000) for each object, and picks a visual type plus guidance text for the current step.
+3. Each box becomes a 3D box in the room. Objects smaller than 5 cm get a pulsing dot instead. `move_to_target` / `apply_to_target` adds an arrow and a ghost box that moves to the target, and `wait` adds a countdown.
+
+The request defaults to the items the current step names. `FindItems("any object name")` takes free text, so voice input can call it later. Inspector (`ObjectDetectionGuidance`): `testPrompt` (used by `F`), `findOnNewStep`, `defaultDistance` (used when there is no depth), `minBoxEdge`. Each request is saved in the session report with its image (`detect_step*.jpg`), boxes, 3D position, and depth source. The headset asks for the spatial data permission (`USE_SCENE`) for depth. Without it, boxes are placed at `defaultDistance`.
+
+### Stand-alone test scene (`3DGuidanceTestScence.unity`)
+
+Tests detection without the procedure flow. Rebuild it with **Tools → Home Care → Set Up 3D Guidance Test Scene**. It contains an OVRCameraRig, stand-in supplies (Editor only, hidden on the headset), and `ObjectDetectionTestRig`.
+
+- In the Inspector, set `stepInstruction` (the step the guidance follows) and `prompts` (one panel button each).
+- Editor: keys `1`–`4` run the prompts, `F` runs `testPrompt`, `X` clears, `C` moves the panel. Editor captures leave out the UI layer, as the headset camera does.
+- Every request is saved as an image and JSON (boxes, 3D size, depth source, latency) in `persistentDataPath/HomeCareDetectionTests/`.
+- The bridge handles one request at a time, so wait for a result (about 10–25 s) before pressing the next prompt.
+
 # Implementation
 ### 1. System Architecture
 

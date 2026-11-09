@@ -28,7 +28,11 @@ namespace HomeCare.Procedures
             }.ToString(Formatting.None);
         }
 
-        public static VerificationResponse ParseInteraction(string json)
+        public static VerificationResponse ParseInteraction(string json) =>
+            RequirementsJson.ParseResponse(ExtractModelText(json));
+
+        // Returns the final text output of a completed Interactions API response.
+        public static string ExtractModelText(string json)
         {
             var interaction = JObject.Parse(json);
             if ((string)interaction["status"] != "completed")
@@ -42,9 +46,9 @@ namespace HomeCare.Procedures
                     if (steps[i]["content"] is JArray parts)
                         foreach (var part in parts)
                             if ((string)part["type"] == "text") output += (string)part["text"];
-                    if (!string.IsNullOrWhiteSpace(output)) return RequirementsJson.ParseResponse(output);
+                    if (!string.IsNullOrWhiteSpace(output)) return output;
                 }
-            throw new ArgumentException("The model returned no verification result.");
+            throw new ArgumentException("The model returned no output.");
         }
     }
 }

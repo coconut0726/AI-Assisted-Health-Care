@@ -19,19 +19,27 @@ namespace HomeCare.AR
         PassthroughCameraAccess _access;
         const string CameraPermission = "horizonos.permission.HEADSET_CAMERA";
 
-        public async Task<byte[]> CaptureJpegAsync(CancellationToken cancellation)
+        public async Task<byte[]> CaptureJpegAsync(CancellationToken cancellation) =>
+            (await CaptureFrameAsync(cancellation)).Jpeg;
+
+        /// <summary>
+        /// Captures a JPEG together with the camera pose and projection at that moment, so a 2D box
+        /// found in the image later can be turned into rays in the room.
+        /// </summary>
+        public async Task<CapturedFrame> CaptureFrameAsync(CancellationToken cancellation)
         {
             IsEditorTest = false;
 #if UNITY_EDITOR
             if (editorTestImage != null)
             {
                 IsEditorTest = true;
-                return Encode(editorTestImage);
+                return EditorFrame(Encode(editorTestImage), (float)editorTestImage.width / editorTestImage.height,
+                    "editor_test_image", false);
             }
             if (captureViewCameraInEditor)
             {
                 IsEditorTest = true;
-                return RenderView();
+                return EditorFrame(RenderView(), 1280f / 960f, "editor_view", true);
             }
 #endif
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -73,7 +81,19 @@ namespace HomeCare.AR
                 if (_access.IsPlaying && _access.Timestamp != default && _access.Timestamp != previousTimestamp)
                 {
                     var texture = _access.GetTexture();
-                    if (texture != null && texture.width > 16 && texture.height > 16) return Encode(texture);
+                    if (texture != null && texture.width > 16 && texture.height > 16)
+                    {
+                        var access = _access;
+                        var pose = access.GetCameraPose();
+                        return new CapturedFrame
+                        {
+                            Jpeg = Encode(texture),
+                            CameraPose = pose,
+                            ViewportToRay = viewport => access.ViewportPointToRay(viewport, pose),
+                            Source = "passthrough",
+                            MatchesScene = true,
+                        };
+                    }
                 }
                 await Task.Yield();
             }
@@ -81,18 +101,44 @@ namespace HomeCare.AR
         }
 
 #if UNITY_EDITOR
-        static byte[] RenderView()
+        static Camera EditorCamera()
         {
             var rig = FindAnyObjectByType<OVRCameraRig>();
-            var camera = rig != null && rig.centerEyeAnchor != null ? rig.centerEyeAnchor.GetComponent<Camera>() : Camera.main;
+            return rig != null && rig.centerEyeAnchor != null ? rig.centerEyeAnchor.GetComponent<Camera>() : Camera.main;
+        }
+
+        /// <summary>Editor frame: rays come from the head camera with the capture's aspect ratio.</summary>
+        static CapturedFrame EditorFrame(byte[] jpeg, float aspect, string source, bool matchesScene)
+        {
+            var camera = EditorCamera();
+            var pose = camera != null ? new Pose(camera.transform.position, camera.transform.rotation) : new Pose(Vector3.zero, Quaternion.identity);
+            float tanHalf = Mathf.Tan(0.5f * Mathf.Deg2Rad * (camera != null ? camera.fieldOfView : 60f));
+            return new CapturedFrame
+            {
+                Jpeg = jpeg,
+                CameraPose = pose,
+                ViewportToRay = v => new Ray(pose.position,
+                    pose.rotation * new Vector3((2 * v.x - 1) * tanHalf * aspect, (2 * v.y - 1) * tanHalf, 1).normalized),
+                Source = source,
+                MatchesScene = matchesScene,
+            };
+        }
+
+        static byte[] RenderView()
+        {
+            var camera = EditorCamera();
             if (camera == null) throw new InvalidOperationException("No camera to capture in the Editor.");
             var target = RenderTexture.GetTemporary(1280, 960, 24, RenderTextureFormat.ARGB32);
             var previousTarget = camera.targetTexture;
             var previousColor = camera.backgroundColor;
+            var previousMask = camera.cullingMask;
             try
             {
                 camera.targetTexture = target;
                 camera.backgroundColor = new Color(0.55f, 0.55f, 0.55f, 1); // passthrough stand-in
+                // The headset camera never sees our panels, so leave the UI layer out here too.
+                int ui = LayerMask.NameToLayer("UI");
+                if (ui >= 0) camera.cullingMask &= ~(1 << ui);
                 camera.Render();
                 return Encode(target);
             }
@@ -100,6 +146,7 @@ namespace HomeCare.AR
             {
                 camera.targetTexture = previousTarget;
                 camera.backgroundColor = previousColor;
+                camera.cullingMask = previousMask;
                 RenderTexture.ReleaseTemporary(target);
             }
         }
@@ -128,5 +175,19 @@ namespace HomeCare.AR
                 if (readable != null) Destroy(readable);
             }
         }
+    }
+
+    /// <summary>A camera image plus what is needed to map image points back into the room.</summary>
+    public sealed class CapturedFrame
+    {
+        public byte[] Jpeg;
+        /// <summary>World pose of the camera when the image was taken.</summary>
+        public Pose CameraPose;
+        /// <summary>Viewport point (0,0 bottom-left to 1,1 top-right of the image) to a world ray, using the capture-time pose.</summary>
+        public Func<Vector2, Ray> ViewportToRay;
+        /// <summary>passthrough | editor_view | editor_test_image</summary>
+        public string Source;
+        /// <summary>False when the image does not show the current scene (an Editor test photo), so depth cannot be measured.</summary>
+        public bool MatchesScene;
     }
 }

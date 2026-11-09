@@ -133,9 +133,13 @@ namespace AHC.VR
             var img = Image(parent, "Pill", bg, Sprites.Rounded(PillRadius));
             var h = img.gameObject.AddComponent<HorizontalLayoutGroup>();
             h.padding = new RectOffset(14, 14, 6, 6);
+            // The rounded sprite makes the pill at least ~46 px tall; keep the label in the middle of it.
+            h.childAlignment = TextAnchor.MiddleCenter;
             h.childControlWidth = h.childControlHeight = true;
             h.childForceExpandWidth = h.childForceExpandHeight = false;
-            Text(img.transform, text, size, fg, bold: true, wrap: false);
+            var label = Text(img.transform, text, size, fg, bold: true, wrap: false);
+            label.alignment = TextAlignmentOptions.Center; // centred vertically too, as in Figma
+            label.lineSpacing = 0;
             return img;
         }
 

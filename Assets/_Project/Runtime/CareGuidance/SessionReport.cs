@@ -35,6 +35,7 @@ namespace HomeCare.Guidance
         public List<ItemPresence> mentioned_items = new();
         public List<AttemptReport> attempts = new();
         public List<GuidanceEvent> guidance = new();
+        public List<DetectionEvent> detections = new();
     }
 
     [Serializable]
@@ -78,6 +79,39 @@ namespace HomeCare.Guidance
         public string caution;
         public string target_item_id;
         public string visual_cue;
+    }
+
+    /// <summary>One "find this object" request: what was asked, what the model found and where it was placed.</summary>
+    [Serializable]
+    public class DetectionEvent
+    {
+        public string at_utc;
+        public string request;
+        public string source;
+        public string image_file;
+        public string frame_source;
+        public int depth_samples;
+        public string visual_type;
+        public string guidance_text;
+        public string caution;
+        public string error;
+        public List<DetectionObjectReport> objects = new();
+    }
+
+    [Serializable]
+    public class DetectionObjectReport
+    {
+        public string query;
+        public string label;
+        public string role;
+        public bool found;
+        /// <summary>[y_min, x_min, y_max, x_max], 0-1000.</summary>
+        public int[] box_2d;
+        /// <summary>depth | live_depth | default_distance, empty when not found.</summary>
+        public string depth_source;
+        /// <summary>World position and size (metres) of the placed 3D box.</summary>
+        public float[] world_center;
+        public float[] world_size;
     }
 
     /// <summary>
@@ -188,6 +222,15 @@ namespace HomeCare.Guidance
                                   (string.IsNullOrEmpty(g.caution) ? "" : $" Caution: {g.caution}"));
                 }
                 if (s.guidance.Count > 0) md.AppendLine();
+                foreach (var d in s.detections)
+                {
+                    var found = new List<string>();
+                    foreach (var o in d.objects) found.Add(o.label + (o.found ? $" ({o.role}, {o.depth_source})" : " (not seen)"));
+                    md.AppendLine($"- Find \"{Cell(d.request)}\" ({d.source}, {d.at_utc}" +
+                                  (string.IsNullOrEmpty(d.image_file) ? "" : $", image `{d.image_file}`") + "): " +
+                                  (string.IsNullOrEmpty(d.error) ? string.Join(", ", found) + " — " + Cell(d.guidance_text) : "Error: " + Cell(d.error)));
+                }
+                if (s.detections.Count > 0) md.AppendLine();
             }
             md.AppendLine("---");
             md.AppendLine("Verification results come from a vision-language model and are a prototype aid, not a clinical assessment. " +

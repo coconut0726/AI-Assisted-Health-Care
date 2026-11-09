@@ -75,29 +75,8 @@ namespace HomeCare.Guidance.EditorTools
                 }
             }
 
-            var unlit = Shader.Find("Universal Render Pipeline/Unlit");
-            var lineMaterial = MaterialAsset("CareHighlight", unlit, Color.white);
-
-            var itemsRoot = new GameObject("Care Items").transform;
-            var tray = Prop(itemsRoot, "Tray", PrimitiveType.Cube, new Vector3(0, 0, 0.03f), new Vector3(0.62f, 0.01f, 0.4f), default,
-                MaterialAsset("Tray", unlit, Hex("5B6B7A")));
-            Object.DestroyImmediate(tray.GetComponent<Collider>());
-            Prop(itemsRoot, "Forearm", PrimitiveType.Capsule, new Vector3(-0.1f, 0.035f, -0.07f), new Vector3(0.07f, 0.16f, 0.07f),
-                new Vector3(0, 0, 90), MaterialAsset("Skin", unlit, Hex("E0AE84")));
-
-            var vocabulary = new ItemVocabulary[Items.Length];
-            for (int i = 0; i < Items.Length; i++)
-            {
-                var spec = Items[i];
-                var go = Prop(itemsRoot, spec.name, spec.shape, spec.position, spec.scale, spec.euler,
-                    MaterialAsset("Item_" + spec.id, unlit, Hex(spec.color)));
-                var item = go.AddComponent<CareItem>();
-                item.itemId = spec.id;
-                item.displayName = spec.name;
-                item.keywords = spec.keywords;
-                item.grabbable = spec.grabbable;
-                vocabulary[i] = new ItemVocabulary { itemId = spec.id, displayName = spec.name, keywords = spec.keywords };
-            }
+            var lineMaterial = LineMaterial();
+            var itemsRoot = BuildCareItems(out var vocabulary);
 
             var guidance = new GameObject("Care Guidance");
             var controller = guidance.AddComponent<CareGuidanceController>(); // adds camera, hand tracking and grabber
@@ -112,6 +91,37 @@ namespace HomeCare.Guidance.EditorTools
             EditorSceneManager.SaveScene(scene);
             Selection.activeGameObject = guidance;
             Debug.Log("[HomeCare] V2 scene set up: " + ScenePath);
+        }
+
+        /// <summary>Unlit material for highlight boxes, arrows and detection markers.</summary>
+        public static Material LineMaterial() =>
+            MaterialAsset("CareHighlight", Shader.Find("Universal Render Pipeline/Unlit"), Color.white);
+
+        /// <summary>Creates "Care Items": a tray with a forearm, a burn and stand-in burn-care supplies.</summary>
+        public static Transform BuildCareItems(out ItemVocabulary[] vocabulary)
+        {
+            var unlit = Shader.Find("Universal Render Pipeline/Unlit");
+            var itemsRoot = new GameObject("Care Items").transform;
+            var tray = Prop(itemsRoot, "Tray", PrimitiveType.Cube, new Vector3(0, 0, 0.03f), new Vector3(0.62f, 0.01f, 0.4f), default,
+                MaterialAsset("Tray", unlit, Hex("5B6B7A")));
+            Object.DestroyImmediate(tray.GetComponent<Collider>());
+            Prop(itemsRoot, "Forearm", PrimitiveType.Capsule, new Vector3(-0.1f, 0.035f, -0.07f), new Vector3(0.07f, 0.16f, 0.07f),
+                new Vector3(0, 0, 90), MaterialAsset("Skin", unlit, Hex("E0AE84")));
+
+            vocabulary = new ItemVocabulary[Items.Length];
+            for (int i = 0; i < Items.Length; i++)
+            {
+                var spec = Items[i];
+                var go = Prop(itemsRoot, spec.name, spec.shape, spec.position, spec.scale, spec.euler,
+                    MaterialAsset("Item_" + spec.id, unlit, Hex(spec.color)));
+                var item = go.AddComponent<CareItem>();
+                item.itemId = spec.id;
+                item.displayName = spec.name;
+                item.keywords = spec.keywords;
+                item.grabbable = spec.grabbable;
+                vocabulary[i] = new ItemVocabulary { itemId = spec.id, displayName = spec.name, keywords = spec.keywords };
+            }
+            return itemsRoot;
         }
 
         static GameObject Prop(Transform parent, string name, PrimitiveType shape, Vector3 position, Vector3 scale, Vector3 euler, Material material)

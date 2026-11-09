@@ -19,12 +19,12 @@ namespace HomeCare.Guidance
         readonly Canvas _canvas;
         readonly TMP_Text _progress, _status, _instruction, _items, _guidance, _feedback;
         readonly Image _guidanceBox;
-        readonly Button _verify, _next, _restart;
-        readonly TMP_Text _verifyLabel, _nextLabel;
+        readonly Button _verify, _next, _restart, _find;
+        readonly TMP_Text _verifyLabel, _nextLabel, _findLabel;
 
         public Transform Root => _root;
 
-        public CarePanel(Transform parent, Action verify, Action next, Action restart, Action recenter, Action saveReport)
+        public CarePanel(Transform parent, Action verify, Action next, Action restart, Action recenter, Action saveReport, Action findItems)
         {
             var panel = new GameObject("Care Panel", typeof(RectTransform), typeof(Canvas), typeof(Image), typeof(GraphicRaycaster));
             _root = panel.GetComponent<RectTransform>();
@@ -51,9 +51,13 @@ namespace HomeCare.Guidance
 
             _verify = Button("Complete & Verify", new Vector2(32, -822), new Vector2(520, 100), verify, out _verifyLabel, 30);
             _next = Button("Next step", new Vector2(568, -822), new Vector2(300, 100), next, out _nextLabel, 30);
-            _restart = Button("Restart", new Vector2(32, -942), new Vector2(270, 90), restart, out _, 24);
-            Button("Move panel here", new Vector2(315, -942), new Vector2(270, 90), recenter, out _, 24);
-            Button("Save report", new Vector2(598, -942), new Vector2(270, 90), saveReport, out _, 24);
+            _find = Button("Find items", new Vector2(32, -942), new Vector2(200, 90), findItems, out _findLabel, 24);
+            _find.GetComponent<Image>().color = new Color(0.1f, 0.45f, 0.25f, 1);
+            _restart = Button("Restart", new Vector2(244, -942), new Vector2(200, 90), restart, out _, 22);
+            Button("Move panel", new Vector2(456, -942), new Vector2(200, 90), recenter, out _, 22);
+            Button("Save report", new Vector2(668, -942), new Vector2(200, 90), saveReport, out _, 22);
+
+            ObjectDetectionTestRig.SetLayer(_root, LayerMask.NameToLayer("UI"));
 
             if (UnityEngine.Object.FindAnyObjectByType<EventSystem>() == null)
                 new GameObject("Care EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
@@ -170,6 +174,13 @@ namespace HomeCare.Guidance
             _next.gameObject.SetActive(!completed);
             _feedback.GetComponentInParent<ScrollRect>().verticalNormalizedPosition = 1;
             _instruction.GetComponentInParent<ScrollRect>().verticalNormalizedPosition = 1;
+        }
+
+        /// <summary>Find items button: shows "Looking..." while a detection runs.</summary>
+        public void SetFinding(bool finding, bool available)
+        {
+            _find.interactable = available && !finding;
+            _findLabel.text = finding ? "Looking..." : "Find items";
         }
 
         public void SetStatus(string text)

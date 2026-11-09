@@ -22,12 +22,14 @@ namespace HomeCare.Guidance
     /// <item>Finds the items the current step mentions among the scene's <see cref="CareItem"/>s and draws a box around them.</item>
     /// <item>When you pick an item up (pinch or fist), asks Gemini through the PC bridge how to use it for this step
     ///       and shows the answer as text plus an arrow to where it goes.</item>
+    /// <item>Find items looks for the step's items (or any named object) in the real camera view, boxes them
+    ///       in the room and adds step guidance (<see cref="ObjectDetectionGuidance"/>).</item>
     /// <item>Complete &amp; Verify captures the passthrough camera and checks the step's requirements (verification-test flow).</item>
     /// <item>Writes a session report (JSON + Markdown) after every change.</item>
     /// </list>
     /// Gestures: poke a button to press it · pinch or make a fist next to an item to hold it ·
     /// pinch with the left hand in empty air for about a second to bring the panel in front of you.
-    /// Editor: mouse clicks the buttons and drags items; Enter verify · N next · R restart · C recenter · S save report.
+    /// Editor: mouse clicks the buttons and drags items; Enter verify · N next · R restart · C recenter · S save report · F find items.
     /// </summary>
     [DefaultExecutionOrder(-100)]
     [RequireComponent(typeof(AfterStepCamera), typeof(HandTracking), typeof(HandGrabber))]
@@ -71,6 +73,8 @@ namespace HomeCare.Guidance
         HandTracking _hands;
         HandGrabber _grabber;
         HandPointer _pointer;
+        ObjectDetectionGuidance _detector;
+        readonly List<string> _stepItemNames = new();
         GhostCompanion _ghost;
         bool _flatScreen;
         Transform _head;
@@ -99,6 +103,7 @@ namespace HomeCare.Guidance
             _hands = GetComponent<HandTracking>();
             _grabber = GetComponent<HandGrabber>();
             _pointer = TryGetComponent<HandPointer>(out var pointer) ? pointer : gameObject.AddComponent<HandPointer>();
+            _detector = TryGetComponent<ObjectDetectionGuidance>(out var detector) ? detector : gameObject.AddComponent<ObjectDetectionGuidance>();
             var manager = FindAnyObjectByType<OVRManager>();
             if (manager != null) manager.isInsightPassthroughEnabled = true;
         }
@@ -117,6 +122,7 @@ namespace HomeCare.Guidance
             _hands.viewCamera = _view;
             _pointer.head = _head;
             _pointer.material = lineMaterial;
+            _detector.Init(_camera, lineMaterial, _head);
 #if UNITY_EDITOR
             // The XR Interaction Toolkit auto-spawns its device simulator in the Editor; it takes over
             // the mouse and keyboard, and this scene does not use XRI.
@@ -130,7 +136,7 @@ namespace HomeCare.Guidance
                 _view.backgroundColor = Color.clear;
             }
 
-            _panel = new CarePanel(transform, CompleteAndVerify, NextStep, RestartProcedure, RecenterPanel, SaveReport);
+            _panel = new CarePanel(transform, CompleteAndVerify, NextStep, RestartProcedure, RecenterPanel, SaveReport, () => FindItems());
             _highlightRoot = new GameObject("Item Highlights").transform;
             _highlightRoot.SetParent(transform, false);
             _arrow = GuidanceArrow.Create(transform, lineMaterial);
@@ -213,6 +219,7 @@ namespace HomeCare.Guidance
             if (keyboard.rKey.wasPressedThisFrame) RestartProcedure();
             if (keyboard.cKey.wasPressedThisFrame) { RecenterPanel(); PlaceItems(); }
             if (keyboard.sKey.wasPressedThisFrame) SaveReport();
+            if (keyboard.fKey.wasPressedThisFrame) FindItems(_detector.testPrompt);
 #endif
         }
 
@@ -225,6 +232,7 @@ namespace HomeCare.Guidance
             _mentioned.Clear();
             _guidanceTarget = null;
             _arrow.Hide();
+            _detector.Clear();
             var presence = new List<ItemPresence>();
             bool completed = _session == null || _session.State == ProcedureSessionState.Completed;
             if (!completed)
@@ -265,8 +273,12 @@ namespace HomeCare.Guidance
                 if (step.final_status == "not_started") step.final_status = "in_progress";
                 _report.Save();
             }
-            _panel.SetGuidance(completed ? "" : "<color=#C8D6E0>Pick up an item (pinch or grab it) to get guidance on how to use it.</color>");
+            _stepItemNames.Clear();
+            _stepItemNames.AddRange(presence.Select(p => p.name).Where(n => !string.IsNullOrWhiteSpace(n)));
+            _panel.SetGuidance(completed ? "" : "<color=#C8D6E0>Press Find items to locate this step's supplies on your table, " +
+                                                "or pick up an item (pinch or grab it) for guidance on how to use it.</color>");
             UpdateHighlights();
+            if (!completed && _detector.findOnNewStep) FindItems();
         }
 
         void UpdateHighlights()
@@ -373,6 +385,97 @@ namespace HomeCare.Guidance
 
         static CareItem FindItem(string id) =>
             string.IsNullOrEmpty(id) ? null : CareItem.FindAllInScene().FirstOrDefault(i => i.itemId == id);
+
+        // ------------------------------------------------------------------ real objects in the camera view
+
+        /// <summary>
+        /// Looks for <paramref name="request"/> in the passthrough camera view (empty: the items the current step
+        /// names), boxes what is found in the room and shows step guidance. Can be called from voice input later.
+        /// </summary>
+        public async void FindItems(string request = null)
+        {
+            if (_session == null || _session.State == ProcedureSessionState.Completed || _verifying) return;
+            var step = _session.CurrentStep;
+            if (string.IsNullOrWhiteSpace(request))
+                request = _stepItemNames.Count > 0 ? string.Join(", ", _stepItemNames) : "the supplies needed for this step: " + step.title;
+            request = request.Trim();
+            _panel.SetGuidance($"Looking for <b><noparse>{request}</noparse></b>... Keep the work area in view.");
+            _panel.SetFinding(true, true);
+
+            var detection = new DetectionEvent { at_utc = SessionReportWriter.Now(), request = request, source = "gemini" };
+            DetectionOutcome outcome = null;
+            try
+            {
+                outcome = await _detector.FindAsync(request, _session.Procedure, step, _stepItemNames, bridgeEndpoint, geminiModel, _lifetime.Token);
+            }
+            catch (OperationCanceledException) when (_lifetime.IsCancellationRequested) { return; }
+            catch (Exception e)
+            {
+                detection.error = e is OperationCanceledException ? "Timed out waiting for the camera or the PC bridge." : e.Message;
+                Debug.LogWarning("[HomeCare] Object detection failed: " + detection.error, this);
+            }
+            if (this == null || _session == null || outcome is { Superseded: true }) return;
+
+            if (outcome != null) RecordDetection(detection, outcome);
+            _report?.Step(step.id)?.detections.Add(detection);
+            _report?.Save();
+
+            // Ignore answers that arrive after the user moved on.
+            if (_session.State == ProcedureSessionState.Completed || _session.CurrentStep != step) return;
+            _panel.SetFinding(false, true);
+            if (outcome == null)
+            {
+                _panel.SetGuidance("Could not look for items. Check the camera and the PC bridge connection, then try again.", true);
+                return;
+            }
+            ShowDetection(outcome);
+        }
+
+        void RecordDetection(DetectionEvent detection, DetectionOutcome outcome)
+        {
+            detection.frame_source = outcome.FrameSource;
+            detection.depth_samples = outcome.DepthSamples;
+            if (outcome.Jpeg != null && _sessionDirectory != null)
+            {
+                string file = "detect_step" + (_session.StepIndex + 1) + "_" + Guid.NewGuid().ToString("N").Substring(0, 10) + ".jpg";
+                try { File.WriteAllBytes(Path.Combine(_sessionDirectory, file), outcome.Jpeg); detection.image_file = file; }
+                catch (IOException e) { Debug.LogWarning("[HomeCare] Could not save the detection image: " + e.Message, this); }
+            }
+            var r = outcome.Result;
+            detection.visual_type = r.visual_type;
+            detection.guidance_text = r.guidance_text;
+            detection.caution = r.caution;
+            foreach (var o in r.objects)
+            {
+                var marker = outcome.Placed.FirstOrDefault(p => p.detection == o).marker;
+                detection.objects.Add(new DetectionObjectReport
+                {
+                    query = o.query, label = o.label, role = o.role, found = o.found, box_2d = o.box_2d,
+                    depth_source = marker != null ? marker.Box.depthSource : "",
+                    world_center = marker != null ? new[] { marker.Box.center.x, marker.Box.center.y, marker.Box.center.z } : null,
+                    world_size = marker != null ? new[] { marker.Box.size.x, marker.Box.size.y, marker.Box.size.z } : null,
+                });
+                Debug.Log($"[HomeCare] Detect \"{o.query}\" ({o.role}): found={o.found} box=[{string.Join(",", o.box_2d)}]" +
+                          (marker != null ? $" at {marker.Box.center:F2} size {marker.Box.size:F2} ({marker.Box.depthSource})" : ""));
+            }
+        }
+
+        void ShowDetection(DetectionOutcome outcome)
+        {
+            var r = outcome.Result;
+            var text = new StringBuilder();
+            var names = r.objects.Select(o => !o.found ? $"<color=#FF9A8A><noparse>{o.label}</noparse> (not seen)</color>"
+                : o.role == "target" ? $"<color=#FFC857><noparse>{o.label}</noparse></color>"
+                : $"<color=#7CFFA0><noparse>{o.label}</noparse></color>");
+            text.Append(r.objects.Count == 0 ? "<color=#FFC857>Nothing found.</color>" : string.Join("   ", names)).Append('\n');
+            text.Append("<noparse>").Append(r.guidance_text).Append("</noparse>");
+            if (!string.IsNullOrWhiteSpace(r.caution))
+                text.Append("\n<color=#FF9A8A>Caution: <noparse>").Append(r.caution).Append("</noparse></color>");
+            if (outcome.Placed.Count > 0 && outcome.Placed.All(p => p.marker.Box.depthSource == "default_distance"))
+                text.Append("\n<size=70%><color=#9BB0C0>No depth reading: boxes are placed at an estimated distance.</color></size>");
+            _panel.SetGuidance(text.ToString(), outcome.Placed.Count == 0);
+            if (_ghost != null && !string.IsNullOrWhiteSpace(r.guidance_text)) _ghost.Say(r.guidance_text);
+        }
 
         // ------------------------------------------------------------------ verification (verification-test flow)
 
@@ -518,6 +621,7 @@ namespace HomeCare.Guidance
             if (_session == null)
             {
                 _panel.Set("Home Care", "Procedure unavailable", _feedback, false, false, false, false, false);
+                _panel.SetFinding(false, false);
                 return;
             }
             bool completed = _session.State == ProcedureSessionState.Completed;
@@ -526,6 +630,7 @@ namespace HomeCare.Guidance
             string instruction = completed ? "Procedure complete" : _session.CurrentStep.title + "\n" + _session.CurrentStep.instruction;
             _panel.Set(progress, instruction, _feedback, busy, !completed && !_session.CanAdvance,
                 _session.CanAdvance, completed, _session.StepIndex == _session.Procedure.steps.Length - 1);
+            _panel.SetFinding(_detector.Busy, !completed && !busy);
 
             int stepKey = completed ? -2 : _session.StepIndex;
             if (stepKey != _renderedStep)

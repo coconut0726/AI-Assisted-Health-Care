@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using HomeCare.Procedures;
 using Newtonsoft.Json;
@@ -177,7 +178,8 @@ namespace HomeCare.Guidance
             md.AppendLine($"- **Verification model:** {r.verification_model}");
             md.AppendLine($"- **Started (UTC):** {r.started_at_utc}");
             md.AppendLine($"- **Finished (UTC):** {(string.IsNullOrEmpty(r.finished_at_utc) ? "—" : r.finished_at_utc)}");
-            md.AppendLine($"- **Completed:** {(r.completed ? "yes, all steps passed" : "no")}");
+            int skipped = r.steps.Count(s => s.final_status == "skipped");
+            md.AppendLine($"- **Completed:** {(!r.completed ? "no" : skipped == 0 ? "yes, all steps passed" : $"yes, {skipped} step(s) skipped without a passed check")}");
             md.AppendLine();
             md.AppendLine("## Summary");
             md.AppendLine();

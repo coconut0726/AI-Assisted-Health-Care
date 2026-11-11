@@ -123,3 +123,7 @@ InitTestScene*.unity*
 
 # Python verification bridge cache
 /Tools/__pycache__/
+
+# Meta Voice SDK: wit.config holds the Wit.ai Server Access Token; never commit it
+/ProjectSettings/wit.config
+/ProjectSettings/WitConfigExports/

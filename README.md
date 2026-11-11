@@ -89,6 +89,27 @@ On the headset, start the PC bridge with USB forwarding before using **Complete 
 - Every session writes `session_report.json` and `session_report.md` (plus per-attempt images and JSON) to `Application.persistentDataPath/HomeCareSessions/<session>/`. **Save report** on the panel (or `S` in the Editor) saves it on demand.
 - Editor keys: `Enter` verify · `N` next · `R` restart · `C` recenter · `S` save report. The mouse clicks buttons and drags items.
 
+## Full demo: guided care with detection and verification (`VRGuidanceDemo.unity`)
+
+The caregiver flow of the Figma demo scene now runs on real data: the 6-step burn care procedure (`burn_care_procedure.json`), object detection in the passthrough view, and an after-step check that unlocks Next. The nurse flow is still the scripted walkthrough. Set it up once with **AHC → Set Up Real Care Flow (VRGuidanceDemo)** (adds `RealCareSession` to the `AHC VR Demo` object and saves the scene).
+
+1. Start the PC bridge (see V2 above), then launch the app. Choose **Caregiver / patient**.
+2. **Supplies on the table**: the app looks for every supply (four per request, about 40 s in total) and marks each one Found / Not found yet. **Look again** repeats it, **Start** begins.
+3. Each step: the step's items are boxed in the room with guidance. Do the step, then press **Check step**. The result shows Pass / Not met / Not sure per check. **Next** unlocks only after a pass. **Check again** retries, and **Skip** (presenter override) moves on and marks the step as skipped in the report.
+4. After step 6, the completion screen shows the red flags and the report path (`HomeCareSessions/<session>/session_report.md`, with every detection and check image).
+
+| Hands | Controllers | Editor |
+| --- | --- | --- |
+| Hand ray + pinch, or touch a button | A check step / next · B skip (after a failed check) · X find items · Y home | → / Space next · ← back/skip · R find items · H home |
+
+**Care cases.** **AHC → Care Case → Simple Wound Dressing (prop test)** switches the flow to `wound_dressing_procedure.json`: 4 steps (5 checks) a patient can do at home with 4 props: gloves, the practice skin pad (the wound), non-stick pads and a zip bag. A procedure file may list its own `supplies` and a `completion_note`. **AHC → Care Case → Burn Dressing** switches back.
+
+**UI stays where it appears.** The panels are placed once, in front of the first tracked view, and do not follow the head. Labels, cards and the ghost's speech bubble turn toward the user once, when they appear, and then stay fixed.
+
+**Voice (Meta Voice SDK + Wit.ai, free).** The guide reads its lines aloud, and you can talk to it: press **V** (Editor), click the left thumbstick, or press **Talk**, then say one sentence: "next" / "check", "find the scissors", "repeat", "skip", or "home". Setup: create a Wit.ai app (English), paste its Server Access Token in **Meta → Voice SDK → Get Started**, then run **AHC → Set Up Voice (Meta Voice SDK)**. `ProjectSettings/wit.config` holds that token and is git-ignored. Do not commit it.
+
+The PC bridge handles one request at a time. The app waits for it (up to 60 s) instead of failing. In the Editor, turn off the console's **Error Pause**: a Pipeline/CLI timeout logs an error, and Error Pause then freezes Play mode. Screenshots of an Editor run are in `Reports/full_demo/`.
+
 ## Real-object detection (Find items)
 
 Code: `Assets/_Project/Runtime/Detection/`. Added automatically to the V2 controller.

@@ -64,6 +64,15 @@ namespace HomeCare.Procedures
             OverallStatus = null;
         }
 
+        /// <summary>Moves on without a passed check (a presenter override; the report marks the step as skipped).</summary>
+        public void Skip()
+        {
+            if (State == ProcedureSessionState.Verifying || State == ProcedureSessionState.Completed)
+                throw new InvalidOperationException("This step cannot be skipped now.");
+            State = ProcedureSessionState.Passed;
+            Advance();
+        }
+
         public void Restart()
         {
             if (State == ProcedureSessionState.Verifying)

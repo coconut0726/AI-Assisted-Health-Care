@@ -29,6 +29,7 @@ namespace AHC.VR
         Vector3[] _eyeScales;
         float _nextBlink, _talkUntil, _hop, _spawnTime;
         bool _placed;
+        Quaternion _bubbleRotation = Quaternion.identity;
         TextMeshProUGUI _bubbleText;
         GameObject _bubble;
 
@@ -141,10 +142,14 @@ namespace AHC.VR
             float t = Time.time;
 
             // Appear once in front of the user's first view, then stay put; only turn to face them.
-            if (!_placed) { _placed = TryPlace(); if (!_placed) return; }
+            bool justPlaced = false;
+            if (!_placed) { _placed = justPlaced = TryPlace(); if (!_placed) return; }
             Vector3 look = Vector3.ProjectOnPlane(_head.position - transform.position, Vector3.up);
             if (look.sqrMagnitude > 1e-4f) transform.rotation = Quaternion.LookRotation(look, Vector3.up);
-            if (_bubble != null) _bubble.transform.rotation = Quaternion.LookRotation(-look, Vector3.up);
+            // The speech bubble is UI: it faces the user once when the ghost appears, then stays fixed in the room
+            // (the ghost itself still turns toward the user).
+            if (justPlaced && look.sqrMagnitude > 1e-4f) _bubbleRotation = Quaternion.LookRotation(-look, Vector3.up);
+            if (_bubble != null) _bubble.transform.rotation = _bubbleRotation;
 
             // Float loop from the Blender animation: 4 s bob, sway, nod and soft squash.
             float phase = t * Mathf.PI * 2f / 4f;

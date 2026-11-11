@@ -107,11 +107,13 @@ namespace HomeCare.Guidance
         /// Looks for <paramref name="request"/> (one or more object names, or a vague description) in the current
         /// camera view and places markers and cues. Throws on capture, bridge or model errors.
         /// </summary>
+        /// <param name="boxesOnly">Only outline what was found (no guidance card, arrow or hint), and add to the boxes
+        /// already shown instead of replacing them: for the supply check before any step has started.</param>
         public async Task<DetectionOutcome> FindAsync(string request, ProcedureRequirements procedure, ProcedureStep step,
-            IEnumerable<string> stepItemNames, string endpoint, string model, CancellationToken cancellation)
+            IEnumerable<string> stepItemNames, string endpoint, string model, CancellationToken cancellation, bool boxesOnly = false)
         {
             if (_camera == null) throw new InvalidOperationException("Object detection was not initialised.");
-            Clear(); // also invalidates any earlier request
+            // Invalidate any earlier request; its boxes stay until this result replaces them (a refresh does not blink).
             int id = ++_request;
             Busy = true;
             var outcome = new DetectionOutcome { Request = request };
@@ -130,12 +132,28 @@ namespace HomeCare.Guidance
                 var response = await VerificationBridgeClient.PostAsync(endpoint, body, timeout.Token);
                 outcome.Result = DetectionProtocol.Parse(response);
                 if (this == null || id != _request) { outcome.Superseded = true; return outcome; }
+                if (boxesOnly)
+                {
+                    PlaceBoxes(outcome, lifter);
+                    return outcome;
+                }
+                RemoveMarkers();
                 Place(outcome, lifter);
                 return outcome;
             }
             finally
             {
                 if (id == _request) Busy = false;
+            }
+        }
+
+        void PlaceBoxes(DetectionOutcome outcome, SpatialLifter lifter)
+        {
+            foreach (var detection in outcome.Result.objects.Where(o => o.found))
+            {
+                var marker = DetectedObjectMarker.Create(detection, lifter.Lift(detection.ViewportRect), _root, _head, MarkerStyle.Secondary, minBoxEdge);
+                _markers.Add(marker);
+                outcome.Placed.Add((detection, marker));
             }
         }
 
@@ -181,6 +199,14 @@ namespace HomeCare.Guidance
         {
             _request++;
             Busy = false;
+            RemoveMarkers();
+        }
+
+        /// <summary>The boxes shown in the room now.</summary>
+        public IReadOnlyList<DetectedObjectMarker> Markers => _markers;
+
+        void RemoveMarkers()
+        {
             foreach (var marker in _markers) if (marker != null) Destroy(marker.gameObject);
             _markers.Clear();
             foreach (var extra in _extras) if (extra != null) Destroy(extra);

@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using HomeCare.Guidance;
+using HomeCare.Procedures;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,9 +17,14 @@ namespace AHC.VR
     /// and the caregiver/patient guided-care flow (VP1–VP5). Everything is built at runtime from
     /// the demo JSON; add it to a scene with  AHC ▸ Add VR Demo to Scene.
     ///
-    /// Controls — Quest controllers:  A next · B back · X repeat (or "nurse" on the first screen) ·
-    /// Y home · hold right trigger to move the guidance onto the real burn.
-    /// Editor keyboard:  → / Space next · ← back · R repeat · 1 patient · 2 nurse · H home ·
+    /// With a <see cref="RealCareSession"/> on the same object, the caregiver flow is real: the supplies are looked
+    /// for in the passthrough view, each step's items are boxed in the room, and Check step verifies the result
+    /// through the PC bridge before Next unlocks. The nurse flow stays a scripted walkthrough.
+    ///
+    /// Controls — hands: aim the hand ray at a button and pinch, or touch it with a fingertip.
+    /// Quest controllers:  A next / check step · B back (skip a step that did not pass) · X find items / repeat
+    /// (or "nurse" on the first screen) · Y home · hold right trigger to move the scripted guidance onto the burn.
+    /// Editor keyboard:  → / Space next · ← back · R find items / repeat · 1 patient · 2 nurse · H home ·
     /// I J K L U O nudge the workspace · P put it back in front of you. Buttons are also clickable.
     /// </summary>
     public class VRDemoController : MonoBehaviour
@@ -60,6 +69,11 @@ namespace AHC.VR
         GhostCompanion _ghost;
         TextMeshProUGUI _timer, _transcript;
         RectTransform _voiceBar;
+        RealCareSession _care;
+        VoiceGuide _voice;
+        string _lastLine = "", _heard = "";
+
+        bool Real => _care != null && _care.isActiveAndEnabled;
 
         // ------------------------------------------------------------------ setup
 
@@ -80,8 +94,20 @@ namespace AHC.VR
             _eventCamera = _head.TryGetComponent<Camera>(out var cam) ? cam : Camera.main;
 
             EnsureEventSystem();
+            SetUpHands();
             BuildHud();
             BuildWorkspace();
+            if (TryGetComponent(out _care) && _care.enabled)
+            {
+                _care.Init(_head);
+                _care.Changed += OnCareChanged;
+                _care.Spoke += Say;
+            }
+            if (TryGetComponent(out _voice) && _voice.enabled)
+            {
+                _voice.Heard += OnHeard;
+                _voice.Changed += () => { if (this != null && _hud != null && Real && (_view == View.PatientStart || _view == View.PatientStep)) SetView(_view, speak: false); };
+            }
             if (ghostModel != null) _ghost = GhostCompanion.Spawn(ghostModel, transform, _head); // appears in the first view, then stays
             SetView(View.RoleSelect);
         }
@@ -93,13 +119,29 @@ namespace AHC.VR
             es.transform.SetParent(transform, false);
         }
 
+        // Hands-free use during care: a ray from each tracked hand presses HUD buttons with a pinch (or a fingertip touch).
+        void SetUpHands()
+        {
+            var hands = TryGetComponent<HandTracking>(out var h) ? h : gameObject.AddComponent<HandTracking>();
+            if (_rig != null) hands.trackingSpace = _rig.trackingSpace;
+            hands.viewCamera = _eventCamera;
+            var pointer = TryGetComponent<HandPointer>(out var p) ? p : gameObject.AddComponent<HandPointer>();
+            pointer.head = _head;
+            if (TryGetComponent<RealCareSession>(out var care) && care.lineMaterial != null) pointer.material = care.lineMaterial;
+        }
+
         void BuildHud()
         {
             var follow = new GameObject("HUD").AddComponent<LazyFollow>();
+            // On the UI layer, so Editor test captures (which stand in for the headset camera) leave the panels out.
+            int uiLayer = LayerMask.NameToLayer("UI");
+            if (uiLayer >= 0) follow.gameObject.layer = uiLayer;
             follow.transform.SetParent(transform, false);
             follow.head = _head;
             follow.distance = hudDistance;
             follow.heightOffset = hudHeight;
+            follow.onWall = true; // against the wall ahead, clear of the supplies on the table
+            follow.panelHeight = 900 * HudScale;
 
             var canvas = Ui.WorldCanvas("HUD Canvas", follow.transform, new Vector2(1440, 900), HudScale, _eventCamera);
             canvas.sortingOrder = 10;
@@ -135,12 +177,13 @@ namespace AHC.VR
         {
             if (_data == null) return;
 
-            if (Pressed(OVRInput.Button.One, Key.RightArrow, Key.Space, Key.Enter)) Next();
+            if (Pressed(OVRInput.Button.PrimaryThumbstick, Key.V)) ToggleListening(); // click the left stick to talk
+            else if (Pressed(OVRInput.Button.One, Key.RightArrow, Key.Space, Key.Enter)) Next();
             else if (Pressed(OVRInput.Button.Two, Key.LeftArrow, Key.Backspace)) Back();
             else if (Pressed(OVRInput.Button.Three, Key.R)) Alt();
             else if (Pressed(OVRInput.Button.Four, Key.H, Key.Escape))
             {
-                SetView(View.RoleSelect);
+                GoHome();
                 if (_ghost != null) _ghost.Recenter(); // also brings the guide back in front of you
             }
             else if (_view == View.RoleSelect && KeyDown(Key.Digit1)) SetView(View.PatientStart);
@@ -183,8 +226,54 @@ namespace AHC.VR
             if (kb[Key.P].wasPressedThisFrame) PlaceWorkspaceInFront();
         }
 
+        void GoHome()
+        {
+            if (Real) _care.Leave();
+            SetView(View.RoleSelect);
+        }
+
+        // ------------------------------------------------------------------ real caregiver flow
+
+        void NextReal()
+        {
+            switch (_view)
+            {
+                case View.PatientStart:
+                    if (_care.Procedure == null) return;
+                    _care.BeginSession();
+                    SetView(View.PatientStep);
+                    break;
+                case View.PatientStep:
+                    if (_care.CanAdvance) { _care.Next(); AfterStepChange(); }
+                    else _care.Verify();
+                    break;
+                case View.PatientComplete: GoHome(); break;
+            }
+        }
+
+        void SkipReal()
+        {
+            if (_care.State != ProcedureSessionState.NeedsRetry) return;
+            _care.Skip();
+            AfterStepChange();
+        }
+
+        void AfterStepChange() => SetView(_care.Completed ? View.PatientComplete : View.PatientStep);
+
+        // Requests finish in the background; redraw the HUD (without speaking again) when they do.
+        void OnCareChanged()
+        {
+            if (this == null || _hud == null) return;
+            if (_view == View.PatientStart || _view == View.PatientStep) SetView(_view, speak: false);
+        }
+
         void Next()
         {
+            if (Real && (_view == View.PatientStart || _view == View.PatientStep || _view == View.PatientComplete))
+            {
+                NextReal();
+                return;
+            }
             switch (_view)
             {
                 case View.RoleSelect: SetView(View.PatientStart); break;
@@ -202,6 +291,8 @@ namespace AHC.VR
 
         void Back()
         {
+            if (Real && _view == View.PatientStep) { SkipReal(); return; } // checks only move forward
+            if (Real && _view == View.PatientStart) { GoHome(); return; }
             switch (_view)
             {
                 case View.PatientStart: case View.NurseStart: SetView(View.RoleSelect); break;
@@ -218,20 +309,77 @@ namespace AHC.VR
         void Alt()
         {
             if (_view == View.RoleSelect) SetView(View.NurseStart);
+            else if (Real && _view == View.PatientStart) _care.CheckSupplies();
+            else if (Real && _view == View.PatientStep) _care.FindItems();
             else if (_view == View.PatientStep) Repeat();
         }
 
         void Repeat()
         {
-            // No text-to-speech yet: replaying is shown by the ghost "talking" again, or a pulse on the voice bar.
             if (_ghost != null) _ghost.Repeat();
+            if (_voice != null) _voice.Speak(_lastLine);
             if (_voiceBar != null) StartCoroutine(PulseRoutine(_voiceBar));
+        }
+
+        /// <summary>The guide says a line: in the ghost's bubble and, with Voice SDK set up, aloud.</summary>
+        void Say(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line)) return;
+            _lastLine = line;
+            if (_ghost != null) _ghost.Say(line);
+            if (_voice != null) _voice.Speak(line);
+        }
+
+        // ------------------------------------------------------------------ voice commands
+
+        void ToggleListening() { if (_voice != null) _voice.ToggleListening(); }
+
+        const string VoiceHelp = "Say “next”, “check”, “find the scissors” or “repeat”.";
+
+        /// <summary>One spoken sentence → the same action as a button.</summary>
+        void OnHeard(string text)
+        {
+            _heard = text;
+            string t = Regex.Replace(Regex.Replace(text.ToLowerInvariant(), @"[^\w\s'-]", " "), @"\s+", " ").Trim();
+            var find = Regex.Match(t, @"^(?:(?:please|can you|could you|help me)\s+)*(?:find|where is|where's|where are|look for|show me|locate)\s+(?:(?:the|my|a|an|some)\s+)?(.*)$");
+
+            if (Has(t, "repeat", "say again", "say that again", "one more time")) Repeat();
+            else if (_view == View.RoleSelect && Has(t, "nurse")) SetView(View.NurseStart);
+            else if (_view == View.RoleSelect && Has(t, "patient", "caregiver", "care giver", "me")) SetView(View.PatientStart);
+            else if (find.Success)
+            {
+                string what = find.Groups[1].Value.Trim();
+                if (what is "" or "items" or "supplies" or "everything" or "things" or "it") what = null;
+                if (Real && _view == View.PatientStep) _care.FindItems(what);
+                else if (Real && _view == View.PatientStart) _care.CheckSupplies();
+                else Say("I can look for things once a care step has started.");
+            }
+            else if (Has(t, "skip")) { if (Real && _view == View.PatientStep) Back(); }
+            else if (Has(t, "home", "main menu")) GoHome();
+            else if (Has(t, "next", "continue", "check", "done", "finished", "start", "ready", "go ahead")) Next();
+            else Say("Sorry, I didn't catch a command. " + VoiceHelp);
+        }
+
+        static bool Has(string text, params string[] words) =>
+            words.Any(w => Regex.IsMatch(text, @"\b" + Regex.Escape(w) + @"\b"));
+
+        /// <summary>Talk button with what the guide heard (or is hearing), shown when Voice SDK is set up.</summary>
+        void VoiceRow(Transform parent)
+        {
+            if (_voice == null || !_voice.CanListen) return;
+            var row = Ui.Row(parent, "Voice", 12);
+            Ui.Button(row.transform, _voice.Listening ? "Listening…" : "Talk", false, ToggleListening, "V");
+            string line = _voice.Listening ? (string.IsNullOrEmpty(_voice.Partial) ? "I'm listening… " + VoiceHelp : $"“{_voice.Partial}”")
+                        : !string.IsNullOrEmpty(_heard) ? $"Heard: “{_heard}”" : VoiceHelp;
+            Ui.Text(row.transform, line, 15, _voice.Listening ? Theme.PrimaryDark : Theme.Muted);
         }
 
         string GhostLine(View v) => v switch
         {
             View.RoleSelect => "Hi! I'm your care guide. Who's wearing the headset today?",
+            View.PatientStart when Real => _care.Procedure == null ? "" : $"Today: {_care.Procedure.procedure_title}. First, check that your supplies are in view.",
             View.PatientStart => "Let's change your dressing together. First, check that your supplies are in view.",
+            View.PatientStep when Real => _care.Completed ? "" : _care.CurrentStep.instruction,
             View.PatientStep => _data.steps[_flat[_cursor].step].actions[_flat[_cursor].action].voice,
             View.PatientComplete => $"All done, great job! I'll share this session with {_data.nurseName}.",
             View.NurseStart => "Show me how it's done and explain each step out loud. I'll turn it into a guide.",
@@ -253,8 +401,9 @@ namespace AHC.VR
 
         // ------------------------------------------------------------------ views
 
-        void SetView(View v)
+        void SetView(View v, bool speak = true)
         {
+            bool entering = v != _view || speak;
             _view = v;
             Ui.Clear(_hud);
             _timer = _transcript = null;
@@ -264,6 +413,9 @@ namespace AHC.VR
             switch (v)
             {
                 case View.RoleSelect: BuildRoleSelect(); break;
+                case View.PatientStart when Real: BuildRealStart(); break;
+                case View.PatientStep when Real: BuildRealStep(); break;
+                case View.PatientComplete when Real: BuildRealComplete(); break;
                 case View.PatientStart: BuildPatientStart(); break;
                 case View.PatientStep: BuildPatientStep(); break;
                 case View.PatientComplete: BuildPatientComplete(); break;
@@ -272,7 +424,9 @@ namespace AHC.VR
                 case View.NurseSaved: BuildNurseSaved(); break;
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(_hud);
-            if (_ghost != null) _ghost.Say(GhostLine(v));
+            if (speak) Say(GhostLine(v));
+            // Look for the supplies as soon as the start screen opens (it redraws itself as results arrive).
+            if (entering && v == View.PatientStart && Real && _care.Procedure != null) _care.CheckSupplies();
         }
 
         Image CenterPanel(float y = 0)
@@ -442,6 +596,137 @@ namespace AHC.VR
                 ("Next dressing change", "Tomorrow", null),
             });
             Ui.Note(p.transform, _data.redFlags, Theme.Red, Theme.RedBg);
+            Ui.Button(p.transform, "Done", true, Next, "A");
+        }
+
+        // ---------- caregiver / patient, real (detection + verification)
+
+        void BuildRealStart()
+        {
+            var p = CenterPanel();
+            Ui.PillRow(p.transform, "Today's care", Theme.PrimaryDark, Theme.PrimaryBg);
+            if (_care.Procedure == null)
+            {
+                Title(p.transform, "Procedure unavailable");
+                Ui.Note(p.transform, _care.LoadError ?? "No procedure loaded.", Theme.Red, Theme.RedBg);
+                return;
+            }
+            Title(p.transform, _care.Procedure.procedure_title);
+            Sub(p.transform, $"{_care.StepCount} steps · from {_data.nurseName}");
+
+            var box = Ui.Image(p.transform, "Supplies", Theme.Surface, Sprites.Rounded(22));
+            Ui.VStack(box.gameObject, new RectOffset(20, 20, 16, 16), 10);
+            Ui.Text(box.transform, "SUPPLIES ON THE TABLE", 13, Theme.Primary, bold: true).characterSpacing = 8;
+            foreach (var s in _care.SupplyChecks)
+            {
+                var r = Ui.Row(box.transform, s.Item.displayName, 10);
+                Ui.Text(r.transform, s.Item.displayName, 17, Theme.Text, bold: true);
+                FoundPill(r.transform, s.Found, _care.CheckingSupplies);
+            }
+            if (!string.IsNullOrEmpty(_care.Status)) Sub(p.transform, _care.Status);
+            VoiceRow(p.transform);
+            var row = Ui.Row(p.transform, "Actions", 12);
+            Ui.Button(row.transform, _care.CheckingSupplies ? "Looking…" : "Look again", false, Alt, "X", stretch: true);
+            Ui.Button(row.transform, "Start", true, Next, "A", stretch: true);
+        }
+
+        static void FoundPill(Transform parent, bool? found, bool busy)
+        {
+            if (found == true) Ui.Pill(parent, "Found", Theme.PrimaryDark, Theme.PrimaryBg, 13);
+            else if (found == false) Ui.Pill(parent, "Not found yet", Theme.Amber, Theme.AmberBg, 13);
+            else Ui.Pill(parent, busy ? "Looking…" : "Not checked", Theme.Muted, Theme.Surface, 13);
+        }
+
+        void BuildRealStep()
+        {
+            if (_care.Completed) return;
+            var step = _care.CurrentStep;
+            int si = _care.StepIndex, count = _care.StepCount;
+
+            var panel = Ui.Card(_hud, "Step panel", 460, Theme.Panel, new RectOffset(26, 26, 24, 24), 12, 28);
+            Ui.Place(panel.rectTransform, new Vector2(0, 1), new Vector2(40, -40), 460);
+            Ui.Text(panel.transform, $"STEP {si + 1} OF {count}", 13, Theme.Primary, bold: true, wrap: false).characterSpacing = 8;
+            Ui.Text(panel.transform, step.title, 28, Theme.Text, bold: true);
+            var progress = Ui.Row(panel.transform, "Progress", 6);
+            for (int i = 0; i < count; i++)
+            {
+                var seg = Ui.Image(progress.transform, "Seg", i <= si ? Theme.Primary : Theme.Border, Sprites.Rounded(4));
+                Ui.Fixed(seg.gameObject, -1, 7);
+                Ui.Flexible(seg.gameObject);
+            }
+            Ui.Text(panel.transform, step.instruction, 19, Theme.Text);
+
+            if (_care.StepItems.Count > 0)
+            {
+                var items = Ui.Row(panel.transform, "Items", 8);
+                foreach (var item in _care.StepItems)
+                {
+                    var (fg, bg) = item.Found == true ? (Theme.PrimaryDark, Theme.PrimaryBg)
+                                 : item.Found == false ? (Theme.Amber, Theme.AmberBg) : (Theme.Muted, Theme.Surface);
+                    Ui.Pill(items.transform, item.Found == false ? item.Item.displayName + " · not seen" : item.Item.displayName, fg, bg, 13);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(_care.Guidance)) Ui.Note(panel.transform, _care.Guidance, Theme.PrimaryDark, Theme.PrimaryBg);
+            if (!string.IsNullOrWhiteSpace(_care.Caution)) Ui.Note(panel.transform, "Caution: " + _care.Caution, Theme.Red, Theme.RedBg);
+
+            Ui.Divider(panel.transform);
+            Ui.Text(panel.transform, "DONE WHEN", 13, Theme.Primary, bold: true).characterSpacing = 8;
+            var results = _care.Results;
+            for (int i = 0; i < step.requirements.Length; i++)
+            {
+                var result = results != null && i < results.Length ? results[i] : null;
+                var row = Ui.Row(panel.transform, "Check", 10);
+                if (result != null)
+                {
+                    bool pass = result.status == RequirementVerification.Satisfied;
+                    bool fail = result.status == RequirementVerification.NotSatisfied;
+                    Ui.Pill(row.transform, pass ? "Pass" : fail ? "Not met" : "Not sure",
+                        pass ? Theme.PrimaryDark : fail ? Theme.Red : Theme.Amber,
+                        pass ? Theme.PrimaryBg : fail ? Theme.RedBg : Theme.AmberBg, 13);
+                }
+                else StateIcon(row.transform, 2);
+                Ui.Text(row.transform, step.requirements[i].description, 17, Theme.Text);
+                if (result != null && result.status != RequirementVerification.Satisfied && !string.IsNullOrWhiteSpace(result.reason))
+                    Ui.Text(panel.transform, result.reason, 15, Theme.Muted);
+            }
+            if (!string.IsNullOrEmpty(_care.Status)) Ui.Text(panel.transform, _care.Status, 16, Theme.Muted);
+            VoiceRow(panel.transform);
+
+            if (_ghost == null) BuildVoiceBar(step.instruction); // otherwise the ghost speaks it
+            bool last = si == count - 1;
+            string find = _care.Detecting ? "Finding…" : "Find items";
+            switch (_care.State)
+            {
+                case ProcedureSessionState.Verifying:
+                    BuildControls(("Checking…", true, null, null));
+                    break;
+                case ProcedureSessionState.Passed:
+                    BuildControls((find, false, Alt, "X"), (last ? "Finish" : "Next", true, Next, "A"));
+                    break;
+                case ProcedureSessionState.NeedsRetry:
+                    BuildControls(("Skip", false, Back, "B"), (find, false, Alt, "X"), ("Check again", true, Next, "A"));
+                    break;
+                default:
+                    BuildControls((find, false, Alt, "X"), ("Check step", true, Next, "A"));
+                    break;
+            }
+        }
+
+        void BuildRealComplete()
+        {
+            var p = CenterPanel();
+            DoneIcon(p.transform);
+            Title(p.transform, $"All {_care.StepCount} steps done");
+            Sub(p.transform, "This session was recorded for your nurse's review.");
+            int minutes = Mathf.Max(1, Mathf.RoundToInt((Time.time - _care.StartedAt) / 60f));
+            Ui.Details(p.transform, new (string, string, Color?)[]
+            {
+                ("Time today", $"{minutes} min", null),
+                ("Next dressing change", "Tomorrow", null),
+            });
+            // The procedure's own warning signs (e.g. the wound dressing case), else the burn demo's red flags.
+            Ui.Note(p.transform, string.IsNullOrWhiteSpace(_care.CompletionNote) ? _data.redFlags : _care.CompletionNote, Theme.Red, Theme.RedBg);
+            if (!string.IsNullOrEmpty(_care.ReportPath)) Ui.Text(p.transform, "Report: " + _care.ReportPath, 13, Theme.Muted);
             Ui.Button(p.transform, "Done", true, Next, "A");
         }
 

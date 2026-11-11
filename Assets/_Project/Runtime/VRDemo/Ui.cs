@@ -184,6 +184,8 @@ namespace AHC.VR
             colors.pressedColor = new Color(0.8f, 0.86f, 0.8f);
             btn.colors = colors;
             if (onClick != null) btn.onClick.AddListener(onClick);
+            // Tracked hands press it too: aim the hand ray and pinch, or touch it with a fingertip.
+            img.gameObject.AddComponent<HomeCare.Guidance.HandPokeButton>();
             return btn;
         }
 

@@ -112,3 +112,18 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Android build outputs (Build And Run backups and packages)
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*.apk
+*.aab
+
+# Local git worktrees
+.worktrees/
+
+# Python verification bridge cache
+/Tools/__pycache__/
+
+# Meta Voice SDK: wit.config holds the Wit.ai Server Access Token; never commit it
+/ProjectSettings/wit.config
+/ProjectSettings/WitConfigExports/

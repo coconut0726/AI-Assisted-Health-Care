@@ -1,0 +1,161 @@
+{
+  "procedureTitle": "Burn Dressing Change",
+  "nurseName": "Nurse Lee",
+  "patientName": "James Carter",
+  "updateNotice": "Nurse Lee updated Step 2 today.",
+  "estimate": "5 steps · about 10 minutes · from Nurse Lee",
+  "redFlags": "Call the nurse if the burn gets redder, oozes pus, smells bad, or you get a fever.",
+  "objects": [
+    { "id": "wound", "label": "burn area", "position": { "x": 0.0, "y": 0.0, "z": 0.0 }, "size": { "x": 0.16, "y": 0.10, "z": 0.0 } },
+    { "id": "soap", "label": "mild soap", "position": { "x": 0.30, "y": 0.0, "z": 0.14 }, "size": { "x": 0.08, "y": 0.14, "z": 0.0 } },
+    { "id": "water", "label": "water", "position": { "x": 0.28, "y": 0.0, "z": -0.10 }, "size": { "x": 0.17, "y": 0.08, "z": 0.0 } },
+    { "id": "towel", "label": "clean towel", "position": { "x": 0.16, "y": 0.0, "z": -0.20 }, "size": { "x": 0.20, "y": 0.06, "z": 0.0 } },
+    { "id": "cream", "label": "burn cream", "position": { "x": -0.28, "y": 0.0, "z": -0.14 }, "size": { "x": 0.17, "y": 0.06, "z": 0.0 } },
+    { "id": "qtip", "label": "clean Q-tip", "position": { "x": -0.18, "y": 0.0, "z": -0.22 }, "size": { "x": 0.10, "y": 0.05, "z": 0.0 } },
+    { "id": "pad", "label": "non-stick pad", "position": { "x": -0.30, "y": 0.0, "z": 0.10 }, "size": { "x": 0.12, "y": 0.06, "z": 0.0 } },
+    { "id": "gauze", "label": "gauze roll", "position": { "x": 0.40, "y": 0.0, "z": -0.18 }, "size": { "x": 0.14, "y": 0.09, "z": 0.0 } },
+    { "id": "tape", "label": "medical tape", "position": { "x": 0.46, "y": 0.0, "z": 0.10 }, "size": { "x": 0.09, "y": 0.09, "z": 0.0 } }
+  ],
+  "supplies": [
+    { "label": "Non-stick pad", "found": true },
+    { "label": "Gauze roll", "found": true },
+    { "label": "Medical tape", "found": true },
+    { "label": "Burn cream", "found": true },
+    { "label": "Clean Q-tip", "found": false }
+  ],
+  "steps": [
+    {
+      "title": "Preparation & Hand Hygiene",
+      "expectedState": "Hands are clean before handling supplies.",
+      "sourceSpan": "So once a day you're gonna change this, wash your hands first,",
+      "updated": false,
+      "actions": [
+        {
+          "label": "Change the dressing once a day",
+          "voice": "Change this dressing once a day.",
+          "overlays": [
+            { "type": "widget", "target": "wound", "pill": "How often", "title": "Once a day", "note": "Same time each day helps you remember." }
+          ]
+        },
+        {
+          "label": "Wash your hands first",
+          "voice": "Wash your hands thoroughly before you touch any supplies.",
+          "overlays": [
+            { "type": "box", "target": "soap", "text": "mild soap" },
+            { "type": "chip", "target": "soap", "text": "Wash hands for 20 seconds" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Old Bandage Removal",
+      "expectedState": "Old bandage is off without tearing the skin.",
+      "sourceSpan": "and if the old bandage is stuck, just wet it with some water so it comes off easy, don't rip it.",
+      "updated": true,
+      "actions": [
+        {
+          "label": "If it is stuck, wet it with water",
+          "voice": "If the old bandage is stuck, wet it with water so it comes off easily.",
+          "overlays": [
+            { "type": "box", "target": "wound", "text": "old bandage" },
+            { "type": "box", "target": "water", "text": "water" },
+            { "type": "widget", "target": "wound", "pill": "If the bandage is stuck", "title": "Wet it with water so it comes off easily.", "note": "Don't rip it off." }
+          ]
+        },
+        {
+          "label": "Peel it off slowly — don't rip it",
+          "voice": "Peel it off slowly. Don't rip it.",
+          "overlays": [
+            { "type": "box", "target": "wound", "text": "old bandage" },
+            { "type": "warn", "target": "wound", "text": "Peel slowly — don't rip" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Clean the Burn",
+      "expectedState": "Burn is clean and patted dry.",
+      "sourceSpan": "Then wash the burn real gently with mild soap and water and pat it dry, no rubbing.",
+      "updated": false,
+      "actions": [
+        {
+          "label": "Wash gently with mild soap and water",
+          "voice": "Wash the burn gently with mild soap and water.",
+          "overlays": [
+            { "type": "box", "target": "soap", "text": "mild soap" },
+            { "type": "chip", "target": "wound", "text": "Gently — no scrubbing" }
+          ]
+        },
+        {
+          "label": "Pat dry — no rubbing",
+          "voice": "Pat it dry with the clean towel. No rubbing.",
+          "overlays": [
+            { "type": "gesture", "target": "wound" },
+            { "type": "box", "target": "towel", "text": "clean towel" },
+            { "type": "chip", "target": "wound", "text": "Pat gently — press, lift, repeat" },
+            { "type": "warn", "target": "wound", "text": "No rubbing" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Apply Cream",
+      "expectedState": "A thin layer of cream covers the burn.",
+      "sourceSpan": "Put a thin layer of the cream on with a clean Q-tip,",
+      "updated": false,
+      "actions": [
+        {
+          "label": "Apply a thin layer with a clean Q-tip",
+          "voice": "Apply a thin layer of cream with a clean Q-tip.",
+          "overlays": [
+            { "type": "box", "target": "cream", "text": "burn cream" },
+            { "type": "box", "target": "qtip", "text": "clean Q-tip" },
+            { "type": "chip", "target": "wound", "text": "Thin layer — cover the whole burn" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Cover & Secure",
+      "expectedState": "Pad covers burn; gauze wrapped and taped.",
+      "sourceSpan": "then the non-stick pad goes right on the burn, and wrap the gauze roll around it and tape it.",
+      "updated": false,
+      "actions": [
+        {
+          "label": "Place non-stick pad on burn",
+          "voice": "Place the non-stick pad on the burn.",
+          "overlays": [
+            { "type": "box", "target": "pad", "text": "non-stick pad" },
+            { "type": "chip", "target": "wound", "text": "Cover the whole burn" }
+          ]
+        },
+        {
+          "label": "Wrap gauze around it",
+          "voice": "Wrap the gauze around it, overlapping each layer.",
+          "overlays": [
+            { "type": "arc", "target": "wound" },
+            { "type": "box", "target": "gauze", "text": "gauze roll" },
+            { "type": "chip", "target": "wound", "text": "Wrap, overlap each layer" },
+            { "type": "next", "target": "tape", "text": "tape" }
+          ]
+        },
+        {
+          "label": "Tape it in place",
+          "voice": "Tape the end of the gauze in place.",
+          "overlays": [
+            { "type": "box", "target": "tape", "text": "medical tape" },
+            { "type": "chip", "target": "wound", "text": "Tape the loose end" }
+          ]
+        }
+      ]
+    }
+  ],
+  "nurseTranscript": [
+    "So once a day you're gonna change this, wash your hands first,",
+    "and if the old bandage is stuck, just wet it with some water so it comes off easy, don't rip it.",
+    "Then wash the burn real gently with mild soap and water and pat it dry, no rubbing.",
+    "Put a thin layer of the cream on with a clean Q-tip,",
+    "then the non-stick pad goes right on the burn, and wrap the gauze roll around it and tape it.",
+    "Don't pop any blisters. If it gets redder, starts oozing pus, smells bad, or you get a fever, call us."
+  ]
+}

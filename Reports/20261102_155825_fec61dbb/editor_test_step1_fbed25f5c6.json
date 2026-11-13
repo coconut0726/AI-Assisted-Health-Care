@@ -1,0 +1,147 @@
+{
+  "verified_at_utc": "2026-11-02T16:00:13.9423605Z",
+  "provider": "Gemini",
+  "model": "gemini-3.8-flash",
+  "procedure": {
+    "procedure_title": "Minor burn dressing change",
+    "instruction": "Wash your hands with soap and water, then put on clean gloves. Gently remove the old dressing. If it sticks, soak it with clean water before lifting it. Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters. Use a cotton swab to apply a thin layer of burn ointment to the burn. Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll. Secure the gauze with medical tape, keeping the tape off the burned skin. Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Clean hands and gloves",
+        "instruction": "Wash your hands with soap and water, then put on clean gloves.",
+        "source_span": "Wash your hands with soap and water, then put on clean gloves.",
+        "requirements": [
+          {
+            "id": "s1_r1",
+            "category": "postcondition",
+            "description": "Both hands are wearing gloves.",
+            "source_span": "put on clean gloves",
+            "vqa_question": "Are both of the user's hands wearing gloves?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show both gloved hands clearly in front of the camera after putting the gloves on."
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "Remove the old dressing",
+        "instruction": "Gently remove the old dressing. If it sticks, soak it with clean water before lifting it.",
+        "source_span": "Gently remove the old dressing. If it sticks, soak it with clean water before lifting it.",
+        "requirements": [
+          {
+            "id": "s2_r1",
+            "category": "postcondition",
+            "description": "The old dressing has been removed and the burn is uncovered.",
+            "source_span": "Gently remove the old dressing.",
+            "vqa_question": "Is the burn area uncovered, with no old dressing left on it?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show the whole burn area after the dressing is removed, with nothing covering it."
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "Rinse and pat dry",
+        "instruction": "Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters.",
+        "source_span": "Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters.",
+        "requirements": [
+          {
+            "id": "s3_r1",
+            "category": "postcondition",
+            "description": "The skin around the burn is dry, with no pooled water on it.",
+            "source_span": "pat the skin dry with a clean towel",
+            "vqa_question": "Is the skin around the burn dry, with no visible pooled or dripping water?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show the burn and surrounding skin up close in good light after drying."
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "Apply ointment",
+        "instruction": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+        "source_span": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+        "requirements": [
+          {
+            "id": "s4_r1",
+            "category": "postcondition",
+            "description": "A thin layer of ointment is visible on the burn.",
+            "source_span": "apply a thin layer of burn ointment to the burn",
+            "vqa_question": "Is a thin layer of ointment visible covering the burn?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show the burn up close after applying the ointment so its sheen on the skin is visible."
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "Cover and wrap",
+        "instruction": "Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll.",
+        "source_span": "Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll.",
+        "requirements": [
+          {
+            "id": "s5_r1",
+            "category": "postcondition",
+            "description": "A non-stick pad covers the burn.",
+            "source_span": "Cover the burn with a non-stick pad",
+            "vqa_question": "Is the burn covered by a pad?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show the dressed area so it is visible that no part of the burn is left uncovered."
+          },
+          {
+            "id": "s5_r2",
+            "category": "postcondition",
+            "description": "Gauze is wrapped around the area, over the pad.",
+            "source_span": "wrap it loosely with a gauze roll",
+            "vqa_question": "Is gauze wrapped around the area so that it holds the pad in place?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show the wrapped limb from the side so the gauze layers around it are visible."
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "Secure with tape",
+        "instruction": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+        "source_span": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+        "requirements": [
+          {
+            "id": "s6_r1",
+            "category": "postcondition",
+            "description": "The end of the gauze is held down with medical tape.",
+            "source_span": "Secure the gauze with medical tape",
+            "vqa_question": "Is the end of the gauze held down with tape?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show the taped end of the gauze clearly."
+          },
+          {
+            "id": "s6_r2",
+            "category": "postcondition",
+            "description": "The tape is on the gauze or healthy skin, not on the burned skin.",
+            "source_span": "keeping the tape off the burned skin",
+            "vqa_question": "Is all visible tape placed on the gauze or on unburned skin, and not on the burned skin?",
+            "evidence_scope": "after_step",
+            "observation_hint": "Show all pieces of tape and the edges of the dressing so their position relative to the burn can be judged."
+          }
+        ]
+      }
+    ]
+  },
+  "step_id": "s1",
+  "attachments": [
+    {
+      "scope": "after_step",
+      "path": "C:/Users/maoxi/AppData/LocalLow/DefaultCompany/AI Assisted Health Care\\HomeCareSessions\\20261102_155825_fec61dbb\\editor_test_step1_fbed25f5c6.jpg"
+    }
+  ],
+  "overall_status": "unknown",
+  "results": [
+    {
+      "requirement_id": "s1_r1",
+      "status": "unknown",
+      "evidence": "editor_test_step1_fbed25f5c6.jpg shows a virtual scene and interface, but neither of the user's hands is visible in the frame.",
+      "reason": "The user's hands are completely absent from the image, so it cannot be determined whether both hands are wearing gloves. An after-step image showing both hands clearly is required."
+    }
+  ]
+}

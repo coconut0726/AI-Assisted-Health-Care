@@ -1,0 +1,114 @@
+{
+  "procedure_title": "Simple wound dressing",
+  "instruction": "Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.",
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Put on gloves",
+      "instruction": "Wash your hands, then put on clean gloves.",
+      "source_span": "Wash your hands, then put on clean gloves.",
+      "requirements": [
+        {
+          "id": "s1_r1",
+          "category": "postcondition",
+          "description": "Both hands are wearing gloves.",
+          "source_span": "put on clean gloves",
+          "vqa_question": "Are both of the user's hands wearing gloves?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Hold both gloved hands up side by side, about 30 cm in front of your chest."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Check the wound",
+      "instruction": "Look at the cut on the skin pad. Check that it is not red, swollen or leaking.",
+      "source_span": "Look at the cut on the skin pad. Check that it is not red, swollen or leaking.",
+      "requirements": [
+        {
+          "id": "s2_r1",
+          "category": "postcondition",
+          "description": "The whole cut is uncovered and in view.",
+          "source_span": "Look at the cut on the skin pad.",
+          "vqa_question": "Is the whole cut on the skin pad clearly visible, with nothing covering it?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Hold the skin pad up so the whole cut is in view, in good light."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Cover the wound",
+      "instruction": "Place a non-stick pad over the whole cut on the skin pad.",
+      "source_span": "Place a non-stick pad over the whole cut on the skin pad.",
+      "requirements": [
+        {
+          "id": "s3_r1",
+          "category": "postcondition",
+          "description": "A non-stick pad covers the whole cut.",
+          "source_span": "Place a non-stick pad over the whole cut on the skin pad.",
+          "vqa_question": "Is the cut on the skin pad completely covered by a white pad?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Show the skin pad from above so all edges of the white pad are visible."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "Clean up",
+      "instruction": "Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.",
+      "source_span": "Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.",
+      "requirements": [
+        {
+          "id": "s4_r1",
+          "category": "postcondition",
+          "description": "The wrapper is inside the sealed zip bag.",
+          "source_span": "Put the pad wrapper into the zip bag and seal it.",
+          "vqa_question": "Is there a closed plastic bag with a wrapper inside it?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Show the sealed bag clearly."
+        },
+        {
+          "id": "s4_r2",
+          "category": "postcondition",
+          "description": "Both gloves are off.",
+          "source_span": "take off the gloves",
+          "vqa_question": "Are both of the user's hands bare, without gloves?",
+          "evidence_scope": "after_step",
+          "observation_hint": "Hold both bare hands up side by side, about 30 cm in front of your chest."
+        }
+      ]
+    }
+  ],
+  "supplies": [
+    {
+      "itemId": "gloves",
+      "displayName": "Gloves",
+      "keywords": [
+        "glove"
+      ]
+    },
+    {
+      "itemId": "skin_pad",
+      "displayName": "Skin pad",
+      "keywords": [
+        "skin pad"
+      ]
+    },
+    {
+      "itemId": "nonstick_pad",
+      "displayName": "Non-stick pad",
+      "keywords": [
+        "non-stick pad"
+      ]
+    },
+    {
+      "itemId": "zip_bag",
+      "displayName": "Zip bag",
+      "keywords": [
+        "zip bag"
+      ]
+    }
+  ],
+  "completion_note": "Call your nurse if the wound becomes more red, swollen or warm, starts leaking, or if you get a fever."
+}

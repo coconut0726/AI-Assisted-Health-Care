@@ -40,6 +40,5 @@ for switching roles; on a phone it fills the screen. The `Network` URL works fro
 
 ## Deploy
 
-`.github/workflows/deploy-mobile.yml` (repo root) builds this folder and publishes it to GitHub Pages
-on every push to `main` that touches `Mobile/`. Enable it once in the repository:
-**Settings → Pages → Build and deployment → Source: GitHub Actions**.
+There is no deploy workflow on this branch. The GitHub Pages workflow was removed because the saved token cannot push
+workflow files. To publish again, add a workflow that builds `Mobile/` with a token that has the `workflow` scope.

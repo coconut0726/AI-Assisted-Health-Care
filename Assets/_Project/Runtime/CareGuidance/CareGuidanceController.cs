@@ -506,6 +506,7 @@ namespace HomeCare.Guidance
                 var response = await VerificationBridgeClient.VerifyAsync(bridgeEndpoint, request, cancellation);
                 cancellation.ThrowIfCancellationRequested();
                 _session.AcceptVerification(response, attachments);
+                _report.Report.verification_model = response.model ?? geminiModel;
                 _feedback = ResultText();
                 attempt.overall_status = _session.OverallStatus;
                 for (int i = 0; i < _session.Results.Length; i++)
@@ -521,7 +522,7 @@ namespace HomeCare.Guidance
                 // Same per-attempt file the verification-test branch writes.
                 var verification = new VerificationReport
                 {
-                    verified_at_utc = DateTime.UtcNow.ToString("o"), provider = "Gemini", model = geminiModel,
+                    verified_at_utc = DateTime.UtcNow.ToString("o"), provider = response.provider ?? "Gemini", model = response.model ?? geminiModel,
                     procedure = _session.Procedure, step_id = step.id, attachments = attachments,
                     overall_status = _session.OverallStatus, results = _session.Results,
                 };

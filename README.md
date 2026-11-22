@@ -10,62 +10,98 @@ This project explores an AI-assisted augmented reality system for home healthcar
 
 # Progress
 Version_1: Focuses on after-step verification, allowing users to review feedback and retry a step before proceeding.
+Version_2: Add local lightweight model(Qwen3-VL-4B) for quick verification and periodical sampling module. 
 
-# Testing
-### 1. Start Verification Bridge
+# V3: Periodical Sampling with Lightweight VLM  
 
-Open PowerShell:
+The main workflow is **VRGuidanceDemo + Quest Link + local Qwen**. Follow steps 1–4 below using the reviewed procedure already assigned to the scene. The launcher prepares missing local-model dependencies automatically; Unity and Quest Link must already be installed.
 
-```
-$projectRoot = "D:\Projects\AI-Assisted-Health-Care"
-$env:GEMINI_API_KEY = Read-Host "Enter Gemini API Key"
-python (Join-Path $projectRoot "Tools\verification_bridge.py")
-```
+### 1. Prepare and start the selected VLM
 
-Check: http://127.0.0.1:8765/health
+Use **Windows x64**, Unity **6000.6.4f1**, and a working Quest Link/OpenXR setup. Unity and Meta Quest Link are prerequisites; the launcher prepares Python, Ollama and Qwen for you.
 
-Expected response:
+**GitHub pull is the main distribution workflow.** Commit and push the startup scripts, configuration, Editor code and matching Unity `.meta` files together. `LocalVlm/` remains ignored: each recipient's first start prepares their local runtime and model automatically. No separately shared model folder or ZIP is required.
 
-```
-{"ok": true, "key_configured": true}
-```
+After pulling the repository:
 
-### 2. Unity Editor Testing
+1. Make sure Git LFS has downloaded the Unity binary assets (`git lfs pull` if needed), then open the project in Unity and wait for package import/compilation.
+2. Open **Tools → Home Care → VLM Backend**, keep **Qwen** selected, and click **Apply & Start**.
+3. First use automatically downloads missing portable Python/Ollama runtimes from official pinned URLs, checks SHA256 values, starts or reuses Ollama, and downloads the configured Qwen model if missing. Allow internet access and several GB of free disk space. No manual Python/Ollama installation, environment-variable setup, model-folder copying or Qwen API key is needed.
+4. Wait until preparation and the **actual image inference / JSON output check** succeed, then continue with steps 2–4 below to connect Link and run the scene.
 
-1. **Tools → Home Care → Open AR Prototype Scene**.
-2. Keep the default `procedureJson` selected.
-3. Assign a test image to `AfterStepCamera.editorTestImage`.
-4. Enter Play Mode.
+Later starts reuse installed dependencies and model files. Local Qwen verification uses the model running on the recipient's PC. Selecting **Gemini** in the same window remains available with the recipient's own API key and an available Gemini model ID; keys stay in memory.
 
-| Key | Action |
+**Optional outside-Unity launcher:** double-click **Start-LocalVlm.cmd** in the project root. It performs the same first-use preparation and actual inference check; keep its window open while using Unity. Normal use can stay entirely in the Unity window above.
+
+For GPU/driver failures, update the driver or enable **Use CPU (slower)** in that window. From a terminal, `Start-LocalVlm.cmd -Cpu` selects CPU; `Start-LocalVlm.cmd -AutoGpu` restores automatic GPU selection. The choice is saved only in ignored `UserSettings/local-vlm-machine.json`, so it does not change another person's computer. CPU inference may take a minute or longer; a 5-second polling interval does not guarantee a result every 5 seconds. NVIDIA Windows drivers must meet [Ollama's requirements](https://docs.ollama.com/windows#system-requirements).
+
+Settings shared by both launch paths live in `Tools/local-vlm.json` (default: `qwen3-vl:4b-instruct`, Ollama `127.0.0.1:11434`, bridge `127.0.0.1:8765`). If Ollama is already running, its active model store is reused; otherwise the portable service uses `LocalVlm/models`. LocalVlm is ignored by Git. A model downloaded into an existing Ollama service's store is not automatically copied into the portable store.
+
+`Start-LocalVlm.cmd -CheckOnly` only inspects existing dependencies; it does not download, change compute settings or run inference. The normal launch runs inference unless the advanced `-SkipInferenceCheck` option is supplied.
+
+An optional runtime health URL is `http://127.0.0.1:8765/health`. It reports the selected provider/model, CPU mode and whether a request is running.
+
+### 2. Connect the headset through Quest Link
+
+Start a working Quest Link session on the same PC. Use OpenXR for the real headset path and disable XR Simulation for that path. Prepare the headset camera access required by the Link setup.
+
+Unity runs in the Editor and appears in the headset. There is no APK installation in this workflow.
+
+### 3. Open the configured main scene
+
+Open `Assets/_Project/Scenes/VRGuidanceDemo.unity` and enter Play mode. Choose **Caregiver / patient**.
+
+The saved scene is already configured with:
+
+| Setting | Saved value |
 | --- | --- |
-| `Enter` | Complete & Verify |
-| `N` | Next Step (only if passed) |
-| `R` | Restart Procedure |
-| `C` | Recenter Panel |
+| `RealCareSession.procedureJson` | `wound_dressing_procedure.json`: 4 steps, 5 checks |
+| `autoVerify` / `verificationInterval` | Enabled / 5 seconds |
+| `AfterStepCamera.editorTestImage` | Empty |
+| `captureViewCameraInEditor` | Disabled, requesting real passthrough over Link |
+| Editor placeholder props | Disabled |
+| Automatic supply detection, per-step object finding, touch-triggered relocalization | Disabled |
 
-### 3. Meta Quest Testing
+No setup menu is needed for the saved main scene. On the supply screen, **Look again** optionally checks supplies; **Start** begins the procedure without requiring a supply check.
 
-Connect Quest via USB and run:
+### 4. Perform the procedure and review verification
 
-```
-adb devices
-adb reverse tcp:8765 tcp:8765
-adb reverse --list
-```
+Press **Start** on the supply screen. The current instruction and its requirements appear on the headset.
 
-1. Keep the PC verification bridge running.
-2. Build and launch the Unity application on Quest.
-3. Follow the AR instructions and click **Complete & Verify** to capture an image using Meta's Passthrough Camera.
-4. Review the results, then proceed or retry.
+1. Perform the step while keeping the relevant work area in view.
+2. After five seconds, the app captures a fresh image and sends the current step's requirements for verification. Further polling slots occur at five-second intervals.
+3. The panel shows **Pass / Not met / Not sure** per requirement. Failed or uncertain checks keep the step active for a later attempt. Request errors also leave the step available for retry.
+4. Once every requirement passes, polling stops and **Next** or **Finish** unlocks. Click it to advance or complete the procedure. A new step starts a fresh interval.
 
-### 4. Generate Custom Procedure Requirements
+The interval controls when a request may start, not how quickly Qwen returns an answer. Slots are skipped while capture, verification, or an object search is busy; missed slots do not become queued requests.
 
-1. **Tools → Home Care → Requirements Prototype**.
-2. Enter the nurse's instructions → **Generate Step Requirements**.
-3. **Open Edit JSON** → Review and modify → **Apply** → Save locally.
-4. Replace `procedureJson` in the AR prototype scene with the saved JSON.
-5. Enter Play Mode to test the custom procedure.
+**Check step / Check again** still performs a manual check with the photo countdown. Automatic checks skip that countdown. **Skip**, available after an unsuccessful check, is a presenter override and is recorded as skipped. Home, application pause, and disabling the component cancel step work; stale replies cannot update another step or a restarted session. Resuming waits a fresh interval.
+
+| Input | Main-scene action |
+| --- | --- |
+| Hand ray + pinch, or fingertip touch | Press a panel button |
+| Controller A / Editor Right Arrow, Space, or Enter | Start, check manually, or advance, depending on screen/state |
+| Controller B / Editor Left Arrow or Backspace | Skip after an unsuccessful check; Home from the supply screen |
+| Controller X / Editor R | Look for supplies or find the current step's items |
+| Controller Y / Editor H or Escape | Home |
+
+### 5. generate a custom procedure
+
+This is a preparation workflow. Skip it when using the procedure already assigned to the scene. Start the selected backend using step 1 before generating.
+
+1. Exit Play mode and open **Tools → Home Care → Requirements Prototype**.
+2. In **1. Author**, enter the nurse's instruction, keep **ProjectBackend** selected to follow the VLM Backend window, and click **Generate step requirements**. Explicit Gemini/Claude/LocalOllama overrides remain available.
+3. Review the steps, requirements, VQA questions, evidence scopes, and source quotations. In **3. Edit JSON**, apply any corrections with **Validate and apply JSON**.
+4. Return to **1. Author** and click **Save requirements**. Save under `Assets/_Project/Content/Procedures/` so Unity imports the JSON as a TextAsset.
+5. Select **AHC VR Demo** in `VRGuidanceDemo` and assign that asset to **RealCareSession → Procedure Json**. Save the scene outside Play mode.
+6. Continue with Testing steps 2–4 to run the custom procedure.
+
+The same window's **2. Verify** tab supports manually selected before/after images for a selected step. Local VQA explicitly rejects whole-step MP4 video; it does not discard video or relabel it as after-step evidence.
+
+The older **Tools → Home Care → Decompose Instruction** window generates the earlier `steps → subgoals → actions` schema. Use **Requirements Prototype** for the requirement JSON consumed by `RealCareSession`.
+
+To switch between included care cases, use **AHC → Care Case → Simple Wound Dressing (prop test)** or **Burn Dressing**. These menus change the main scene's assigned procedure.
+
 
 
 # V2: Hands-only care guidance (`VRGuidanceDemo_V2.unity`)
@@ -81,7 +117,7 @@ Code: `Assets/_Project/Runtime/CareGuidance/`. Procedure: `Content/Procedures/bu
 
 The dot on each index fingertip shows the hand is tracked. The top-right of the panel shows the hand-tracking state (`not seen` / `tracked` / `pinch` / `fist`), and the log prints finger curl and pinch distances every 3 s for tuning the thresholds in `HandTracking`.
 
-On the headset, start the PC bridge with USB forwarding before using **Complete & Verify** or item guidance: `powershell -File Tools/Start-VerificationBridge.ps1 -Usb -AdbPath <path to adb.exe>` (needs Python 3 and `GEMINI_API_KEY`).
+On the headset, start the local bridge with USB forwarding before using **Complete & Verify** or item guidance: `powershell -ExecutionPolicy Bypass -File Tools/Start-LocalVlm.ps1 -Usb -AdbPath <path to adb.exe>`. Editor + Quest Link uses **Start-LocalVlm.cmd** without USB forwarding.
 
 - Items that the current step mentions (keyword match on the step text against each `CareItem`) get a blue box; mentioned items missing from the scene are listed as "not found".
 - Picking up an item asks Gemini (through the same PC bridge) how to use it for this step: text on the panel, a green box on the held item, and an amber box + arrow to its target. Without the bridge, it falls back to the step text.
@@ -91,12 +127,19 @@ On the headset, start the PC bridge with USB forwarding before using **Complete 
 
 ## Full demo: guided care with detection and verification (`VRGuidanceDemo.unity`)
 
-The caregiver flow of the Figma demo scene now runs on real data: the 6-step burn care procedure (`burn_care_procedure.json`), object detection in the passthrough view, and an after-step check that unlocks Next. The nurse flow is still the scripted walkthrough. Set it up once with **AHC → Set Up Real Care Flow (VRGuidanceDemo)** (adds `RealCareSession` to the `AHC VR Demo` object and saves the scene).
+The caregiver flow uses the reviewed procedure assigned to `RealCareSession` (the saved scene currently uses the 4-step simple wound dressing case), camera-based requirement verification, and a session report. The nurse flow is still the scripted walkthrough. The saved scene is already configured; no setup menu is needed.
 
-1. Start the PC bridge (see V2 above), then launch the app. Choose **Caregiver / patient**.
-2. **Supplies on the table**: the app looks for every supply (four per request, about 40 s in total) and marks each one Found / Not found yet. **Look again** repeats it, **Start** begins.
-3. Each step: the step's items are boxed in the room with guidance. Do the step, then press **Check step**. The result shows Pass / Not met / Not sure per check. **Next** unlocks only after a pass. **Check again** retries, and **Skip** (presenter override) moves on and marks the step as skipped in the report.
-4. After step 6, the completion screen shows the red flags and the report path (`HomeCareSessions/<session>/session_report.md`, with every detection and check image).
+1. Double-click **Start-LocalVlm.cmd** for local Ollama + Editor/Quest Link (for an Android build over USB, run `Tools/Start-LocalVlm.ps1 -Usb`). Connect Quest Link and open `Assets/_Project/Scenes/VRGuidanceDemo.unity`, then enter Play mode. Choose **Caregiver / patient**.
+2. **Supplies on the table**: automatic supply detection is off in the saved scene. **Look again** runs it on demand; **Start** begins the procedure without waiting for it.
+3. Each step: read the instruction and perform it with the work area in view. After 5 seconds, and at subsequent 5-second polling slots, the app captures a fresh image and sends the current step's requirements for verification. Pass / Not met / Not sure are shown per requirement. A failed, uncertain or failed-network check is retried at later slots. A running capture, verification or object search skips the slot; requests are never stacked to catch up. Model latency therefore determines the actual result frequency.
+4. Once every requirement passes, automatic checking stops and **Next** / **Finish** unlocks. Advancing starts a fresh interval for the new step. **Check step** / **Check again** still performs a manual check with the existing photo countdown. **Skip** remains a presenter override and is recorded as skipped. Home, application pause and disabling the component cancel step work; old replies cannot update a new step or restarted session. Resuming waits a fresh interval.
+5. The completion screen shows the care note and report path (`persistentDataPath/HomeCareSessions/<session>/session_report.md`). Each completed verification attempt records its image, requirement results, `trigger` (`automatic_poll` / `manual`), and `duration_ms` (capture/countdown through result processing).
+
+On **AHC VR Demo → RealCareSession**, **Auto Verify** enables polling and **Verification Interval** defaults to 5 seconds. The saved scene uses the real passthrough camera over Link (`AfterStepCamera.captureViewCameraInEditor = false`) and hides placeholder props. To test without a headset, explicitly assign **Editor Test Image** or enable **Capture View Camera In Editor**. Automatic supply detection, per-step object detection and touch-triggered relocalization are off for this baseline; **Look again** / **Find items** remain available manually.
+
+This baseline borrows the periodic decision cadence from [RegulAR](https://arxiv.org/abs/2608.26715). RegulAR uses a 1 fps frame window and graph state in its 5-second decision cycle. Here, each check uses one fresh image with `after_step` evidence; it does not accumulate a video window or implement graph-based action recognition. `before_step`, `whole_step`, or nonvisual requirements remain unknown when the evidence is insufficient; repeated snapshots cannot establish that a technique or constraint held throughout the step.
+
+Run `pwsh -NoProfile -File Tools/Test-RequirementsPrototype.ps1` for the requirement, step progression and polling checks without making API calls. The polling checks also appear under **Tools → Home Care → Run Verification Polling Checks**.
 
 | Hands | Controllers | Editor |
 | --- | --- | --- |
@@ -128,88 +171,3 @@ Tests detection without the procedure flow. Rebuild it with **Tools → Home Car
 - Editor: keys `1`–`4` run the prompts, `F` runs `testPrompt`, `X` clears, `C` moves the panel. Editor captures leave out the UI layer, as the headset camera does.
 - Every request is saved as an image and JSON (boxes, 3D size, depth source, latency) in `persistentDataPath/HomeCareDetectionTests/`.
 - The bridge handles one request at a time, so wait for a result (about 10–25 s) before pressing the next prompt.
-
-# Implementation
-### 1. System Architecture
-
-```
-Procedure JSON
-      ↓
-HomeCareARController
-      ↓
-ProcedureSession (StepIndex, State)
-      ↓
-ProcedurePanel (AR Instructions)
-      ↓
-User Completes Step
-      ↓
-AfterStepCamera (JPEG)
-      ↓
-GeminiVerificationProtocol (JSON Request)
-      ↓
-VerificationBridgeClient
-      ↓
-PC Python Bridge → Gemini API
-      ↓
-VerificationResponse
-      ↓
-RequirementVerification
-      ↓
-Passed / NeedsRetry
-      ↓
-Next Step / Retry
-```
-
-### 2.Initialization
-
-`HomeCareARController.Start()` creates a `ProcedureSession`:
-
-- `Validate()` — validate the procedure JSON.
-- `Serialize()` + `Parse()` — create an independent copy.
-- `Restart()` — initialize `StepIndex = 0`, `State = Ready`.
-- `Render()` — display the current instruction through `ProcedurePanel`.
-
-The panel is positioned relative to `OVRCameraRig.centerEyeAnchor` and can be manually recentered.
-
-### 3. Complete & Verify
-
-When the user clicks **Complete & Verify**:
-
-**1. Start Verification**
-
-`BeginVerification()` → `State = Verifying`.
-
-**2. Capture Image**
-
-`AfterStepCamera.CaptureJpegAsync()`:
-
-- Unity Editor: use `editorTestImage`.
-- Meta Quest: use `PassthroughCameraAccess` (left camera, requested 1280 × 960, max 30 FPS).
-- Wait for a fresh frame → `GetTexture()` → `EncodeToJPG(85)`.
-
-**3. Send to Gemini**
-
-- `CreateAfterImageRequest()` — package the current step, requirements, prompt, image, and response schema.
-- `VerifyAsync()` — HTTP POST to `127.0.0.1:8765/verify`.
-- ADB Reverse forwards the request to the PC.
-- `verification_bridge.py` adds the API key and forwards it to Gemini.
-- `ParseInteraction()` extracts the structured `VerificationResponse`.
-
-**4. Evaluate Requirements**
-
-`ProcedureSession.AcceptVerification(response, evidence)`:
-
-- `Evaluate()` — evaluate each requirement using the response and evidence.
-- `Aggregate()` — determine the overall verification status.
-- Update the session state:
-
-| State | Behavior |
-| --- | --- |
-| `Passed` | `CanAdvance = true`; enable Next Step |
-| `NeedsRetry` | `CanAdvance = false`; display feedback and allow re-verification |
-
-**5. Advance or Retry**
-
-- **Passed:** User clicks Next → `Advance()` increments `StepIndex`, resets state to `Ready`, and calls `Render()` for the next instruction.
-- **Last step passed:** `Advance()` sets `State = Completed` without incrementing `StepIndex`.
-- **NeedsRetry:** User corrects the operation and clicks Complete & Verify again.

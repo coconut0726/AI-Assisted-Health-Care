@@ -7,9 +7,11 @@ $sourcePaths = @(
     'Assets/_Project/Runtime/Procedures/RequirementsJson.cs',
     'Assets/_Project/Runtime/Procedures/RequirementsPrompts.cs',
     'Assets/_Project/Runtime/Procedures/ProcedureSession.cs',
+    'Assets/_Project/Runtime/Procedures/VerificationPollingSchedule.cs',
     'Assets/_Project/Runtime/Procedures/GeminiVerificationProtocol.cs',
     'Assets/_Project/Editor/Authoring/RequirementsPrototypeChecks.cs',
-    'Assets/_Project/Editor/Authoring/ARPrototypeChecks.cs'
+    'Assets/_Project/Editor/Authoring/ARPrototypeChecks.cs',
+    'Assets/_Project/Editor/Authoring/VerificationPollingChecks.cs'
 ) | ForEach-Object { Join-Path $projectRoot $_ }
 $referencePaths = @((Get-ChildItem -LiteralPath (Join-Path $PSHOME 'ref') -Filter '*.dll').FullName)
 $referencePaths += [Newtonsoft.Json.JsonConvert].Assembly.Location
@@ -21,6 +23,8 @@ Write-Output "$passed requirement validation and verification policy checks pass
 $arExamplePath = Join-Path $projectRoot 'Assets/_Project/Content/Procedures/ar_example.json'
 $arPassed = [HomeCare.Authoring.ARPrototypeChecks]::Run($arExamplePath)
 Write-Output "$arPassed AR step progression and verification protocol checks passed."
+$pollingPassed = [HomeCare.Authoring.VerificationPollingChecks]::Run($arExamplePath)
+Write-Output "$pollingPassed polling cadence, busy-request and evidence policy checks passed."
 
 # Syntax-check every custom script, including EditorWindow and transport code.
 # This does not substitute for compilation against the installed Unity Editor assemblies.

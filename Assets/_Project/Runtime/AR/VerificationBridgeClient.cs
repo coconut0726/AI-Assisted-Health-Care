@@ -11,7 +11,12 @@ namespace HomeCare.AR
     {
         public static async Task<VerificationResponse> VerifyAsync(string endpoint, string requestJson, CancellationToken cancellation)
         {
-            return GeminiVerificationProtocol.ParseInteraction(await PostAsync(endpoint, requestJson, cancellation));
+            string raw = await PostAsync(endpoint, requestJson, cancellation);
+            var result = GeminiVerificationProtocol.ParseInteraction(raw);
+            var envelope = Newtonsoft.Json.Linq.JObject.Parse(raw);
+            result.provider = (string)envelope["provider"] ?? "Gemini";
+            result.model = (string)envelope["model"];
+            return result;
         }
 
         /// <summary>How long to keep retrying while the bridge is busy with another request (HTTP 429).</summary>
@@ -20,7 +25,8 @@ namespace HomeCare.AR
         // Sends any Interactions request through the PC bridge and returns the raw response JSON.
         // The bridge runs one request at a time and answers 429 meanwhile (also while an abandoned
         // request is still finishing), so wait for it instead of failing.
-        public static async Task<string> PostAsync(string endpoint, string requestJson, CancellationToken cancellation)
+        public static async Task<string> PostAsync(string endpoint, string requestJson, CancellationToken cancellation,
+            string expectedProvider = null, string expectedModel = null)
         {
             if (!Uri.TryCreate(endpoint, UriKind.Absolute, out var uri) ||
                 (uri.Scheme != "http" && uri.Scheme != "https"))
@@ -28,7 +34,7 @@ namespace HomeCare.AR
             var deadline = DateTime.UtcNow.AddSeconds(BusyRetrySeconds);
             while (true)
             {
-                var (code, text, error) = await SendAsync(uri, requestJson, cancellation);
+                var (code, text, error) = await SendAsync(uri, requestJson, cancellation, expectedProvider, expectedModel);
                 if (code == 429 && DateTime.UtcNow < deadline)
                 {
                     await Task.Delay(750, cancellation);
@@ -40,12 +46,15 @@ namespace HomeCare.AR
             }
         }
 
-        static async Task<(long code, string text, string error)> SendAsync(Uri uri, string requestJson, CancellationToken cancellation)
+        static async Task<(long code, string text, string error)> SendAsync(Uri uri, string requestJson, CancellationToken cancellation,
+            string expectedProvider, string expectedModel)
         {
             using var request = new UnityWebRequest(uri, "POST");
             request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(requestJson));
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
+            if (expectedProvider != null) request.SetRequestHeader("X-HomeCare-Provider", expectedProvider);
+            if (expectedModel != null) request.SetRequestHeader("X-HomeCare-Model", expectedModel);
             request.timeout = 150;
             var operation = request.SendWebRequest();
             while (!operation.isDone)

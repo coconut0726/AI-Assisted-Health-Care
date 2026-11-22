@@ -47,7 +47,7 @@ namespace HomeCare.Guidance
         public static SpatialLifter Capture(CapturedFrame frame, EnvironmentRaycastManager environment,
             int columns, int rows, float defaultDistance)
         {
-            Func<Ray, float> distance = frame.MatchesScene ? DistanceProvider(environment) : null;
+            Func<Ray, float> distance = frame.MatchesScene ? DistanceProvider(frame, environment) : null;
             var lifter = new SpatialLifter(frame, distance, columns, rows, defaultDistance);
             for (int r = 0; r < rows; r++)
             for (int c = 0; c < columns; c++)
@@ -61,15 +61,15 @@ namespace HomeCare.Guidance
             get { int n = 0; foreach (var d in _grid) if (!float.IsNaN(d)) n++; return n; }
         }
 
-        static Func<Ray, float> DistanceProvider(EnvironmentRaycastManager environment)
+        static Func<Ray, float> DistanceProvider(CapturedFrame frame, EnvironmentRaycastManager environment)
         {
 #if UNITY_EDITOR
-            return EditorDistance;
-#else
+            // A Link camera frame shows the real room, so virtual colliders cannot supply its depth.
+            if (frame.Source == "editor_view") return EditorDistance;
+#endif
             if (environment == null || !EnvironmentRaycastManager.IsSupported) return null;
             return ray => environment.Raycast(ray, out var hit, MaxDistance) && hit.status == EnvironmentRaycastHitStatus.Hit
                 ? Vector3.Distance(ray.origin, hit.point) : float.NaN;
-#endif
         }
 
 #if UNITY_EDITOR

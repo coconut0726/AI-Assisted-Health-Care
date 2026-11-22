@@ -11,9 +11,9 @@ namespace HomeCare.Authoring
 {
     public class DecomposeTestWindow : EditorWindow
     {
-        enum Provider { Gemini, Claude }
+        enum Provider { Gemini, Claude, LocalOllama, ProjectBackend }
 
-        Provider _provider = Provider.Gemini;
+        Provider _provider = Provider.ProjectBackend;
         string _instruction =
             "So once a day you're gonna change this, wash your hands first, and if the old bandage is stuck, " +
             "just wet it with some water so it comes off easy, don't rip it. Then wash the burn real gently with " +
@@ -90,6 +90,7 @@ namespace HomeCare.Authoring
 
         void OnGUI()
         {
+            if (GUILayout.Button("VLM Backend…")) VlmBackendWindow.Open();
             _provider = (Provider)EditorGUILayout.EnumPopup("Provider", _provider);
 
             EditorGUILayout.LabelField("Nurse instruction");
@@ -145,9 +146,16 @@ namespace HomeCare.Authoring
                         ? await gemini.DecomposeAsync(SystemPrompt, _instruction, Schema)
                         : await gemini.DecomposeWithVideoAsync(SystemPrompt, _instruction, _videoPath, Schema);
                 }
-                else
+                else if (_provider == Provider.Claude)
                 {
                     _output = await new ClaudeClient().DecomposeAsync(SystemPrompt, _instruction, Schema);
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(_videoPath))
+                        throw new InvalidOperationException("Clear the video path for local text decomposition; local video is unsupported.");
+                    _output = await new LocalVlmClient(followProjectBackend: _provider == Provider.ProjectBackend)
+                        .DecomposeAsync(SystemPrompt, _instruction, Schema);
                 }
             }
             catch (Exception e)

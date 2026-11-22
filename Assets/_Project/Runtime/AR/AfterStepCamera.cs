@@ -68,9 +68,11 @@ namespace HomeCare.AR
                 cameraObject.transform.SetParent(transform, false);
                 cameraObject.SetActive(false);
                 _access = cameraObject.AddComponent<PassthroughCameraAccess>();
+                _access.enabled = false;
                 _access.CameraPosition = PassthroughCameraAccess.CameraPositionType.Left;
                 _access.RequestedResolution = new Vector2Int(1280, 960);
                 _access.MaxFramerate = 30;
+                _access.enabled = true;
                 cameraObject.SetActive(true);
             }
             DateTime previousTimestamp = _access.Timestamp;

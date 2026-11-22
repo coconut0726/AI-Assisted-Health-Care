@@ -72,13 +72,15 @@ namespace HomeCare.Guidance
             _root = new GameObject("Detected Objects").transform;
             _root.SetParent(transform, false);
             _arrow = GuidanceArrow.Create(_root, lineMaterial);
-#if UNITY_ANDROID && !UNITY_EDITOR
-            StartCoroutine(StartDepth());
+#if UNITY_EDITOR
+            // Photos and virtual Editor captures keep using their existing test paths.
+            if (camera.editorTestImage != null || camera.captureViewCameraInEditor) return;
 #endif
+            StartCoroutine(StartDepth());
         }
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-        // Depth needs the spatial data permission; ask once, then start the depth raycaster.
+        // Link uses the same environment raycaster. Android alone requests its runtime permission;
+        // Link permissions are configured in the Meta Horizon Link desktop application.
         IEnumerator StartDepth()
         {
             if (!EnvironmentRaycastManager.IsSupported)
@@ -86,6 +88,7 @@ namespace HomeCare.Guidance
                 Debug.Log("[HomeCare] Depth raycasting is not supported; detected objects use a default distance.");
                 yield break;
             }
+#if UNITY_ANDROID && !UNITY_EDITOR
             if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(ScenePermission))
             {
                 UnityEngine.Android.Permission.RequestUserPermission(ScenePermission);
@@ -98,10 +101,10 @@ namespace HomeCare.Guidance
                     yield break;
                 }
             }
+#endif
             _environment = FindAnyObjectByType<EnvironmentRaycastManager>();
             if (_environment == null) _environment = new GameObject("Environment Raycast").AddComponent<EnvironmentRaycastManager>();
         }
-#endif
 
         /// <summary>
         /// Looks for <paramref name="request"/> (one or more object names, or a vague description) in the current

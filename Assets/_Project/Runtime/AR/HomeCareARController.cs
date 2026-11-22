@@ -21,7 +21,7 @@ namespace HomeCare.AR
         public TextAsset procedureJson;
         [Header("PC verification bridge (USB: adb reverse tcp:8765 tcp:8765)")]
         public string verificationEndpoint = "http://127.0.0.1:8765/verify";
-        public string geminiModel = "gemini-3.8-flash";
+        public string geminiModel = "gemini-3.5-flash";
         [Tooltip("Template UI/demo objects hidden only in this prototype scene.")]
         public GameObject[] hideTemplateObjects;
 
@@ -119,7 +119,7 @@ namespace HomeCare.AR
                 _session.AcceptVerification(response, attachments);
                 _feedback = ResultText();
                 var report = new VerificationReport { verified_at_utc = DateTime.UtcNow.ToString("o"),
-                    provider = "Gemini", model = geminiModel, procedure = _session.Procedure,
+                    provider = response.provider ?? "Gemini", model = response.model ?? geminiModel, procedure = _session.Procedure,
                     step_id = _session.CurrentStep.id, attachments = attachments,
                     overall_status = _session.OverallStatus, results = _session.Results };
                 try { File.WriteAllText(Path.Combine(_sessionDirectory, basename + ".json"), RequirementsJson.Serialize(report)); }

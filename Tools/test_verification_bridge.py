@@ -4,7 +4,7 @@ import threading
 import unittest
 import urllib.error
 
-from verification_bridge import MAX_REQUEST_BYTES, create_server
+from verification_bridge import MAX_REQUEST_BYTES, BackendRouter, create_server
 
 
 class BridgeTests(unittest.TestCase):
@@ -119,6 +119,126 @@ class MissingKeyTests(unittest.TestCase):
             server.shutdown()
             server.server_close()
             thread.join(1)
+
+
+class BackendSwitchTests(unittest.TestCase):
+    def setUp(self):
+        self.calls = []
+        self.started, self.release = threading.Event(), threading.Event()
+        self.release.set()
+        self.config = {"provider": "ollama", "model": "qwen-test:4b", "gemini_model": "gemini-test"}
+
+        def answer():
+            return {"status": "completed", "steps": [{"type": "model_output", "content": [
+                {"type": "text", "text": '{"step_id":"s1","results":[]}'}]}]}
+
+        def gemini(body, key):
+            self.calls.append(("gemini", json.loads(body), key))
+            return json.dumps(answer()).encode()
+
+        def ollama_factory(config):
+            def forward(body, _key):
+                self.calls.append(("ollama", config["model"], None))
+                self.started.set()
+                self.release.wait(3)
+                return json.dumps(dict(answer(), provider="Ollama", model=config["model"])).encode()
+            return forward
+
+        self.router = BackendRouter(self.config, gemini_forward=gemini, ollama_factory=ollama_factory)
+        self.server = create_server("127.0.0.1", 0, "", backend=self.router,
+                                    control_token="test-control-token", instance_id="test-instance")
+        self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+        self.thread.start()
+
+    def tearDown(self):
+        self.release.set()
+        self.server.shutdown()
+        self.server.server_close()
+        self.thread.join(1)
+
+    def request(self, path="/verify", payload=None, authorized=False, headers=None):
+        connection = http.client.HTTPConnection(*self.server.server_address, timeout=5)
+        request_headers = {"Content-Type": "application/json"}
+        if authorized:
+            request_headers["Authorization"] = "Bearer test-control-token"
+        request_headers.update(headers or {})
+        connection.request("GET" if path == "/health" else "POST", path,
+                           None if path == "/health" else json.dumps(payload if payload is not None else BridgeTests.valid_payload()),
+                           request_headers)
+        response = connection.getresponse()
+        result = response.status, json.loads(response.read())
+        connection.close()
+        return result
+
+    def configure(self, provider, key=None):
+        payload = {"provider": provider, "config": self.config}
+        if key is not None:
+            payload["api_key"] = key
+        return self.request("/configure", payload, authorized=True)
+
+    def test_switches_both_routes_and_overrides_the_legacy_scene_model(self):
+        self.assertEqual(self.request()[1]["model"], "qwen-test:4b")
+        self.assertEqual(self.configure("gemini", "fake-session-key")[0], 200)
+        status, answer = self.request()
+        self.assertEqual(status, 200)
+        self.assertEqual(answer["provider"], "Gemini")
+        self.assertEqual(answer["model"], "gemini-test")
+        self.assertEqual(self.calls[-1][1]["model"], "gemini-test")
+        self.assertEqual(self.calls[-1][2], "fake-session-key")
+        self.assertEqual(self.configure("ollama")[0], 200)
+        self.assertEqual(self.request()[1]["provider"], "Ollama")
+        self.assertEqual(self.configure("gemini")[0], 200)  # reuse the in-memory session key
+        self.assertEqual(len(self.calls), 3)  # selection/health never runs an inference
+
+    def test_missing_gemini_key_leaves_the_working_qwen_route_unchanged(self):
+        self.assertEqual(self.configure("gemini")[0], 400)
+        self.assertEqual(self.request("/health")[1]["provider"], "ollama")
+        self.assertEqual(self.request()[1]["provider"], "Ollama")
+
+    def test_settings_and_shutdown_require_the_project_control_token(self):
+        payload = {"provider": "gemini", "config": self.config, "api_key": "fake-session-key"}
+        self.assertEqual(self.request("/configure", payload)[0], 403)
+        self.assertEqual(self.request("/shutdown", {})[0], 403)
+        self.assertEqual(self.request("/health")[1]["provider"], "ollama")
+
+    def test_active_inference_blocks_switch_and_shutdown(self):
+        self.release.clear()
+        worker = threading.Thread(target=self.request, daemon=True)
+        worker.start()
+        self.assertTrue(self.started.wait(2))
+        self.assertTrue(self.request("/health")[1]["busy"])
+        self.assertEqual(self.configure("gemini", "fake-session-key")[0], 409)
+        self.assertEqual(self.request("/shutdown", {}, authorized=True)[0], 409)
+        self.release.set()
+        worker.join(2)
+        self.assertEqual(self.request("/health")[1]["provider"], "ollama")
+
+    def test_editor_backend_guard_prevents_an_unintended_cloud_request(self):
+        self.assertEqual(self.configure("gemini", "fake-session-key")[0], 200)
+        self.assertEqual(self.request(headers={"X-HomeCare-Provider": "ollama"})[0], 409)
+        self.assertEqual(self.request(headers={"X-HomeCare-Provider": "gemini", "X-HomeCare-Model": "wrong-model"})[0], 409)
+        self.assertEqual(self.calls, [])
+        self.assertEqual(self.request(headers={"X-HomeCare-Provider": "gemini", "X-HomeCare-Model": "gemini-test"})[0], 200)
+
+    def test_health_does_not_disclose_api_or_control_keys(self):
+        self.configure("gemini", "fake-session-key")
+        _, health = self.request("/health")
+        self.assertTrue(health["gemini_key_configured"])
+        self.assertTrue(health["managed"])
+        self.assertEqual(health["instance_id"], "test-instance")
+        self.assertNotIn("api_key", health)
+        self.assertNotIn("token", health)
+        self.assertNotIn("fake-session-key", json.dumps(health))
+        self.assertNotIn("test-control-token", json.dumps(health))
+
+    def test_bad_provider_does_not_replace_the_existing_route(self):
+        self.assertEqual(self.configure("other")[0], 400)
+        self.assertEqual(self.request("/health")[1]["provider"], "ollama")
+
+    def test_managed_shutdown_stops_the_server(self):
+        self.assertEqual(self.request("/shutdown", {}, authorized=True)[0], 200)
+        self.thread.join(2)
+        self.assertFalse(self.thread.is_alive())
 
 
 if __name__ == "__main__":

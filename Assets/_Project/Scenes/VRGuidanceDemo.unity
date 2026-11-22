@@ -4173,7 +4173,7 @@ MonoBehaviour:
   hudDistance: 1
   hudHeight: 0.08
   workspaceStart: {x: 0.5, y: -0.5}
-  placeholderPropsInEditor: 1
+  placeholderPropsInEditor: 0
   placeholderPropsOnDevice: 0
 --- !u!4 &1835049243
 Transform:
@@ -4206,7 +4206,10 @@ MonoBehaviour:
   procedureJson: {fileID: 4900000, guid: face920d48283894aa4497c8580f1e24, type: 3}
   bridgeEndpoint: http://127.0.0.1:8765/verify
   geminiModel: gemini-3.8-flash
-  findOnNewStep: 1
+  autoVerify: 1
+  verificationInterval: 5
+  checkSuppliesOnOpen: 0
+  findOnNewStep: 0
   lineMaterial: {fileID: 2100000, guid: 97dc6cefbbc1c7249984056912dd963b, type: 2}
   supplies:
   - itemId: burn
@@ -4259,7 +4262,7 @@ MonoBehaviour:
     keywords:
     - medical tape
     - tape
-  refreshAfterTouch: 1
+  refreshAfterTouch: 0
   touchMargin: 0.04
   minTouchSeconds: 0.3
   releaseDelay: 0.6
@@ -4276,7 +4279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HomeCare.AR.AfterStepCamera
   editorTestImage: {fileID: 0}
-  captureViewCameraInEditor: 1
+  captureViewCameraInEditor: 0
 --- !u!114 &1835049246
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ namespace AHC.VR
 
     /// <summary>
     /// The real caregiver flow behind <see cref="VRDemoController"/>: the nurse's reviewed procedure
-    /// (6 steps with checks), real object detection in the passthrough view, after-step verification
+    /// with requirements, real object detection in the passthrough view, periodic result verification
     /// through the PC bridge, and a session report. The controller draws the Figma UI from this state.
     /// </summary>
     [RequireComponent(typeof(AfterStepCamera))]
@@ -33,7 +33,15 @@ namespace AHC.VR
         public string bridgeEndpoint = "http://127.0.0.1:8765/verify";
         public string geminiModel = "gemini-3.8-flash";
 
+        [Header("Requirement verification")]
+        [Tooltip("While a step is active, periodically capture a fresh image and check its requirements. Stops when passed; Next remains manual.")]
+        public bool autoVerify;
+        [Min(1f), Tooltip("Seconds between polling slots. Busy slots are skipped; requests never overlap.")]
+        public float verificationInterval = 5f;
+
         [Header("Object detection")]
+        [Tooltip("Automatically check supplies when the start screen opens. Look again remains available when off.")]
+        public bool checkSuppliesOnOpen = true;
         [Tooltip("Look for the step's supplies each time a step starts.")]
         public bool findOnNewStep = true;
         [Tooltip("Unlit material for detection boxes and arrows (Assets/_Project/Art/CareItems/CareHighlight).")]
@@ -69,7 +77,11 @@ namespace AHC.VR
         ObjectDetectionGuidance _detector;
         ProcedureSession _session;
         SessionReportWriter _report;
-        CancellationTokenSource _lifetime, _supplyCheck;
+        CancellationTokenSource _lifetime, _supplyCheck, _stepCancellation;
+        readonly VerificationPollingSchedule _polling = new();
+        RequirementResult[] _displayResults;
+        string _lastSpokenResult;
+        bool _paused;
         int _stepRequest;
 
         public string LoadError { get; private set; }
@@ -84,7 +96,9 @@ namespace AHC.VR
         public bool CanAdvance => _session != null && _session.CanAdvance;
         public bool Verifying => State == ProcedureSessionState.Verifying;
         public bool CanVerify => _session != null && (State == ProcedureSessionState.Ready || State == ProcedureSessionState.NeedsRetry);
-        public RequirementResult[] Results => _session?.Results;
+        public RequirementResult[] Results => _session?.Results ?? _displayResults;
+        public float PollingInterval => float.IsNaN(verificationInterval) || float.IsInfinity(verificationInterval)
+            ? 5f : Mathf.Max(1f, verificationInterval);
         public bool Detecting => _detector != null && _detector.Busy;
         public bool CheckingSupplies { get; private set; }
         public readonly List<SupplyCheck> SupplyChecks = new();
@@ -139,12 +153,61 @@ namespace AHC.VR
 
         void OnDestroy()
         {
+            SuspendStepWork();
             _report?.Save();
             _lifetime?.Cancel();
             _lifetime?.Dispose();
         }
 
-        void OnApplicationPause(bool paused) { if (paused) _report?.Save(); }
+        void OnEnable() => ResumeStepWork();
+
+        void OnDisable()
+        {
+            StopSupplyCheck();
+            SuspendStepWork();
+            _report?.Save();
+        }
+
+        void OnApplicationPause(bool paused)
+        {
+            _paused = paused;
+            if (paused)
+            {
+                StopSupplyCheck();
+                SuspendStepWork();
+                _report?.Save();
+            }
+            else ResumeStepWork();
+        }
+
+        // A step owns its capture/detection/verification work. Invalidating it also protects a
+        // restarted session whose first step happens to have the same id as an old response.
+        void SuspendStepWork()
+        {
+            _polling.Stop();
+            _stepRequest++;
+            _stepCancellation?.Cancel();
+            _stepCancellation?.Dispose();
+            _stepCancellation = null;
+            _session?.FailVerification();
+            _detector?.Clear();
+            _touchStarted = _releasedAt = -1;
+        }
+
+        void ResumeStepWork()
+        {
+            if (!Started || Completed || _paused || !isActiveAndEnabled || _lifetime == null) return;
+            _stepCancellation ??= CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
+            if (autoVerify && !CanAdvance) _polling.Start(Time.realtimeSinceStartupAsDouble, PollingInterval);
+            Status = CanAdvance ? "Passed. You can continue." : WaitingStatus();
+            Notify();
+        }
+
+        bool IsCurrentStep(int request) => this != null && Started && !_paused && isActiveAndEnabled && request == _stepRequest;
+
+        string WaitingStatus() => autoVerify
+            ? $"Do this step. Checking automatically every {PollingInterval:0.#} s; keep the work area in view."
+            : "Do this step, then press Check step.";
 
         void Notify() { if (this != null) Changed?.Invoke(); }
 
@@ -175,17 +238,16 @@ namespace AHC.VR
         {
             StopSupplyCheck();
             Started = false;
-            _stepRequest++;
-            _detector.Clear();
-            _touchStarted = _releasedAt = -1;
+            SuspendStepWork();
             _report?.Save();
             Status = Guidance = Caution = "";
         }
 
         void EnterStep()
         {
-            _stepRequest++;
-            _detector.Clear();
+            SuspendStepWork();
+            _displayResults = null;
+            _lastSpokenResult = null;
             _lastRequest = null;
             _touchStarted = _releasedAt = -1;
             Guidance = Caution = "";
@@ -203,8 +265,7 @@ namespace AHC.VR
                 step.mentioned_items = StepItems.Select(i => new ItemPresence { item_id = i.Item.itemId, name = i.Item.displayName }).ToList();
                 _report.Save();
             }
-            Status = "Do this step, then press Check step.";
-            Notify();
+            ResumeStepWork();
             if (findOnNewStep) FindItems();
         }
 
@@ -242,7 +303,7 @@ namespace AHC.VR
         /// <summary>Looks for every supply on the table, four at a time (the most one detection returns).</summary>
         public async void CheckSupplies()
         {
-            if (_session == null || CheckingSupplies) return;
+            if (_session == null || Started || CheckingSupplies || _paused || !isActiveAndEnabled) return;
             StopSupplyCheck();
             _supplyCheck = CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
             var token = _supplyCheck.Token;
@@ -267,6 +328,7 @@ namespace AHC.VR
                     catch (OperationCanceledException) when (token.IsCancellationRequested) { return; }
                     catch (Exception e)
                     {
+                        if (token.IsCancellationRequested) return;
                         Debug.LogWarning("[HomeCare] Supply check failed: " + e.Message, this);
                         Status = "Could not look for supplies. Check the camera and the PC bridge, then press Look again.";
                         return;
@@ -280,14 +342,20 @@ namespace AHC.VR
             }
             finally
             {
-                if (_supplyCheck != null && _supplyCheck.Token == token) CheckingSupplies = false;
-                Notify();
+                if (_supplyCheck != null && _supplyCheck.Token == token)
+                {
+                    _supplyCheck.Dispose();
+                    _supplyCheck = null;
+                    CheckingSupplies = false;
+                    Notify();
+                }
             }
         }
 
         void StopSupplyCheck()
         {
             _supplyCheck?.Cancel();
+            _supplyCheck?.Dispose();
             _supplyCheck = null;
             CheckingSupplies = false;
         }
@@ -304,10 +372,11 @@ namespace AHC.VR
         /// </summary>
         public async void FindItems(string request = null, bool refresh = false)
         {
-            if (_session == null || !Started || Completed || Verifying) return; // no step guidance before Start
+            if (_session == null || !Started || Completed || Verifying || Detecting || _stepCancellation == null) return;
             StopSupplyCheck();
             var step = CurrentStep;
             int stepRequest = _stepRequest;
+            var cancellation = _stepCancellation.Token;
             var names = StepItems.Select(i => i.Item.displayName).ToList();
             if (string.IsNullOrWhiteSpace(request))
                 request = names.Count > 0 ? string.Join(", ", names) : "the supplies needed for this step: " + step.title;
@@ -320,19 +389,18 @@ namespace AHC.VR
             DetectionOutcome outcome = null;
             try
             {
-                outcome = await _detector.FindAsync(request, _session.Procedure, step, names, bridgeEndpoint, geminiModel, _lifetime.Token);
+                outcome = await _detector.FindAsync(request, _session.Procedure, step, names, bridgeEndpoint, geminiModel, cancellation);
             }
-            catch (OperationCanceledException) when (_lifetime.IsCancellationRequested) { return; }
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { return; }
             catch (Exception e)
             {
                 detection.error = e is OperationCanceledException ? "Timed out waiting for the camera or the PC bridge." : e.Message;
                 Debug.LogWarning("[HomeCare] Object detection failed: " + detection.error, this);
             }
-            if (this == null || outcome is { Superseded: true }) return;
+            if (!IsCurrentStep(stepRequest) || cancellation.IsCancellationRequested || outcome is { Superseded: true }) return;
             if (outcome != null) Record(detection, outcome);
             _report?.Step(step.id)?.detections.Add(detection);
             _report?.Save();
-            if (stepRequest != _stepRequest) return; // the user moved on
 
             if (outcome == null)
             {
@@ -360,7 +428,8 @@ namespace AHC.VR
             }
             Guidance = r.guidance_text ?? "";
             Caution = r.caution ?? "";
-            Status = r.objects.Count == 0 ? "Nothing found. Look at the table and press Find items." : "Do this step, then press Check step.";
+            Status = CanAdvance ? "Passed. You can continue."
+                : r.objects.Count == 0 ? "Nothing found. Look at the table and press Find items." : WaitingStatus();
             if (outcome.Placed.Count > 0 && outcome.Placed.All(p => p.marker.Box.depthSource == "default_distance"))
                 Status += " (No depth reading: boxes are at an estimated distance.)";
             Notify();
@@ -396,35 +465,53 @@ namespace AHC.VR
 
         // ------------------------------------------------------------------ after-step check
 
-        /// <summary>Captures the passthrough camera and checks the current step's requirements.</summary>
-        public async void Verify()
+        /// <summary>Manual check, using the countdown so the user's hands can return to the work area.</summary>
+        public void Verify() => VerifyCurrentStep(automatic: false);
+
+        async void VerifyCurrentStep(bool automatic)
         {
-            if (!CanVerify || _report == null) return;
+            if (!CanVerify || _report == null || _stepCancellation == null || !IsCurrentStep(_stepRequest)) return;
+            if (Detecting || CheckingSupplies)
+            {
+                if (!automatic) { Status = "Wait for the item search to finish, then check this step."; Notify(); }
+                return;
+            }
             var step = CurrentStep;
+            int stepIndex = StepIndex, stepRequest = _stepRequest;
+            var session = _session;
+            var report = _report;
+            var cancellation = _stepCancellation.Token;
+            if (!automatic && autoVerify) _polling.Start(Time.realtimeSinceStartupAsDouble, PollingInterval);
+            _displayResults = session.Results ?? _displayResults;
             _session.BeginVerification();
-            Status = "Checking your result. Keep the area in view.";
+            Status = automatic ? "Automatic check in progress. Keep the work area in view." : "Checking your result. Keep the area in view.";
             Notify();
-            var attempt = new AttemptReport { at_utc = SessionReportWriter.Now() };
+            double startedAt = Time.realtimeSinceStartupAsDouble;
+            var attempt = new AttemptReport { at_utc = SessionReportWriter.Now(), trigger = automatic ? "automatic_poll" : "manual" };
             try
             {
-                var cancellation = _lifetime.Token;
-                await CountDownToPhoto(step, cancellation);
+                if (!automatic) await CountDownToPhoto(step, cancellation);
                 byte[] jpeg = await _camera.CaptureJpegAsync(cancellation);
-                string basename = (_camera.IsEditorTest ? "editor_test" : "headset") + "_step" + (StepIndex + 1) + "_" +
+                cancellation.ThrowIfCancellationRequested();
+                if (!IsCurrentStep(stepRequest)) return;
+                string basename = (_camera.IsEditorTest ? "editor_test" : "headset") + "_step" + (stepIndex + 1) + "_" +
                                   Guid.NewGuid().ToString("N").Substring(0, 10);
-                string imagePath = Path.Combine(_report.Directory, basename + ".jpg");
+                string imagePath = Path.Combine(report.Directory, basename + ".jpg");
                 File.WriteAllBytes(imagePath, jpeg);
                 attempt.image_file = Path.GetFileName(imagePath);
                 var attachments = new[] { new EvidenceAttachment { scope = "after_step", path = imagePath } };
-                string request = GeminiVerificationProtocol.CreateAfterImageRequest(_session.Procedure, step, jpeg,
+                string request = GeminiVerificationProtocol.CreateAfterImageRequest(session.Procedure, step, jpeg,
                     Path.GetFileName(imagePath), geminiModel);
                 var response = await VerificationBridgeClient.VerifyAsync(bridgeEndpoint, request, cancellation);
                 cancellation.ThrowIfCancellationRequested();
-                _session.AcceptVerification(response, attachments);
-                attempt.overall_status = _session.OverallStatus;
-                for (int i = 0; i < _session.Results.Length; i++)
+                if (!IsCurrentStep(stepRequest)) return;
+                session.AcceptVerification(response, attachments);
+                report.Report.verification_model = response.model ?? geminiModel;
+                _displayResults = session.Results;
+                attempt.overall_status = session.OverallStatus;
+                for (int i = 0; i < session.Results.Length; i++)
                 {
-                    var r = _session.Results[i];
+                    var r = session.Results[i];
                     var q = step.requirements[i];
                     attempt.results.Add(new RequirementReport
                     {
@@ -434,28 +521,32 @@ namespace AHC.VR
                 }
                 var verification = new VerificationReport
                 {
-                    verified_at_utc = DateTime.UtcNow.ToString("o"), provider = "Gemini", model = geminiModel,
-                    procedure = _session.Procedure, step_id = step.id, attachments = attachments,
-                    overall_status = _session.OverallStatus, results = _session.Results,
+                    verified_at_utc = DateTime.UtcNow.ToString("o"), provider = response.provider ?? "Gemini", model = response.model ?? geminiModel,
+                    procedure = session.Procedure, step_id = step.id, attachments = attachments,
+                    overall_status = session.OverallStatus, results = session.Results,
                 };
-                try { File.WriteAllText(Path.Combine(_report.Directory, basename + ".json"), RequirementsJson.Serialize(verification)); }
+                try { File.WriteAllText(Path.Combine(report.Directory, basename + ".json"), RequirementsJson.Serialize(verification)); }
                 catch (IOException e) { Debug.LogWarning("[HomeCare] Verification report could not be saved: " + e.Message, this); }
                 Status = CanAdvance ? "Passed. You can continue."
-                    : _session.OverallStatus == RequirementVerification.NotSatisfied ? "Not done yet. Fix what is marked, then check again."
-                    : "The camera could not confirm this. Show the area clearly, then check again.";
+                    : session.OverallStatus == RequirementVerification.NotSatisfied
+                        ? (autoVerify ? "Not done yet. Fix what is marked; automatic checks will continue." : "Not done yet. Fix what is marked, then check again.")
+                        : (autoVerify ? "Not confirmed. Show the work area clearly; automatic checks will continue." : "The camera could not confirm this. Show the area clearly, then check again.");
             }
-            catch (OperationCanceledException) when (_lifetime.IsCancellationRequested) { return; }
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { return; }
             catch (Exception e)
             {
-                _session.FailVerification();
+                if (!IsCurrentStep(stepRequest) || cancellation.IsCancellationRequested) return;
+                session.FailVerification();
                 attempt.overall_status = RequirementVerification.Unknown;
                 attempt.error = e.Message;
-                Status = "Could not check this step. Check the camera and the PC bridge connection, then try again.";
+                Status = autoVerify ? "Could not check this step. Check the camera and PC bridge; automatic checks will retry."
+                    : "Could not check this step. Check the camera and the PC bridge connection, then try again.";
                 Debug.LogException(e, this);
             }
 
-            if (this == null) return;
-            var stepReport = _report.Step(step.id);
+            if (!IsCurrentStep(stepRequest) || cancellation.IsCancellationRequested) return;
+            attempt.duration_ms = Math.Round((Time.realtimeSinceStartupAsDouble - startedAt) * 1000);
+            var stepReport = report.Step(step.id);
             stepReport.attempts.Add(attempt);
             stepReport.final_status = attempt.overall_status switch
             {
@@ -463,11 +554,17 @@ namespace AHC.VR
                 RequirementVerification.NotSatisfied => "not_met",
                 _ => "not_verified",
             };
-            _report.Save();
+            report.Save();
+            if (CanAdvance) _polling.Stop();
             Notify();
-            Spoke?.Invoke(CanAdvance ? "Well done. That step is complete." : FirstProblem() ?? Status);
+            // Repeated polls can produce different wording for the same outcome. Speak only when
+            // requirement statuses change, or when the user explicitly asked for another check.
+            string resultKey = attempt.error != null ? "error" : string.Join("|", attempt.results.Select(r => r.requirement_id + ":" + r.status));
+            if (!automatic || resultKey != _lastSpokenResult)
+                Spoke?.Invoke(CanAdvance ? "Well done. That step is complete." : attempt.error != null ? Status : FirstProblem() ?? Status);
+            _lastSpokenResult = resultKey;
             // Items were handled during the step: update where their boxes are (once, quietly).
-            if (_detector.Markers.Count > 0) FindItems(_lastRequest, refresh: true);
+            if (!autoVerify && IsCurrentStep(stepRequest) && _detector.Markers.Count > 0) FindItems(_lastRequest, refresh: true);
         }
 
         // ------------------------------------------------------------------ boxes follow handled items
@@ -487,6 +584,18 @@ namespace AHC.VR
 
         void Update()
         {
+            // Poll requirement verification, independently of hand interaction and object finding.
+            if (!Started || Completed || _paused) { _polling.Stop(); return; }
+            if (!autoVerify || CanAdvance) _polling.Stop();
+            else
+            {
+                double now = Time.realtimeSinceStartupAsDouble;
+                if (!_polling.Running) _polling.Start(now, PollingInterval);
+                if (_polling.TryConsumeTick(now, PollingInterval,
+                    CanVerify && !Detecting && !CheckingSupplies && _stepCancellation != null))
+                    VerifyCurrentStep(automatic: true);
+            }
+
             // Only during the steps: supply boxes on the start screen are not followed.
             if (!refreshAfterTouch || _session == null || !Started || Completed || CheckingSupplies) return;
             bool touching = HandTouchesABox();

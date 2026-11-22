@@ -9,9 +9,11 @@ namespace HomeCare.Authoring
 {
     public class RequirementsPrototypeWindow : EditorWindow
     {
-        enum Provider { Gemini, Claude }
+        enum Provider { Gemini, Claude, LocalOllama, ProjectBackend }
         const string ExamplePath = "Assets/_Project/Content/Procedures/requirements_example.json";
-        Provider _provider;
+        Provider _provider = Provider.ProjectBackend;
+        bool _followVerificationBackend = true;
+        bool _localVerification = true;
         string _geminiModel = "gemini-3.8-flash";
         string _claudeModel = "claude-sonnet-5-5";
         string _instruction = "Place the blue pad on the tray. Put the red block on the blue pad. Keep the block on the pad while wrapping the yellow strap around it.";
@@ -34,6 +36,7 @@ namespace HomeCare.Authoring
         void OnGUI()
         {
             EditorGUILayout.LabelField("Instruction → Requirements → VQA", EditorStyles.boldLabel);
+            if (GUILayout.Button("VLM Backend…")) VlmBackendWindow.Open();
             EditorGUILayout.HelpBox("Editor research prototype. Manually select a step and attach execution evidence. Generated requirements are editable candidates for author review.", MessageType.Info);
             using (new EditorGUI.DisabledScope(_busy))
             {
@@ -55,7 +58,10 @@ namespace HomeCare.Authoring
             _instruction = EditorGUILayout.TextArea(_instruction, GUILayout.MinHeight(100));
             _provider = (Provider)EditorGUILayout.EnumPopup("Generation provider", _provider);
             if (_provider == Provider.Gemini) _geminiModel = EditorGUILayout.TextField("Model", _geminiModel);
-            else _claudeModel = EditorGUILayout.TextField("Model", _claudeModel);
+            else if (_provider == Provider.Claude) _claudeModel = EditorGUILayout.TextField("Model", _claudeModel);
+            else EditorGUILayout.HelpBox(_provider == Provider.ProjectBackend
+                ? "Follows Tools → Home Care → VLM Backend."
+                : "Requires the bridge to be set to Qwen in VLM Backend.", MessageType.Info);
             using (new EditorGUI.DisabledScope(string.IsNullOrWhiteSpace(_instruction)))
                 if (GUILayout.Button("Generate step requirements", GUILayout.Height(28))) Generate();
             EditorGUILayout.BeginHorizontal();
@@ -124,10 +130,17 @@ namespace HomeCare.Authoring
             EvidenceField("Before image", ref _before, false);
             EvidenceField("Whole-step video", ref _during, true);
             EvidenceField("After image", ref _after, false);
-            _geminiModel = EditorGUILayout.TextField("VQA Gemini model", _geminiModel);
+            _followVerificationBackend = EditorGUILayout.Toggle("Follow project VLM backend", _followVerificationBackend);
+            if (!_followVerificationBackend)
+            {
+                _localVerification = EditorGUILayout.Toggle("Use local Ollama for VQA", _localVerification);
+                if (!_localVerification) _geminiModel = EditorGUILayout.TextField("VQA Gemini model", _geminiModel);
+            }
+            EditorGUILayout.HelpBox("Bridge uploads are limited to 8 MiB after encoding. Qwen accepts images; whole-step video requires Gemini.", MessageType.Info);
             if (EditorGUI.EndChangeCheck()) _report = null;
             using (new EditorGUI.DisabledScope(string.IsNullOrWhiteSpace(_before) && string.IsNullOrWhiteSpace(_during) && string.IsNullOrWhiteSpace(_after)))
-                if (GUILayout.Button("Verify selected step (Gemini)", GUILayout.Height(28))) Verify();
+                if (GUILayout.Button(_followVerificationBackend ? "Verify selected step (project backend)"
+                    : _localVerification ? "Verify selected step (local)" : "Verify selected step (Gemini)", GUILayout.Height(28))) Verify();
             DrawReport();
         }
 
@@ -172,9 +185,10 @@ namespace HomeCare.Authoring
             Repaint();
             try
             {
-                string json = _provider == Provider.Gemini
-                    ? await new GeminiClient(_geminiModel.Trim()).DecomposeAsync(RequirementsPrompts.Generate, instruction, RequirementsJson.ProcedureSchema)
-                    : await new ClaudeClient(_claudeModel.Trim()).DecomposeAsync(RequirementsPrompts.Generate, instruction, RequirementsJson.ProcedureSchema);
+                ILLMClient client = _provider == Provider.ProjectBackend ? new LocalVlmClient(followProjectBackend: true)
+                    : _provider == Provider.LocalOllama ? new LocalVlmClient()
+                    : _provider == Provider.Gemini ? new GeminiClient(_geminiModel.Trim()) : new ClaudeClient(_claudeModel.Trim());
+                string json = await client.DecomposeAsync(RequirementsPrompts.Generate, instruction, RequirementsJson.ProcedureSchema);
                 var generated = RequirementsJson.Parse(json);
                 if (generated.instruction != instruction)
                     throw new InvalidOperationException("The model changed the original instruction. Generate again.");
@@ -201,12 +215,21 @@ namespace HomeCare.Authoring
                 if (!string.IsNullOrWhiteSpace(_after)) attachments.Add(new EvidenceAttachment { scope = "after_step", path = _after });
                 var evidence = attachments.ToArray();
                 string model = _geminiModel.Trim();
+                string provider = "Gemini";
                 string content = RequirementsJson.Serialize(new { procedure_title = procedure.procedure_title,
                     original_instruction = procedure.instruction, selected_step = step });
-                string json = await new GeminiClient(model).GenerateWithEvidenceAsync(RequirementsPrompts.Verify,
+                string json;
+                if (_followVerificationBackend || _localVerification)
+                {
+                    var client = new LocalVlmClient(followProjectBackend: _followVerificationBackend);
+                    model = client.Model;
+                    provider = client.Provider == "ollama" ? "Ollama" : "Gemini";
+                    json = await client.GenerateWithEvidenceAsync(RequirementsPrompts.Verify, content, evidence, RequirementsJson.VerificationSchema);
+                }
+                else json = await new GeminiClient(model).GenerateWithEvidenceAsync(RequirementsPrompts.Verify,
                     content, evidence, RequirementsJson.VerificationSchema);
                 var results = RequirementVerification.Evaluate(step, RequirementsJson.ParseResponse(json), evidence);
-                _report = new VerificationReport { verified_at_utc = DateTime.UtcNow.ToString("o"), provider = "Gemini",
+                _report = new VerificationReport { verified_at_utc = DateTime.UtcNow.ToString("o"), provider = provider,
                     model = model, procedure = procedure, step_id = step.id, attachments = evidence,
                     overall_status = RequirementVerification.Aggregate(results), results = results };
             }

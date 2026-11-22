@@ -51,6 +51,8 @@ namespace HomeCare.Guidance
     public class AttemptReport
     {
         public string at_utc;
+        public string trigger;
+        public double duration_ms;
         public string image_file;
         public string overall_status;
         public string error;
@@ -213,6 +215,7 @@ namespace HomeCare.Guidance
                     var at = s.attempts[a];
                     md.AppendLine($"**Attempt {a + 1}** — {at.at_utc} — {Label(at.overall_status)}" +
                                   (string.IsNullOrEmpty(at.image_file) ? "" : $" — image `{at.image_file}`"));
+                    if (!string.IsNullOrEmpty(at.trigger)) md.AppendLine($"  - Trigger: {at.trigger}; duration: {at.duration_ms:0} ms");
                     if (!string.IsNullOrEmpty(at.error)) md.AppendLine($"  - Error: {at.error}");
                     foreach (var res in at.results)
                         md.AppendLine($"  - {Label(res.status)}: {res.description} — {Cell(res.reason)}");

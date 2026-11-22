@@ -426,7 +426,7 @@ namespace AHC.VR
             LayoutRebuilder.ForceRebuildLayoutImmediate(_hud);
             if (speak) Say(GhostLine(v));
             // Look for the supplies as soon as the start screen opens (it redraws itself as results arrive).
-            if (entering && v == View.PatientStart && Real && _care.Procedure != null) _care.CheckSupplies();
+            if (entering && v == View.PatientStart && Real && _care.Procedure != null && _care.checkSuppliesOnOpen) _care.CheckSupplies();
         }
 
         Image CenterPanel(float y = 0)
@@ -655,6 +655,13 @@ namespace AHC.VR
                 Ui.Flexible(seg.gameObject);
             }
             Ui.Text(panel.transform, step.instruction, 19, Theme.Text);
+            if (_care.autoVerify && !_care.CanAdvance)
+            {
+                Ui.Text(panel.transform, $"Auto-check every {_care.PollingInterval:0.#} s · Keep the work area in view", 15, Theme.Muted);
+                string show = string.Join(" ", step.requirements.Select(r => r.observation_hint)
+                    .Where(h => !string.IsNullOrWhiteSpace(h)).Distinct());
+                if (!string.IsNullOrWhiteSpace(show)) Ui.Text(panel.transform, show, 15, Theme.Muted);
+            }
 
             if (_care.StepItems.Count > 0)
             {

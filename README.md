@@ -16,30 +16,15 @@ Version_2: Add local lightweight model(Qwen3-VL-4B) for quick verification and p
 
 The main workflow is **VRGuidanceDemo + Quest Link + local Qwen**. Follow steps 1–4 below using the reviewed procedure already assigned to the scene. The launcher prepares missing local-model dependencies automatically; Unity and Quest Link must already be installed.
 
-### 1. Prepare and start the selected VLM
+### 1. Connect the local VLM
 
-Use **Windows x64**, Unity **6000.6.4f1**, and a working Quest Link/OpenXR setup. Unity and Meta Quest Link are prerequisites; the launcher prepares Python, Ollama and Qwen for you.
+1. Open **Tools → Home Care → VLM Backend** in Unity.
+2. Select **Qwen** (`qwen3-vl:4b-instruct`) and click **Apply & Start**.
+3. Wait for **Applied** and confirm **Running** shows `ollama / qwen3-vl:4b-instruct`. Unity is now connected to the local model.
 
-**GitHub pull is the main distribution workflow.** Commit and push the startup scripts, configuration, Editor code and matching Unity `.meta` files together. `LocalVlm/` remains ignored: each recipient's first start prepares their local runtime and model automatically. No separately shared model folder or ZIP is required.
+First use requires internet access to download missing dependencies and model files automatically.
 
-After pulling the repository:
-
-1. Make sure Git LFS has downloaded the Unity binary assets (`git lfs pull` if needed), then open the project in Unity and wait for package import/compilation.
-2. Open **Tools → Home Care → VLM Backend**, keep **Qwen** selected, and click **Apply & Start**.
-3. First use automatically downloads missing portable Python/Ollama runtimes from official pinned URLs, checks SHA256 values, starts or reuses Ollama, and downloads the configured Qwen model if missing. Allow internet access and several GB of free disk space. No manual Python/Ollama installation, environment-variable setup, model-folder copying or Qwen API key is needed.
-4. Wait until preparation and the **actual image inference / JSON output check** succeed, then continue with steps 2–4 below to connect Link and run the scene.
-
-Later starts reuse installed dependencies and model files. Local Qwen verification uses the model running on the recipient's PC. Selecting **Gemini** in the same window remains available with the recipient's own API key and an available Gemini model ID; keys stay in memory.
-
-**Optional outside-Unity launcher:** double-click **Start-LocalVlm.cmd** in the project root. It performs the same first-use preparation and actual inference check; keep its window open while using Unity. Normal use can stay entirely in the Unity window above.
-
-For GPU/driver failures, update the driver or enable **Use CPU (slower)** in that window. From a terminal, `Start-LocalVlm.cmd -Cpu` selects CPU; `Start-LocalVlm.cmd -AutoGpu` restores automatic GPU selection. The choice is saved only in ignored `UserSettings/local-vlm-machine.json`, so it does not change another person's computer. CPU inference may take a minute or longer; a 5-second polling interval does not guarantee a result every 5 seconds. NVIDIA Windows drivers must meet [Ollama's requirements](https://docs.ollama.com/windows#system-requirements).
-
-Settings shared by both launch paths live in `Tools/local-vlm.json` (default: `qwen3-vl:4b-instruct`, Ollama `127.0.0.1:11434`, bridge `127.0.0.1:8765`). If Ollama is already running, its active model store is reused; otherwise the portable service uses `LocalVlm/models`. LocalVlm is ignored by Git. A model downloaded into an existing Ollama service's store is not automatically copied into the portable store.
-
-`Start-LocalVlm.cmd -CheckOnly` only inspects existing dependencies; it does not download, change compute settings or run inference. The normal launch runs inference unless the advanced `-SkipInferenceCheck` option is supplied.
-
-An optional runtime health URL is `http://127.0.0.1:8765/health`. It reports the selected provider/model, CPU mode and whether a request is running.
+To use Gemini instead, select **Gemini**, enter your model ID and API key, and click **Apply & Start**.
 
 ### 2. Connect the headset through Quest Link
 

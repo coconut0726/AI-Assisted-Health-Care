@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4124,
+    "total_input_tokens": 3333,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3333
+      }
+    ],
+    "total_cached_tokens": 1887,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1887
+      }
+    ],
+    "total_output_tokens": 791,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3333
+  },
+  "created": "2026-11-23T10:38:39Z",
+  "updated": "2026-11-23T10:38:39Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRP1V5RhHM13RcZQVmm4XDCv/BKoXetjci1YBfofTakupIFQH3Gns9plbzT8tDXs5qdUccRB+tMUO3B+IU1bQEzwPg/AjD79DVz8QZSTy68etWX4B+rfJ3MD91IroXdSkqIfwsYrVW1pbM+REq55ncHHyJt8AlspuE+z3RFKOOFgMLBxgOjTZgwxYIO+ll5oP+sCqurX3AVhQ6E=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A11\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A11_pre_01\",\n          \"condition\": \"The burn is showing signs of increased redness, swelling, foul odor, pus leakage, or the user has developed a fever.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Does the burn appear redder, more swollen, leaking pus, smelling unusual, or is there a fever?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"human_confirmation\"\n            ],\n            \"relevant_entities\": [\n              \"burn\",\n              \"user\"\n            ],\n            \"observable_cues\": [\n              \"redness\",\n              \"swelling\",\n              \"leakage\",\n              \"smell\",\n              \"fever\"\n            ],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\n              \"Signs such as smell, internal feelings of fever, or subtle changes in redness/swelling are not detectable via RGB imagery.\",\n              \"Requires user/expert assessment.\"\n            ]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A11_post_01\",\n          \"condition\": \"The nurse has been contacted.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Was the nurse contacted following the observation of warning signs?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"human_confirmation\"\n            ],\n            \"relevant_entities\": [\n              \"nurse\"\n            ],\n            \"observable_cues\": [\n              \"contact initiation\"\n            ],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\n              \"Cannot verify communication through camera imagery.\",\n              \"Requires human confirmation.\"\n            ]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"none\",\n      \"skip_impact\": \"This action is conditional based on the observation of warning signs (redness, swelling, infection, fever).\",\n      \"review_notes\": [\n        \"A11 is a contingency action. It is only applicable when specific clinical indicators are present.\",\n        \"Clinical warning signs cannot be objectively diagnosed or confirmed via standard RGB imagery.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A11 is triggered by post-procedural complications. The evidence requirement is set to human_required as the system cannot assess medical symptoms like infection or fever.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

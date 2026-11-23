@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4384,
+    "total_input_tokens": 3333,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3333
+      }
+    ],
+    "total_cached_tokens": 1887,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1887
+      }
+    ],
+    "total_output_tokens": 1051,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3333
+  },
+  "created": "2026-11-23T10:38:35Z",
+  "updated": "2026-11-23T10:38:35Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfROXpxjiCa3+yLASK/+K4oRWNardzs/H9nzaantHYGobJyEcCadb0ZfxtGi1/YUsnCOUGm7chIZGcT23WGpaxXdPnA1BztLcrbD3vv4L+TPODZeqwxXix+UVLzbl0roTweuPzag/HbpvRuieHgym9WUq1leDw51UFbe+foD5q2WdCys2oUT9ofVojyYrMz1zbiF4sO9VgK5h59E=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A10\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A10_P1\",\n          \"condition\": \"The gauze roll is wrapped around the burn.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A9\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the gauze roll wrapped around the burn area?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"gauze roll\", \"burn\"],\n            \"observable_cues\": [\"gauze covering burn\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Requires state history or pre-action image which is not available.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A10_S1\",\n          \"condition\": \"The gauze is secured with medical tape.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Secure the gauze with medical tape\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the medical tape placed to secure the gauze roll?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\", \"spatial_position\"],\n            \"relevant_entities\": [\"medical tape\", \"gauze\"],\n            \"observable_cues\": [\"tape applied over gauze ends\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Visual overlap does not guarantee securement strength.\"]\n          }\n        },\n        {\n          \"requirement_id\": \"A10_S2\",\n          \"condition\": \"The medical tape is not touching the burned skin.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"keeping the tape off the burned skin\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Is the medical tape clearly separated from the underlying burned skin?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_mask\"],\n            \"relevant_entities\": [\"medical tape\", \"burn\"],\n            \"observable_cues\": [\"tape edges on healthy skin or gauze only\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"partially_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Occlusion of tape-skin interface may hide contact.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A10_E1\",\n          \"error_type\": \"spatial_error\",\n          \"violation_condition\": \"Medical tape is placed directly on the burned skin.\",\n          \"compliance_condition\": \"Medical tape is only placed on the gauze or healthy skin.\",\n          \"compliance_question\": \"Is any medical tape touching the burn?\",\n          \"applicability_condition\": \"Action A10 is performed.\",\n          \"related_requirement_ids\": [\"A10_S2\"],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"keeping the tape off the burned skin\",\n          \"requires_expert_review\": true,\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"medical tape\", \"burn\"],\n            \"observable_cues\": [\"tape over burn\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"partially_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"May be hidden by tape.\"]\n          }\n        }\n      ],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"none\",\n      \"skip_impact\": \"Leaving the dressing unsecured may lead to displacement of the non-stick pad.\",\n      \"review_notes\": [\"Requires clear visibility of the tape perimeter relative to the burn.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,51 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A1_post_1",
+          "condition": "The handwashing operation was performed.",
+          "source": "explicit_instruction",
+          "source_reference": "Wash your hands with soap and water",
+          "requires_expert_review": false,
+          "vqa_question": "Did the user perform the handwashing operation?",
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "user",
+              "hands",
+              "soap",
+              "water"
+            ],
+            "observable_cues": [
+              "visual absence of soap residue is inconclusive",
+              "requires human record or process observation"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Visual RGB snapshots cannot confirm a completed process like handwashing."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "high",
+      "skip_impact": "Lack of hand hygiene before proceeding to dressing removal or wound care increases risk of procedure contamination.",
+      "review_notes": [
+        "Current system cannot observe the handwashing process. Completion requires human confirmation."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 requires verification of the handwashing operation, which cannot be confirmed via single-frame RGB."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [
+    {
+      "criterion_id": "P_order_error",
+      "error_type": "order_error",
+      "violation_condition": "Actions performed outside established dependencies: S1(A1->A2), S2(A3->A4), S3(A5->A6->A7), S4(A8->A9->A10), S1->S2->S3->S4.",
+      "compliance_condition": "All actions performed in the order specified by the task graph dependencies.",
+      "relevant_step_ids": ["S1", "S2", "S3", "S4"],
+      "relevant_action_ids": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
+      "evidence_specification": {
+        "evidence_types": ["interaction_history"],
+        "relevant_entities": ["action sequence"],
+        "observable_cues": ["execution sequence order"],
+        "temporal_scope": "procedure_history",
+        "verification_method": "state_machine",
+        "observability": "not_observable",
+        "current_support": "unsupported",
+        "limitations": ["Requires full procedure interaction history not available in current system."]
+      },
+      "detection_timing": "continuous",
+      "source_reference": "graph_dependency",
+      "limitations": ["System lacks persistent state tracking for complete procedure history."],
+      "compliance_question": "Was every action performed in the sequence dictated by the procedure dependencies?",
+      "applicability_condition": "always",
+      "source": "graph_dependency",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_missing_step",
+      "error_type": "missing_step",
+      "violation_condition": "Any action A1-A11 is omitted during the procedure.",
+      "compliance_condition": "All actions defined in the procedure are completed successfully.",
+      "relevant_step_ids": ["S1", "S2", "S3", "S4", "S5"],
+      "relevant_action_ids": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11"],
+      "evidence_specification": {
+        "evidence_types": ["interaction_history"],
+        "relevant_entities": ["all actions"],
+        "observable_cues": ["action completion log"],
+        "temporal_scope": "procedure_history",
+        "verification_method": "state_machine",
+        "observability": "not_observable",
+        "current_support": "unsupported",
+        "limitations": ["System cannot determine if a skipped action is an omission or just not yet performed."]
+      },
+      "detection_timing": "procedure_end",
+      "source_reference": "explicit_instruction",
+      "limitations": ["Cannot distinguish between missing step and unobserved action."],
+      "compliance_question": "Were all necessary procedural steps completed?",
+      "applicability_condition": "always",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_prohibit_contact",
+      "error_type": "technique_error",
+      "violation_condition": "Any direct contact or rubbing between tool/hand and burn during cleaning or application.",
+      "compliance_condition": "Burn site is treated without rubbing, pressure, or blister disruption.",
+      "relevant_step_ids": ["S3"],
+      "relevant_action_ids": ["A5", "A6", "A7"],
+      "evidence_specification": {
+        "evidence_types": ["rgb_video", "hand_object_contact"],
+        "relevant_entities": ["burn", "hand", "towel", "cotton swab"],
+        "observable_cues": ["contact intensity", "skin deformation"],
+        "temporal_scope": "during_action",
+        "verification_method": "VLM",
+        "observability": "partially_observable",
+        "current_support": "unsupported",
+        "limitations": ["System cannot measure contact force or detect subtle blister rupture."]
+      },
+      "detection_timing": "during_action",
+      "source_reference": "explicit_instruction",
+      "limitations": ["Cannot measure force; depends on visual estimation of movement."],
+      "compliance_question": "Was the burn treated gently without rubbing or breaking blisters?",
+      "applicability_condition": "during S3",
+      "source": "explicit_instruction",
+      "requires_expert_review": true
+    }
+  ],
+  "review_notes": ["No nurse_prior provided; expert_prior usage is forbidden.", "Procedure error criteria added per include_procedure_error_criteria=true.", "All evidence for global criteria is currently unsupported due to lack of action history/sensor data."]
+}

@@ -45,7 +45,7 @@ if ($health) {
     $cpuOnly = $config.PSObject.Properties.Name -contains 'num_gpu' -and $config.num_gpu -eq 0
     if ($health.provider -ne $Provider -or $health.model -ne $modelName -or
         ($Provider -eq 'ollama' -and [bool]$health.cpu_only -ne $cpuOnly)) {
-        throw 'A bridge with different settings is already running. Stop it in Tools > Home Care > VLM Backend, then start again.'
+        throw 'A bridge with different settings is already running. Stop it in AHC > VLM Backend, then start again.'
     }
     Write-Host "Bridge is already running at http://127.0.0.1:$port/verify."
     exit 0

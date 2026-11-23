@@ -1,0 +1,154 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "preconditions": [
+        {
+          "requirement_id": "A7_pre_1",
+          "condition": "The burn is rinsed with cool running water.",
+          "source": "graph_dependency",
+          "source_reference": "A6",
+          "requires_expert_review": false,
+          "vqa_question": "Is the burn rinsed with cool running water?",
+          "evidence_specification": {
+            "evidence_types": ["interaction_history"],
+            "relevant_entities": ["burn"],
+            "observable_cues": ["rinse status"],
+            "temporal_scope": "procedure_history",
+            "verification_method": "state_machine",
+            "observability": "requires_external_sensor",
+            "current_support": "unsupported",
+            "limitations": ["System lacks history tracking to verify preceding Rinsing action."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A7_post_1",
+          "condition": "The skin is patted dry with a clean towel.",
+          "source": "explicit_instruction",
+          "source_reference": "pat the skin dry with a clean towel",
+          "requires_expert_review": false,
+          "vqa_question": "Is the skin patted dry with a clean towel?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity", "hand_object_contact"],
+            "relevant_entities": ["skin", "towel", "hands"],
+            "observable_cues": ["towel contacting skin", "skin appearance"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": ["Visual observation cannot confirm the specific 'pat' technique or the dryness state."]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A7_err_1",
+          "error_type": "technique_error",
+          "violation_condition": "User rubs the burn during drying.",
+          "compliance_condition": "User avoids rubbing the burn.",
+          "compliance_question": "Is the user rubbing the burn instead of patting it?",
+          "applicability_condition": "during drying action",
+          "related_requirement_ids": [],
+          "source": "explicit_instruction",
+          "source_reference": "Do not rub the burn",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": ["rgb_video"],
+            "relevant_entities": ["skin", "towel", "hands"],
+            "observable_cues": ["rubbing motion"],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": ["Lack of continuous video to verify dynamic rubbing motion."]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "medium",
+      "skip_impact": "Incomplete drying may affect subsequent application of ointment and dressing.",
+      "review_notes": ["Definition of 'pat' is missing and requires expert review.", "Cannot differentiate 'patting' from 'rubbing' without temporal video data."]
+    },
+    {
+      "action_id": "A8",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A8_post_1",
+          "condition": "A thin layer of burn ointment is applied to the burn using a cotton swab.",
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": true,
+          "vqa_question": "Is there a thin layer of burn ointment on the burn applied by a cotton swab?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["burn", "burn ointment", "cotton swab"],
+            "observable_cues": ["ointment presence", "swab proximity"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": ["Ointment layer thickness is subjective and not clinically definable; requires expert review.", "Visual state does not confirm the use of a cotton swab."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "high",
+      "skip_impact": "Missing medication application prevents intended therapeutic outcome.",
+      "review_notes": ["'Thin layer' is not clinically defined.", "Cannot verify the use of a cotton swab from static after-action images."]
+    },
+    {
+      "action_id": "A9",
+      "preconditions": [
+        {
+          "requirement_id": "A9_pre_1",
+          "condition": "Ointment is applied to the burn.",
+          "source": "graph_dependency",
+          "source_reference": "A8",
+          "requires_expert_review": false,
+          "vqa_question": "Has the ointment been applied?",
+          "evidence_specification": {
+            "evidence_types": ["interaction_history"],
+            "relevant_entities": ["burn", "burn ointment"],
+            "observable_cues": ["ointment presence"],
+            "temporal_scope": "procedure_history",
+            "verification_method": "state_machine",
+            "observability": "requires_external_sensor",
+            "current_support": "unsupported",
+            "limitations": ["System lacks history tracking."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A9_post_1",
+          "condition": "The burn is covered with a non-stick pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": false,
+          "vqa_question": "Is the burn covered with a non-stick pad?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity", "object_mask"],
+            "relevant_entities": ["burn", "non-stick pad"],
+            "observable_cues": ["pad covering burn"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": ["Cannot confirm the 'non-stick' property from visual appearance."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "high",
+      "skip_impact": "Failure to cover the burn exposes it to contamination.",
+      "review_notes": ["Cannot confirm 'non-stick' property."]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": ["Global cross-action prohibitions (e.g., Do not break blisters, Keep tape off burned skin) are identified in instructions but are global in nature. These will be added to the procedure-level global error criteria list in future calls where include_procedure_error_criteria=true."]
+}

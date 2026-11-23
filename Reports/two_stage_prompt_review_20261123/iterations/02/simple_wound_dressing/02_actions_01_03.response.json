@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4847,
+    "total_input_tokens": 3500,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3500
+      }
+    ],
+    "total_cached_tokens": 1937,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1937
+      }
+    ],
+    "total_output_tokens": 1347,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3500
+  },
+  "created": "2026-11-23T10:27:33Z",
+  "updated": "2026-11-23T10:27:33Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRPdX55BQIoiV7c2Q6jXUqBeznVZaRsklt1jseCHUuJt7a/cxb4NOWY4+4m93I4fcbDR9Trmh5j1FfUjCfbsos5Rgdy5waR0vu189nCZtdNRWxb3ZXR7dS8MlAwsRQaFy3DrJFehs2BGTOL9Zue893T+VeflZVNnCKqGlPilWRLyi9CRYs+31dSCiOVIMQX7gOw8eXSy6j8UVYs=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A1_POST1\",\n          \"condition\": \"Hands appear clean.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Wash your hands\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Do the user's hands appear clean after the washing action?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"rgb_frame\"\n            ],\n            \"relevant_entities\": [\n              \"hands\"\n            ],\n            \"observable_cues\": [\n              \"visual cleanliness of skin surface\"\n            ],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"partial\",\n            \"limitations\": [\n              \"Visual appearance is not evidence of microbial cleanliness.\",\n              \"Requires definition of 'clean' in a clinical context.\"\n            ]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [\n        \"Hands under water or applying soap\",\n        \"Visible rubbing of hands\"\n      ],\n      \"skip_risk\": \"high\",\n      \"skip_impact\": \"Compromises aseptic technique for subsequent steps.\",\n      \"review_notes\": [\n        \"Cleanliness is not objectively verifiable by standard RGB imaging.\"\n      ]\n    },\n    {\n      \"action_id\": \"A2\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A2_PRE1\",\n          \"condition\": \"Hands are clean.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A1\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Are the hands clean prior to donning gloves?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"interaction_history\"\n            ],\n            \"relevant_entities\": [\n              \"hands\"\n            ],\n            \"observable_cues\": [\n              \"A1 completion\"\n            ],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"state_machine\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\n              \"No capability to track action history or ensure state persistence.\"\n            ]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_POST1\",\n          \"condition\": \"Clean gloves are worn on both hands.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Are clean gloves visible on both hands?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"rgb_frame\",\n              \"object_identity\"\n            ],\n            \"relevant_entities\": [\n              \"hands\",\n              \"gloves\"\n            ],\n            \"observable_cues\": [\n              \"gloves covering both hands\"\n            ],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\n              \"Cannot confirm sterility or 'cleanliness' of gloves from appearance.\"\n            ]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A2_ERR1\",\n          \"error_type\": \"wrong_object\",\n          \"violation_condition\": \"Gloves are not worn or wrong type of object worn on hands.\",\n          \"compliance_condition\": \"Hands are covered with gloves.\",\n          \"compliance_question\": \"Are gloves present on both hands?\",\n          \"applicability_condition\": \"Action A2 is attempted.\",\n          \"related_requirement_ids\": [\n            \"A2_POST1\"\n          ],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false,\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"rgb_frame\",\n              \"object_identity\"\n            ],\n            \"relevant_entities\": [\n              \"hands\",\n              \"gloves\"\n            ],\n            \"observable_cues\": [\n              \"glove presence on hands\"\n            ],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": []\n          }\n        }\n      ],\n      \"in_progress_criteria\": [\n        \"Hands interacting with glove material\"\n      ],\n      \"skip_risk\": \"high\",\n      \"skip_impact\": \"Violation of aseptic practice.\",\n      \"review_notes\": []\n    },\n    {\n      \"action_id\": \"A3\",\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [\n        \"User gaze directed toward the cut on the skin pad\"\n      ],\n      \"skip_risk\": \"medium\",\n      \"skip_impact\": \"Necessary for identifying potential infection signs.\",\n      \"review_notes\": [\n        \"Cannot verify 'looking' intent; only verify gaze direction if supported by capabilities, which is not.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

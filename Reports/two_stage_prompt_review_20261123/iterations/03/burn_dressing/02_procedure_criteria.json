@@ -1,0 +1,191 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [
+    {
+      "criterion_id": "P_order_flow",
+      "error_type": "order_error",
+      "violation_condition": "An action was attempted before its required dependency: (A1->A2), (A2->A3), (A3->A4), (A3->A5), (A5->A6), (A6->A7), (A8->A9), (A9->A10), (A10->A11).",
+      "compliance_condition": "All steps were executed sequentially following their defined dependencies in the task graph.",
+      "relevant_step_ids": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "relevant_action_ids": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10",
+        "A11"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history"
+        ],
+        "relevant_entities": [
+          "user_actions"
+        ],
+        "observable_cues": [
+          "execution_order"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "state_machine",
+        "observability": "not_observable",
+        "current_support": "unsupported",
+        "limitations": [
+          "System does not have access to complete temporal action history or state tracking."
+        ]
+      },
+      "detection_timing": "continuous",
+      "source_reference": "task_graph",
+      "limitations": [
+        "Requires full procedure state tracking which is not available in the current system capabilities."
+      ],
+      "compliance_question": "Was every action performed after its prerequisite dependencies were met?",
+      "applicability_condition": "Always applicable",
+      "source": "graph_dependency",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_prohibit_rubbing",
+      "error_type": "technique_error",
+      "violation_condition": "The burn was rubbed during drying.",
+      "compliance_condition": "The skin was patted dry with a clean towel without rubbing.",
+      "relevant_step_ids": [
+        "S2"
+      ],
+      "relevant_action_ids": [
+        "A7"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "rgb_video",
+          "relative_motion"
+        ],
+        "relevant_entities": [
+          "clean towel",
+          "skin",
+          "burn"
+        ],
+        "observable_cues": [
+          "towel motion"
+        ],
+        "temporal_scope": "during_action",
+        "verification_method": "not_verifiable",
+        "observability": "requires_external_sensor",
+        "current_support": "unsupported",
+        "limitations": [
+          "Cannot distinguish between 'patting' and 'rubbing' using periodic RGB snapshots."
+        ]
+      },
+      "detection_timing": "during_action",
+      "source_reference": "Do not rub the burn",
+      "limitations": [
+        "Continuous video is required to distinguish action techniques."
+      ],
+      "compliance_question": "Did the user pat the skin dry instead of rubbing it?",
+      "applicability_condition": "A7",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_prohibit_blister_break",
+      "error_type": "technique_error",
+      "violation_condition": "Any blisters on the burn were broken during cleaning or dressing.",
+      "compliance_condition": "Blisters remain intact throughout the procedure.",
+      "relevant_step_ids": [
+        "S2",
+        "S3"
+      ],
+      "relevant_action_ids": [
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "rgb_frame"
+        ],
+        "relevant_entities": [
+          "burn",
+          "blisters"
+        ],
+        "observable_cues": [
+          "blister appearance"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "VLM",
+        "observability": "visually_observable",
+        "current_support": "partial",
+        "limitations": [
+          "Occlusion or low resolution may prevent accurate assessment of blister integrity."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "do not break any blisters",
+      "limitations": [
+        "Requires comparison of blister state across the entire procedure."
+      ],
+      "compliance_question": "Are all blisters still intact after the dressing application?",
+      "applicability_condition": "Always applicable",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_tape_placement",
+      "error_type": "spatial_error",
+      "violation_condition": "Medical tape is touching the burned skin.",
+      "compliance_condition": "Medical tape is used only on the gauze and not touching the burned skin.",
+      "relevant_step_ids": [
+        "S3"
+      ],
+      "relevant_action_ids": [
+        "A11"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "rgb_frame",
+          "object_mask"
+        ],
+        "relevant_entities": [
+          "medical tape",
+          "burn"
+        ],
+        "observable_cues": [
+          "tape position"
+        ],
+        "temporal_scope": "after_action",
+        "verification_method": "VLM",
+        "observability": "visually_observable",
+        "current_support": "partial",
+        "limitations": [
+          "Occlusion by the dressing may prevent clear visibility of the tape's interface with skin."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "keeping the tape off the burned skin",
+      "limitations": [
+        "Tape placement beneath the outer gauze layer cannot be verified."
+      ],
+      "compliance_question": "Is the medical tape secured only on the gauze roll and not on the burned skin?",
+      "applicability_condition": "A11",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    }
+  ],
+  "review_notes": [
+    "The requirement to 'gently' remove the dressing and 'loosely' wrap the gauze are qualitative and require expert review to establish operational thresholds.",
+    "Detection of 'clean' materials (towel, water, gloves) is limited by visual classification and cannot guarantee sterility."
+  ]
+}

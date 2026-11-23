@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4199,
+    "total_input_tokens": 3332,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3332
+      }
+    ],
+    "total_cached_tokens": 1887,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1887
+      }
+    ],
+    "total_output_tokens": 867,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3332
+  },
+  "created": "2026-11-23T10:38:31Z",
+  "updated": "2026-11-23T10:38:31Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRM29oxUncWY1uK8k/mU75PUh2LaTzs65mt7pTNqQDTmXZFojYv/u2TwxkKCJpLFvn1oYrkNwMBs4XCKbE0s2jOp8+4oEfkTuq5x3qzVW7yV27iwClN65gJnvWYgrGNzS2bDq1/Wj9NHD5P2O77N/yjjsoF6IVDxRIQMq/ZFAFaqB1SwYRzHy8+DQA46CgJId6sZ2rWQxMV0Wng=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A9\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A9_P1\",\n          \"condition\": \"The burn is covered with a non-stick pad.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A8\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the non-stick pad visible over the burn?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\", \"spatial_position\"],\n            \"relevant_entities\": [\"burn\", \"non-stick pad\"],\n            \"observable_cues\": [\"pad covering the burn area\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Occlusion may prevent confirmation of complete pad coverage.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A9_C1\",\n          \"condition\": \"The burn is wrapped with a gauze roll.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"wrap it loosely with a gauze roll\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is a gauze roll wrapped around the dressing area?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\", \"spatial_position\"],\n            \"relevant_entities\": [\"gauze roll\", \"burn\"],\n            \"observable_cues\": [\"gauze roll wraps present over the dressing area\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Visual observation cannot confirm the 'loosely' constraint.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A9_E1\",\n          \"error_type\": \"technique_error\",\n          \"violation_condition\": \"The gauze is wrapped tightly.\",\n          \"compliance_condition\": \"The gauze is wrapped loosely.\",\n          \"compliance_question\": \"Is the gauze wrapped without excessive tension?\",\n          \"applicability_condition\": \"Gauze roll is present.\",\n          \"related_requirement_ids\": [\"A9_C1\"],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"wrap it loosely with a gauze roll\",\n          \"requires_expert_review\": true,\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"gauze roll\"],\n            \"observable_cues\": [\"apparent tension of the wrap\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"not_verifiable\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"Visual evidence from a static frame cannot determine tightness/tension.\"]\n          }\n        }\n      ],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"none\",\n      \"skip_impact\": \"Leaving the burn uncovered or failing to secure the dressing increases risk of exposure or displacement.\",\n      \"review_notes\": [\"The 'loosely' constraint requires expert assessment as it cannot be verified via VLM on static imagery.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"Action A9 updated with preconditions and error criteria based on requested action ID.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

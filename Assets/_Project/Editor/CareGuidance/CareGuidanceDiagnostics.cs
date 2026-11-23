@@ -10,7 +10,7 @@ namespace HomeCare.Guidance.EditorTools
         public static string Runtime()
         {
             var sb = new StringBuilder();
-            foreach (var es in Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None))
+            foreach (var es in Object.FindObjectsByType<EventSystem>())
                 sb.Append("EventSystem ").Append(es.name).Append(" [")
                   .Append(string.Join(",", es.GetComponents<BaseInputModule>().Select(m => m.GetType().Name + (m.enabled ? "" : "(off)"))))
                   .Append("]\n");
@@ -25,7 +25,7 @@ namespace HomeCare.Guidance.EditorTools
                     sb.Append(h.Side).Append(" tracked=").Append(h.IsTracked).Append(" sim=").Append(h.IsSimulated)
                       .Append(" pinch=").Append(h.IsPinching).Append(" tip=").Append(h.IndexTip).Append('\n');
             else sb.Append("HandTracking.Instance=null\n");
-            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Exclude))
                 if (t.parent == null) sb.Append("root: ").Append(t.name).Append(" (").Append(t.gameObject.scene.name).Append(")\n");
             return sb.ToString();
         }

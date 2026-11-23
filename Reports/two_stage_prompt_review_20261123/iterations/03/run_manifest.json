@@ -1,0 +1,189 @@
+{
+  "experiment": "two-stage prompt revision 03; actual Gemini responses only",
+  "created_utc": "2026-11-23T10:31:50.671736+00:00",
+  "calls": [
+    {
+      "case": "burn_dressing",
+      "phase": "01_task_graph",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 5.605,
+      "usage": {
+        "total_tokens": 3256,
+        "total_input_tokens": 1174,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1174
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 2082,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 1174
+      },
+      "request_sha256": "3bae6843ab0014651f879e961562dbf9834d6a4e00693ef1af2e9cb5883ee28a",
+      "output_sha256": "51a99f392e5dd18b29190ccc6428f4799cbbec4f19dcc0a4033d39e195fb1ecb"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_actions_01_03",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 7.1,
+      "usage": {
+        "total_tokens": 5505,
+        "total_input_tokens": 4081,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4081
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 1424,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4081
+      },
+      "request_sha256": "33ac46631c5e961db4b0cd0ea1022eaa1c2a74ad5c5cbbf3c5fdcc9be390a262",
+      "output_sha256": "ad4b279d3d8ea4c51556d02bf0e949175d873440db396b49c682a8aa00242871"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_actions_04_06",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 9.079,
+      "usage": {
+        "total_tokens": 5632,
+        "total_input_tokens": 4081,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4081
+          }
+        ],
+        "total_cached_tokens": 2094,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 2094
+          }
+        ],
+        "total_output_tokens": 1551,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4081
+      },
+      "request_sha256": "1f28eddc990fe71b033b9b3479edc1cb153c81e5dad61ae9ae3dfb7089777641",
+      "output_sha256": "8d5f10ef8d0d2dd265b0343154d2839c4dc2f914838d557c91cc137898e89750"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_actions_07_09",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 6.349,
+      "usage": {
+        "total_tokens": 5868,
+        "total_input_tokens": 4081,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4081
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 1787,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4081
+      },
+      "request_sha256": "d2e28438341afb601d17cd1cf7b4cf16daf0ad3b128bf9b88cc85aa47514a49b",
+      "output_sha256": "ec6f037bee1d2fa12b07d9e5e765c760d4773002a594a2a25510a5112e813aed"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_actions_10_12",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 9.042,
+      "usage": {
+        "total_tokens": 6159,
+        "total_input_tokens": 4084,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4084
+          }
+        ],
+        "total_cached_tokens": 2095,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 2095
+          }
+        ],
+        "total_output_tokens": 2075,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4084
+      },
+      "request_sha256": "c2ea23034af6873785cf6dc57190e4281c76e2077e5d7525b3a9afa3b6683f5f",
+      "output_sha256": "005559f10f7f0eff8c99a8b69cea39ab9379fd7ac6de617ddcd1f42bdfee70ab"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_procedure_criteria",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 6.929,
+      "usage": {
+        "total_tokens": 5569,
+        "total_input_tokens": 4070,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4070
+          }
+        ],
+        "total_cached_tokens": 2091,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 2091
+          }
+        ],
+        "total_output_tokens": 1499,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4070
+      },
+      "request_sha256": "f4475c16a50ea84eef34e14cf6f5796c40180e1b039a6329f89c85e6208b2c3d",
+      "output_sha256": "9452263ceb0f685fc7a77082e6c4b041ed1aa795bc0f2a80f1f909a911264305"
+    }
+  ],
+  "cases": {},
+  "protected_file_sha256": {
+    "Assets/_Project/Runtime/Procedures/RequirementsPrompts.cs": "1d9d18dd8e96bf221438ffab6c0f3db2fb8b9f9883b6f55c5f883d383f3e0cc1",
+    "Assets/_Project/Runtime/Procedures/RequirementsJson.cs": "30f8f24c526f6de01ec29a44b3502c308cd6c7c5d657d7667dcbc6f1b40aff0c",
+    "Assets/_Project/Runtime/Procedures/ProcedureRequirements.cs": "5a71134a14b3fd7c43b3db15c905c36222219a49145001510d3719bddb91b35a",
+    "Assets/_Project/Runtime/Procedures/ProcedureSession.cs": "c4c2bf99ecae3c390fdb0443fa3f7045fb986d78204ad62125e716f236ea7a53",
+    "Assets/_Project/Content/Procedures/burn_care_procedure.json": "043d87eef136d7cd247f914a9a63076d5a081689a3830556d18c0ca19aba8a04",
+    "Assets/_Project/Content/Procedures/wound_dressing_procedure.json": "5216a02f4482c4b1504bb47e4cd47e1f188475421e8e6eadeefe4924ffa93573"
+  },
+  "prompt_sha256": {
+    "prompt_1": "752a74d005d3c3cbfc829b954b5e93a5025c797d495c5c4c4cdafb73af79b6e3",
+    "prompt_2": "f4b134fb874fe764c0623125251e4ff74162800f9ac56bbeafcd1083a9d71aaa"
+  },
+  "source_policy": "Only AHC case instruction; old rubrics, supplies, completion_note and demo data excluded.",
+  "nurse_prior_supplied": false,
+  "last_failure": {
+    "utc": "2026-11-23T10:32:34.993821+00:00",
+    "case": "burn_dressing",
+    "message": "P_order_flow: graph source reference does not identify graph IDs"
+  },
+  "protected_files_unchanged": true
+}

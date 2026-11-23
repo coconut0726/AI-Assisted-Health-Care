@@ -1,0 +1,798 @@
+{
+  "experiment": "Revision 5: Gemini responses with recorded reviewer/validator feedback; not single-pass stability evidence",
+  "created_utc": "2026-11-23T10:44:24.582599+00:00",
+  "calls": [
+    {
+      "case": "burn_dressing",
+      "phase": "01_graph_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 6.306,
+      "usage": {
+        "total_tokens": 5089,
+        "total_input_tokens": 2963,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 2963
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 2126,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 2963
+      },
+      "request_sha256": "0fb62effd07b4e4ff7f8216aeadf278a866ace6495201229492d63c37cee47c9",
+      "output_sha256": "f246d7b7c96a38bad213db06edcadca4220a30dff25bb9a8e691126f0b40661a"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "01_graph_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 5.355,
+      "usage": {
+        "total_tokens": 3877,
+        "total_input_tokens": 2295,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 2295
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 1582,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 2295
+      },
+      "request_sha256": "0dff3efce8dd579982c117c63dbf4c304b32e5b3f6c9ab5a0a9dbf4ac8ecdcab",
+      "output_sha256": "33b9894ccae2a7757b13aeeaf550142dff80484db0f90d89b0562f60eef97680"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "01_graph_attempt_02",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 9.714,
+      "usage": {
+        "total_tokens": 5394,
+        "total_input_tokens": 2964,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 2964
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 2430,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 2964
+      },
+      "request_sha256": "17a056863a5702beaf5b1ac7e514d4a2fba33b4ecd9ec279a371fc2bd7d3b709",
+      "output_sha256": "960af25d8c59f2beeb510bb832c5dc8d516b805a22c8211d997b139c75385f2f"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "01_graph_attempt_03",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 6.514,
+      "usage": {
+        "total_tokens": 5367,
+        "total_input_tokens": 2934,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 2934
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 2433,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 2934
+      },
+      "request_sha256": "f62175f0b63c1f368e6da79aef64e4647c4f92a0b9e44fcb939ed20f24756647",
+      "output_sha256": "33a9802d8c43ee9256fb6e71d6cbf16e92ef3cfa6a9cc4ba20f88f4d235a61b5"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A1_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.428,
+      "usage": {
+        "total_tokens": 5028,
+        "total_input_tokens": 4243,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4243
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 785,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4243
+      },
+      "request_sha256": "c5f133bb3cf0828262bcfc339d67896baf755d7f62cb0db91a8810860a5de27f",
+      "output_sha256": "9769c7d19bfb7004d0e11d416f44e0effb2078cea7d77cda4639d59862dd8554"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A2_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 3.742,
+      "usage": {
+        "total_tokens": 5228,
+        "total_input_tokens": 4652,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4652
+          }
+        ],
+        "total_cached_tokens": 3342,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3342
+          }
+        ],
+        "total_output_tokens": 576,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4652
+      },
+      "request_sha256": "9fc0a13792df5b9583d844d4f3ebc064fb8831fd2fe698279a94bf134c9d762f",
+      "output_sha256": "931c4f76b357a11567ed45edb417d63e8a867161ffbc9f333bffe7e12d523574"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A3_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.498,
+      "usage": {
+        "total_tokens": 5411,
+        "total_input_tokens": 4476,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4476
+          }
+        ],
+        "total_cached_tokens": 3283,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3283
+          }
+        ],
+        "total_output_tokens": 935,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4476
+      },
+      "request_sha256": "f64043e9976df61b30c50516e68ae2984d822773cf6836d46a7ba296fac24a16",
+      "output_sha256": "57af1218783578dbf6500ee9d4db6e5ffc222e2b23619016c6a0f8214dd12b8e"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A4_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.209,
+      "usage": {
+        "total_tokens": 5358,
+        "total_input_tokens": 4650,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4650
+          }
+        ],
+        "total_cached_tokens": 3341,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3341
+          }
+        ],
+        "total_output_tokens": 708,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4650
+      },
+      "request_sha256": "433b5f5b17665a88d7af930b236d0eb4b4446b79cdf75648748c2d1dda16058a",
+      "output_sha256": "8f33649cf08f9b8926a18c9dc8ea79df63399e2c6a997d226970dc26bd4117e4"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A5_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.634,
+      "usage": {
+        "total_tokens": 5616,
+        "total_input_tokens": 4493,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4493
+          }
+        ],
+        "total_cached_tokens": 3289,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3289
+          }
+        ],
+        "total_output_tokens": 1123,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4493
+      },
+      "request_sha256": "94b59e1d92e553af4fbc8e92f91d44b44fdf7e0e656e01a48e1320c9aa7c2fba",
+      "output_sha256": "661c6d2cce65f6e789ee2c0711c1abbdf84687c6050b51eac194a7fd74a3a819"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A6_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.649,
+      "usage": {
+        "total_tokens": 5785,
+        "total_input_tokens": 4676,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4676
+          }
+        ],
+        "total_cached_tokens": 3349,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3349
+          }
+        ],
+        "total_output_tokens": 1109,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4676
+      },
+      "request_sha256": "885dc12e337e62b1e5b03b595c5b39a311254bddb88808dddfd04afd6ad49c3f",
+      "output_sha256": "3cffc7e2b0edabdd9c679020149f8062afaee8eab638bef431b090331fcc564e"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A7_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.475,
+      "usage": {
+        "total_tokens": 5692,
+        "total_input_tokens": 4748,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4748
+          }
+        ],
+        "total_cached_tokens": 3373,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3373
+          }
+        ],
+        "total_output_tokens": 944,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4748
+      },
+      "request_sha256": "f8cca953ccdf31d4db30cf1169248bec04d8a74d74aee662534044d26f603977",
+      "output_sha256": "f9f239a7aab5abf2d806a8891bf54f5f5bbbfac48235cf5b47efaf0a82e4ff9c"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A8_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.425,
+      "usage": {
+        "total_tokens": 5653,
+        "total_input_tokens": 4658,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4658
+          }
+        ],
+        "total_cached_tokens": 3344,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3344
+          }
+        ],
+        "total_output_tokens": 995,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4658
+      },
+      "request_sha256": "467dc550bfde12f9aecbc9b7952d845bbf9060919a082e65ef46afdf2eea38d9",
+      "output_sha256": "4e62a3cc81f263db0b1bb254ff745940b7f9e26a6eddcd5622c9b613fddc662a"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A9_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 3.831,
+      "usage": {
+        "total_tokens": 5394,
+        "total_input_tokens": 4668,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4668
+          }
+        ],
+        "total_cached_tokens": 3347,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3347
+          }
+        ],
+        "total_output_tokens": 726,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4668
+      },
+      "request_sha256": "52aa78a92ef570ec6d1f301352d26a3957168aa1a4253c713383138a89af44ef",
+      "output_sha256": "4e83aead98bd0f67a85dec78781e616dfdf2ec759f97412eb10c3b14e304d9e0"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A10_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 3.994,
+      "usage": {
+        "total_tokens": 5715,
+        "total_input_tokens": 4841,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4841
+          }
+        ],
+        "total_cached_tokens": 3402,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3402
+          }
+        ],
+        "total_output_tokens": 874,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4841
+      },
+      "request_sha256": "acdb4c6ca434c1747ca1ccafb472094068c30c0b60d2b9060a5c901b61db5e82",
+      "output_sha256": "a8c92e83e195a5abb632f9b675daf6441ea9a8d55f810521e54120efce57eb30"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A11_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.023,
+      "usage": {
+        "total_tokens": 5327,
+        "total_input_tokens": 4593,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4593
+          }
+        ],
+        "total_cached_tokens": 3322,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3322
+          }
+        ],
+        "total_output_tokens": 734,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 4593
+      },
+      "request_sha256": "5d8f5d48cb983b13be0bc953a2d498e5183f63198ac513f47334a98c70794282",
+      "output_sha256": "42691482a00a2f1a53474be768d5078c8c3b58eee14177c58092647df9d8c409"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_global_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 6.022,
+      "usage": {
+        "total_tokens": 6741,
+        "total_input_tokens": 5140,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 5140
+          }
+        ],
+        "total_cached_tokens": 3493,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3493
+          }
+        ],
+        "total_output_tokens": 1601,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 5140
+      },
+      "request_sha256": "6f02feb84be65706e06b1eb8854c1d102f8380ce43c90eccbd90d958a6a22cab",
+      "output_sha256": "c61db168f85ec7657dcaa90028985fe31244a07f76863cc6bde793509903237a"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A1_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 3.323,
+      "usage": {
+        "total_tokens": 3622,
+        "total_input_tokens": 3246,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3246
+          }
+        ],
+        "total_cached_tokens": 1860,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1860
+          }
+        ],
+        "total_output_tokens": 376,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3246
+      },
+      "request_sha256": "5b4358d047247ca72eadf82121ce5ea9f3958e79c693e493a1cfca0b82b37baa",
+      "output_sha256": "748aa352ae57bea772bc57c7ccafd0ba51844bdd5cf74ec3b1b17124a7fe8ea3"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A2_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.053,
+      "usage": {
+        "total_tokens": 4115,
+        "total_input_tokens": 3263,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3263
+          }
+        ],
+        "total_cached_tokens": 1865,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1865
+          }
+        ],
+        "total_output_tokens": 852,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3263
+      },
+      "request_sha256": "ae66162e2a20cdd29ec49cf1a90e0068cbd61241442cb6428e515cdefcec761b",
+      "output_sha256": "d325ec2f24ff9d0f8e0297d81487ec0c53fbfe896f2d90dd343a6f332743abf6"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A3_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 3.687,
+      "usage": {
+        "total_tokens": 3988,
+        "total_input_tokens": 3294,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3294
+          }
+        ],
+        "total_cached_tokens": 1875,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1875
+          }
+        ],
+        "total_output_tokens": 694,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3294
+      },
+      "request_sha256": "1cfa022e0624fb9222e6c50416a3479f30e9878b80c76563387229c3ca3584c5",
+      "output_sha256": "ccade55faa8d3a8bb6020f79845b6e7a027a8bf121d27c85c7bbb4d1ff0f0ba2"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A4_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.618,
+      "usage": {
+        "total_tokens": 4217,
+        "total_input_tokens": 3289,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3289
+          }
+        ],
+        "total_cached_tokens": 1873,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1873
+          }
+        ],
+        "total_output_tokens": 928,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3289
+      },
+      "request_sha256": "6697973f693e6ac0adb23c7ca0c6404685c91583b7f7ff06e0c5f22d47dd6807",
+      "output_sha256": "b2923a4440777ff789185a5a65aab0cc42aa16549177adcf0878b57a8547c7dc"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A5_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.275,
+      "usage": {
+        "total_tokens": 4126,
+        "total_input_tokens": 3259,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3259
+          }
+        ],
+        "total_cached_tokens": 1864,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1864
+          }
+        ],
+        "total_output_tokens": 867,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3259
+      },
+      "request_sha256": "f29fb30fa96a5a25ec6a2bd7055c85f6a98d7791802970e766863aa33031ab4e",
+      "output_sha256": "a35f286adee83eab7af57c13f0c43184ec1856f83c77d1fe1d82b3f32cd61546"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A6_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.259,
+      "usage": {
+        "total_tokens": 4057,
+        "total_input_tokens": 3254,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3254
+          }
+        ],
+        "total_cached_tokens": 1863,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1863
+          }
+        ],
+        "total_output_tokens": 803,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3254
+      },
+      "request_sha256": "4494512b55213fd928bb0d8daf6f2c2b3b9b89b40105dfc9e7e521299bb549f1",
+      "output_sha256": "ec42c46696ec492b50dfa281f7f87e0559ad8362d6d5e4126e66fb1b5a2dfd66"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A7_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.05,
+      "usage": {
+        "total_tokens": 4096,
+        "total_input_tokens": 3243,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3243
+          }
+        ],
+        "total_cached_tokens": 1859,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1859
+          }
+        ],
+        "total_output_tokens": 853,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3243
+      },
+      "request_sha256": "4e7bade8292f868019a49a09dba4e406697693a61fddfa93f4a372c689f322fa",
+      "output_sha256": "827f35c51ac415ce70b588ef2ee665506b398c6a004d8c8faa3240b471cb78ef"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_A8_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 4.652,
+      "usage": {
+        "total_tokens": 4091,
+        "total_input_tokens": 3258,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3258
+          }
+        ],
+        "total_cached_tokens": 1864,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1864
+          }
+        ],
+        "total_output_tokens": 833,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3258
+      },
+      "request_sha256": "8f4b586bd52d3dc574e017809a3b60fd1369a7034e60b0a26250585f37cc937f",
+      "output_sha256": "841174855707b200c8b06926e7ee97d76cb65d676beeddc8b02ed76507878271"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "02_global_attempt_01",
+      "provider": "Gemini",
+      "model": "gemini-3.1-flash-lite",
+      "elapsed_seconds": 9.555,
+      "usage": {
+        "total_tokens": 6587,
+        "total_input_tokens": 3292,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 3292
+          }
+        ],
+        "total_cached_tokens": 1874,
+        "cached_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1874
+          }
+        ],
+        "total_output_tokens": 3295,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 0,
+        "initial_input_tokens": 3292
+      },
+      "request_sha256": "8de884ae7d1230975fe4c1a90e818c342d100a81291380ebbcdeddff4fbb6de3",
+      "output_sha256": "0b3619dd6b3d68c922ab94c79087c868d5477c9eaea417297ddb78db221bb2ba"
+    },
+    {
+      "case": "burn_dressing",
+      "phase": "02_A2_attempt_02",
+      "provider": "Gemini",
+      "model": "gemini-3-flash-preview",
+      "elapsed_seconds": 22.46,
+      "usage": {
+        "total_tokens": 9600,
+        "total_input_tokens": 4442,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 4442
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 1342,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 3816,
+        "initial_input_tokens": 4442
+      },
+      "request_sha256": "197ecc166ed4c616a4a1243bcfbb914da442aca8468406856cca3cb901bd45b8",
+      "output_sha256": "a2a03fcd08fd386a201b0ef389dc60bda5bc2ba7e17d035e7505e548b9cdc8e8"
+    }
+  ],
+  "cases": {
+    "burn_dressing": {
+      "graph_status": "awaiting_semantic_review",
+      "action_selections": {
+        "A1": "02_A1_attempt_01",
+        "A2": "02_A2_attempt_02",
+        "A3": "02_A3_attempt_01",
+        "A4": "02_A4_attempt_01",
+        "A5": "02_A5_attempt_01",
+        "A6": "02_A6_attempt_01",
+        "A7": "02_A7_attempt_01",
+        "A8": "02_A8_attempt_01",
+        "A9": "02_A9_attempt_01",
+        "A10": "02_A10_attempt_01",
+        "A11": "02_A11_attempt_01",
+        "global": "02_global_attempt_01"
+      },
+      "verification_status": "awaiting_semantic_review"
+    },
+    "simple_wound_dressing": {
+      "graph_status": "awaiting_semantic_review",
+      "action_selections": {
+        "A1": "02_A1_attempt_01",
+        "A2": "02_A2_attempt_01",
+        "A3": "02_A3_attempt_01",
+        "A4": "02_A4_attempt_01",
+        "A5": "02_A5_attempt_01",
+        "A6": "02_A6_attempt_01",
+        "A7": "02_A7_attempt_01",
+        "A8": "02_A8_attempt_01"
+      },
+      "verification_status": "awaiting_semantic_review"
+    }
+  },
+  "protected_file_sha256": {
+    "Assets/_Project/Runtime/Procedures/RequirementsPrompts.cs": "09655abba1a75fe107c6544f9943cd9d475357d64c1d15843c9899e0e86fb3e7",
+    "Assets/_Project/Runtime/Procedures/RequirementsJson.cs": "30f8f24c526f6de01ec29a44b3502c308cd6c7c5d657d7667dcbc6f1b40aff0c",
+    "Assets/_Project/Runtime/Procedures/ProcedureRequirements.cs": "5a71134a14b3fd7c43b3db15c905c36222219a49145001510d3719bddb91b35a",
+    "Assets/_Project/Runtime/Procedures/ProcedureSession.cs": "c4c2bf99ecae3c390fdb0443fa3f7045fb986d78204ad62125e716f236ea7a53",
+    "Assets/_Project/Content/Procedures/burn_care_procedure.json": "043d87eef136d7cd247f914a9a63076d5a081689a3830556d18c0ca19aba8a04",
+    "Assets/_Project/Content/Procedures/wound_dressing_procedure.json": "5216a02f4482c4b1504bb47e4cd47e1f188475421e8e6eadeefe4924ffa93573"
+  },
+  "prompt_sha256": {
+    "01_task_graph.txt": "e3d405aad7d9c908f83371c421328f14a9e7ac496493b73b0d75b833ccdcc3ad",
+    "02_verification_spec.txt": "1fa0c88d1b7c08d4d74e9be70a0dfbecb5117f1c311a16da5dd9b235e04ace97"
+  },
+  "source_policy": "Only source instruction; empty nurse_prior. Earlier outputs are rejected candidates, not new authority.",
+  "protected_files_unchanged": true
+}

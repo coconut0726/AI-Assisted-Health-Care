@@ -1,0 +1,45 @@
+{
+  "old_scene_and_procedure_hashes_unchanged": true,
+  "legacy_generate_and_verify_prompts_unchanged": true,
+  "new_scene": "Assets/_Project/Scenes/VRGuidanceDemoActions.unity",
+  "new_interval_seconds": 1,
+  "new_scene_only_new_session_and_controller": true,
+  "new_format_has_no_evidence_fields": true,
+  "legacy_sections_preserved_with_preexisting_appendix_removal": true,
+  "policy_checks": {
+    "legacy": 65,
+    "action_flow": 67
+  },
+  "bridge_tests": 17,
+  "compiled_against_installed_unity": [
+    "Runtime",
+    "Editor with fresh Runtime reference",
+    "Android conditional branch"
+  ],
+  "local_qwen_protocol_smoke": {
+    "ok": true,
+    "provider": "Ollama",
+    "model": "qwen3-vl:4b-instruct",
+    "seconds": 81.87,
+    "response": {
+      "request_id": "699628ea66114394a6ef360967cb6b13",
+      "step_id": "S1",
+      "action_id": "A1",
+      "phase": "Preconditions",
+      "action_applicability": "applies",
+      "results": [
+        {
+          "requirement_id": "A1_PRE1",
+          "status": "unknown",
+          "reason": "The current frame is a solid gray color with no visible tray or objects, so the state of the tray cannot be confirmed."
+        }
+      ]
+    }
+  },
+  "headset_or_unity_play_mode_exercised": false,
+  "notes": [
+    "1 s polling slots are skipped during in-flight inference; not a 1 s response guarantee.",
+    "Clinical examples use actual earlier task graphs plus authored example requirements; not an accepted clinical protocol.",
+    "Live test used one blank 224px JPEG, not a real procedure image."
+  ]
+}

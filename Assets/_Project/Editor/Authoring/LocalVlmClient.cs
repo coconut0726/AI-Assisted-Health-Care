@@ -48,7 +48,7 @@ namespace HomeCare.Authoring
         {
             var health = await VlmBackendSettings.GetAsync(_endpoint.Replace("/verify", "/health"), CancellationToken.None);
             if (health == null || (bool?)health["managed"] != true || (string)health["provider"] != Provider || (string)health["model"] != Model)
-                throw new InvalidOperationException("The bridge does not match this request. Open Tools > Home Care > VLM Backend and use Apply & Start.");
+                throw new InvalidOperationException("The bridge does not match this request. Open AHC > VLM Backend and use Apply & Start.");
             var request = new JObject { ["model"] = Model, ["store"] = false, ["system_instruction"] = systemPrompt,
                 ["input"] = input, ["response_format"] = new JObject { ["type"] = "text", ["mime_type"] = "application/json",
                     ["schema"] = JObject.Parse(schema) } };

@@ -1,0 +1,101 @@
+两阶段 Prompt 与 Dressing 案例的真实生成审查
+2026-11-23
+
+结论
+Gemini bridge 已连通，两案例均已真实生成并审查。两阶段结构可作为下一版设计，
+但目前不能宣称 prompt 已稳定产出合格规格。所有案例响应来自 Gemini，未用 GPT
+代写，也未手工改模型 JSON 制造通过结果。我未写入 Unity 运行时代码，场景与原始
+procedure 未修改。实验期间 RequirementsPrompts.cs 被外部编辑，已保留其当前内容。
+它当前的 Generate 是空占位声明，含 stirng 拼写与分号问题，会阻止 Unity 编译；
+这些不是本轮两阶段 prompt 已接入运行时的证据。
+
+文件与版本
+prompts/01_task_graph.txt、prompts/02_verification_spec.txt：最新实验草案 revision 09。
+results/burn_dressing.draft.json、results/simple_wound_dressing.draft.json：完整对照稿，
+来自 revision 07 的真实 Gemini 输出，程序仅按 Action ID 合并，不是批准后的 procedure。
+results/*.validation.json：结构与来源检查；results/provenance.json：生成方式与版本。
+revision 09 对已拒绝稿加源文审查反馈重试，Burn A1-A3 已修正，其余批次重复超时，
+尚未得到两个完整案例。不能把 revision 07 的稿子冒充最新 prompt 的合格输出。
+
+连接问题
+同一成功终端的密钥同步到 bridge 内存后，Direct Interactions 与 bridge 均成功。
+此前 401 不能证明用户终端中的密钥无效，也不能证明必须改用 generateContent。
+没有更换 Interactions 接口。临时模型对照后已恢复 gemini-3.1-flash-lite-preview。
+密钥没有写入文件；模型选择配置没有被本次实验永久修改。
+
+主要 Prompt 修改
+1. 第一阶段只分解 Steps / atomic Actions / dependencies；第二阶段按 Action 生成规格。
+   一次看目标并检查多个特征合并为一次检查；入袋/封口分开；初始/最后洗手保持独立。
+   “remove；if sticks，soak before lifting”不能误成 remove->soak->再lift。
+   条件护士通知不因最后出现而依赖整套换药结束。
+2. 保留 preconditions、postconditions、error criteria、evidence，不新增 execution_constraints。
+   操作方式和持续禁忌放 error criteria，正向 compliance_condition 与 violation_condition 配对。
+   没检测到错误，不等于已经证明合规。跨动作同一禁忌只定义一次。
+3. 精简掉重复的 VQA/compliance question 字段，未来由 condition / compliance_condition
+   直接构造正向问题，减少改写丢条件或 yes 极性反转。暂去掉非主线 skip risk / in-progress；
+   原来的完整草案仍保留在历史版本中。
+4. 区分末态可见、动作发生、物料性质成立与临床/目标状态成立。
+   手看起来干净不证明洗过；棉签在旁边不证明用过；戴手套不证明手套干净。
+   不补写时长、温度、厚度、松紧阈值、额外护理技巧或未提供的专家先验。
+5. 目标原本异常不自动属于操作者错误。检查到 cut 发红/肿胀/渗漏，不能直接
+   归类为 Technique Error，也不能凭此自行补写新的护理处理动作。
+
+输入边界
+只提供 AHC Care Case 的 burn_care_procedure.json / wound_dressing_procedure.json 中
+instruction 字段，没有现成 requirements、supplies、其他 demo 数据或 nurse_prior。
+Simple wound 的 completion_note 不在本轮 instruction 内，明确排除，因此没有从该字段
+追加护士通知 Action。所有结果是源文规格审查，不是临床正确性验证或患者执行验证。
+
+阶段一结果
+Burn：5 Steps / 11 Actions。
+洗手；戴手套；条件性浸湿；轻柔去除；冲洗；拍干；涂药；覆盖；缠绕；固定；条件护士通知。
+保留清洁水、凉流动水、清洁毛巾、棉签、薄药膏层、不粘垫、松绕纱布、医用胶带，
+以及不揉搓、不弄破水疱、胶带避开烧伤皮肤与通知的 OR 条件。
+Simple wound：4 Steps / 8 Actions。
+初始洗手；戴手套；检查三项特征；覆盖整个 cut；wrapper 入袋；封口；摘手套；最后洗手。
+图中未擅加 source 未指明的 soap/water。
+两个图是 revision 05 中实际 Gemini 响应经源文审查后的复用，不是本轮重新生成。
+原文、ID、有效引用和 DAG 无环检查通过。没有依据的惯常顺序保留为待领域作者确认
+的推荐顺序；不能直接把数组位置用于判 Order Error。这仍不等于临床专家批准该图。
+
+完整阶段二对照稿：Burn 不接受直接接入
+9 preconditions / 15 postconditions / 10 local criteria / 4 global criteria。
+结构大致完整，但来源检查发现 P_ORDER_ERROR、P_MISS_STEP 将图关系标成原文引文；
+Missing Step 又漏了 A3、A11 在条件成立时的遗漏，故来源/覆盖校验不通过。
+其他语义问题包括：clean gloves 的完整属性误标 RGB supported；实际棉签使用误由药膏
+外观推断；复制图依赖为前置；不存在的 action history 误标 supported；禁忌局部/全局重复；
+水疱全程未破误用末态照片；胶带末态位置与应用全程混淆；护士通知被改写成感染诊断。
+revision 09 的 A1-A3 已修正 clean/穿戴拆分、洗手发生、条件浸湿及顺序误分类问题，
+但因后续服务超时，尚不能认定整份结果已修好。
+
+完整阶段二对照稿：Simple wound 结构通过，语义仍不接受
+1 precondition / 11 postconditions / 4 local criteria / 6 global criteria。
+JSON、ID、引用、原文来源、Action 更新完整性通过；知道洗手/认知检查需要人工或过程证据，
+覆盖与袋中 containment 标记 partial、封口需要确认也比仅看框/外观合理。
+但仍在 evidence cues 添加未给定的 soap/water/sink；把 clean 与 unused 混用；
+clean gloves 的完整 claim 仍误标 supported；“看过”不等于检查过全部三项；
+A3_E1 把原本 red/swollen/leaking 的状态当成 Technique Error，归因不成立。
+所以结构合格不能当作语义合格。已在最新 prompt 与反馈中明确要求修正。
+
+实验方法与服务限制
+iterations/01-04：草案、鉴权失败记录、真实生成及拒绝原因。
+05：提供源文审查反馈让 Gemini 修正图与规格。
+06：另一款 Gemini Flash 的图生成对照，未认定换模型自动解决问题。
+07：复用已审查图，测试精简 schema，完整输出位于 results。
+08：Gemini Pro 返回 429；3.8 Flash 返回 503，重试仍超时，没有成功结果。
+09：在精简版中补充目标状态/动作错误区别，并对拒绝稿做反馈重试。
+恢复原 Flash-Lite 后也重试了修复批次，仍服务超时；当前已无待执行请求。
+这不是单次稳定性或跨任务泛化实验；有反馈的样例也不算独立的一次成功测试。
+两阶段指逻辑阶段，实验第二阶段按小批次 Action 请求，因此 HTTP 请求多于两次。
+所有模型响应、输入、prompt、schema、版本及校验都保留；未手改响应掩盖问题。
+本次 schema 因 nurse_prior 为空，额外禁止 expert_prior；将来若提供真实先验，
+应按输入恢复该来源枚举。此次并未更改正式工具如何处理先验。
+
+下一步建议
+这轮证据支持继续采用精简的两阶段表示，但不足以批准自动生成结果直接驱动放行。
+Order/Missing 宜在后续代码中从审查后的 DAG 与真实事件记录确定性推导，减少让 LLM
+再叙述一遍图规则导致的丢边、重复和漏条件。此处仅建议，尚未修改运行时代码。
+当前 5 秒单张 after_step RGB 不提供 before、连续过程、完整历史或人工确认通道；
+需要这些证据的规格必须保持 unknown/human_required。生成更多字段不会创造证据。
+gently/thin/loosely/cool 的操作性定义仍须领域专家决定，不能由 prompt 编造。
+应先审阅这些失败点和最新草案，再决定 parser/session/验证流程的代码迁移。

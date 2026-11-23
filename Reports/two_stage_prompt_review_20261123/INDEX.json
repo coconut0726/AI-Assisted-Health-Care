@@ -1,0 +1,14 @@
+{
+  "status": "bridge_connected_two_cases_generated_but_semantic_acceptance_not_achieved",
+  "review": "REVIEW_CURRENT.txt",
+  "latest_prompt_revision": "09",
+  "latest_prompts": ["prompts/01_task_graph.txt", "prompts/02_verification_spec.txt"],
+  "complete_comparison_outputs_revision": "07",
+  "complete_outputs": ["results/burn_dressing.draft.json", "results/simple_wound_dressing.draft.json"],
+  "outputs_are_not_approved_runtime_procedures": true,
+  "provenance_and_validation": "results/provenance.json",
+  "newest_retry": "iterations/09",
+  "newest_retry_status": "Burn A1-A3 returned; later batch repeatedly timed out; neither case fully regenerated",
+  "legacy_files": "Root run_manifest.json and initial case failures are old authentication diagnostics, not current connection status.",
+  "runtime_integration_performed_by_this_task": false
+}

@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3622,
+    "total_input_tokens": 3246,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3246
+      }
+    ],
+    "total_cached_tokens": 1860,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1860
+      }
+    ],
+    "total_output_tokens": 376,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3246
+  },
+  "created": "2026-11-23T10:49:05Z",
+  "updated": "2026-11-23T10:49:05Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRP2Yyn3Xh0kO+GEEtkFA8NtF0eL4hJF7SbdQ4mH/Ip7R2bsI5PLN3kc51cCiFvD7VwCFWaVfi2ddIHtEn9D1SgcZ//Wl7PUsec1PI9GsRuBmJBVv8ksGMbpIkeS0k4HlBNVezqhCZ7WmnIQZqdRBwk6hfB6XYkYAScMfQDPGl9gi0phgEhxUd2Hn8rL9MPt2BI15E7wIj4lKs0=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A1_P1\",\n          \"condition\": \"The handwashing operation is completed.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Wash your hands\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Was the handwashing operation completed?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"human_confirmation\"],\n            \"relevant_entities\": [\"user\", \"hands\"],\n            \"observable_cues\": [\"handwashing process\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"The current system cannot verify the occurrence of handwashing without external human confirmation.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"unknown\",\n      \"skip_impact\": \"This action precedes the application of clean gloves.\",\n      \"review_notes\": [\"The requirement for handwashing completion relies on human confirmation as no sensor data can verify the activity.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"Only A1 was requested for update.\", \"No nurse_prior was provided, so no expert-prior requirements are included.\", \"Handwashing completion is conditioned on human confirmation per system capabilities.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

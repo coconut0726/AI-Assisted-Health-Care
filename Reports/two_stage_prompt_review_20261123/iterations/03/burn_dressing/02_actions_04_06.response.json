@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 5632,
+    "total_input_tokens": 4081,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4081
+      }
+    ],
+    "total_cached_tokens": 2094,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2094
+      }
+    ],
+    "total_output_tokens": 1551,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4081
+  },
+  "created": "2026-11-23T10:32:16Z",
+  "updated": "2026-11-23T10:32:16Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfROC7MgXIoVsmO77mbh5hdZfwSFSj/VTODjBVCRrr9+1Ux4ReGDk3OTbqv3y//JHhaXI2Fbus5rDpL5UuGPYoMFAVXHJ6ARq8Wm9WdxfvYJMw/YAunmaQ9LCw192IfVtUzwsdCxX0mv7Vk9Tc6TPPC/uRQoltXANJYbBIfjL0ddZt4m9WGAjVARB2W4GiTNISvJJR8xYXZt+iWM=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A4\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A4_P1\",\n          \"condition\": \"The old dressing is stuck.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"If it sticks, soak it with clean water before lifting it.\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the old dressing stuck to the burn site?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"old dressing\", \"burn\"],\n            \"observable_cues\": [\"dressing resistance during removal attempt\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"requires_external_sensor\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"Visual observation cannot determine physical adhesion of a dressing to a wound.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_POST1\",\n          \"condition\": \"The old dressing is soaked with clean water.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"soak it with clean water\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Does the old dressing appear saturated with water?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"old dressing\", \"clean water\"],\n            \"observable_cues\": [\"visual dampness on dressing\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"partial\",\n            \"limitations\": [\"Appearance of dampness does not confirm saturation or liquid identity.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"medium\",\n      \"skip_impact\": \"Prevents proper removal if the dressing is stuck.\",\n      \"review_notes\": [\"Requires human confirmation for adhesion detection.\"]\n    },\n    {\n      \"action_id\": \"A5\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A5_P1\",\n          \"condition\": \"Old dressing is removed.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A3\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the old dressing detached from the skin?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"old dressing\", \"burn\"],\n            \"observable_cues\": [\"old dressing separated from skin\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Occlusion may hide edges of dressing.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A5_POST1\",\n          \"condition\": \"Old dressing is lifted/removed from the burn area.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"before lifting it\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Has the old dressing been removed from the burn site?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"old dressing\", \"burn\"],\n            \"observable_cues\": [\"burn site exposed\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Requires full visibility of the burn site.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"high\",\n      \"skip_impact\": \"Incomplete wound exposure for subsequent steps.\",\n      \"review_notes\": []\n    },\n    {\n      \"action_id\": \"A6\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A6_P1\",\n          \"condition\": \"Old dressing removed.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A5\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the burn site clear of old dressing material?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"burn\", \"old dressing\"],\n            \"observable_cues\": [\"burn site clear of dressing\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": []\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A6_POST1\",\n          \"condition\": \"Burn site rinsed with cool running water.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Rinse the burn with cool running water\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Was the burn rinsed with cool running water?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"burn\", \"cool running water\"],\n            \"observable_cues\": [\"running water over site\"],\n            \"temporal_scope\": \"during_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"requires_external_sensor\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"Visual observation cannot confirm water temperature or 'running' status.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"high\",\n      \"skip_impact\": \"Cleansing the wound is essential for subsequent care.\",\n      \"review_notes\": [\"Cool temperature and running status require expert review for verification feasibility.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"A4 is conditional on adhesion, which is not visually observable.\", \"A6 rinsing temperature/process cannot be confirmed visually.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

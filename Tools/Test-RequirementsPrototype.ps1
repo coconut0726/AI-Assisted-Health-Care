@@ -9,6 +9,12 @@ $sourcePaths = @(
     'Assets/_Project/Runtime/Procedures/ProcedureSession.cs',
     'Assets/_Project/Runtime/Procedures/VerificationPollingSchedule.cs',
     'Assets/_Project/Runtime/Procedures/GeminiVerificationProtocol.cs',
+    'Assets/_Project/Runtime/Procedures/ActionProcedure.cs',
+    'Assets/_Project/Runtime/Procedures/ActionProcedureJson.cs',
+    'Assets/_Project/Runtime/Procedures/ActionRequirementSession.cs',
+    'Assets/_Project/Runtime/Procedures/ActionVerificationProtocol.cs',
+    'Assets/_Project/Editor/Authoring/ActionFlowChecks.cs',
+    'Assets/_Project/Editor/Authoring/ActionRequirementAuthoring.cs',
     'Assets/_Project/Editor/Authoring/RequirementsPrototypeChecks.cs',
     'Assets/_Project/Editor/Authoring/ARPrototypeChecks.cs',
     'Assets/_Project/Editor/Authoring/VerificationPollingChecks.cs'
@@ -25,6 +31,8 @@ $arPassed = [HomeCare.Authoring.ARPrototypeChecks]::Run($arExamplePath)
 Write-Output "$arPassed AR step progression and verification protocol checks passed."
 $pollingPassed = [HomeCare.Authoring.VerificationPollingChecks]::Run($arExamplePath)
 Write-Output "$pollingPassed polling cadence, busy-request and evidence policy checks passed."
+$actionPassed = [HomeCare.Authoring.ActionFlowChecks]::Run((Join-Path $projectRoot 'Assets/_Project/Content/Procedures'))
+Write-Output "$actionPassed Action-flow parsing, phase, history, stale-response and execution-rule checks passed."
 
 # Syntax-check every custom script, including EditorWindow and transport code.
 # This does not substitute for compilation against the installed Unity Editor assemblies.

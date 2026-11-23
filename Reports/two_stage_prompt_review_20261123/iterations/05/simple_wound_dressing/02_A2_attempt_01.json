@@ -1,0 +1,112 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A2",
+      "preconditions": [
+        {
+          "requirement_id": "A2_pre_clean",
+          "condition": "The gloves must be clean.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": true,
+          "vqa_question": "Are the gloves being put on confirmed to be clean according to established guidelines?",
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "gloves"
+            ],
+            "observable_cues": [
+              "clean property"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "The current camera cannot assess the cleanliness of gloves."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A2_post_worn",
+          "condition": "The gloves are worn on the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "vqa_question": "Are the gloves worn on the user's hands?",
+          "evidence_specification": {
+            "evidence_types": [
+              "object_identity",
+              "hand_object_contact"
+            ],
+            "relevant_entities": [
+              "hands",
+              "gloves"
+            ],
+            "observable_cues": [
+              "gloves covering hands"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Requires clear visibility of hands and gloves."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A2_err_01",
+          "error_type": "wrong_object",
+          "violation_condition": "The object worn on the hands is not gloves.",
+          "compliance_condition": "The user is wearing gloves on their hands.",
+          "compliance_question": "Is the user wearing gloves on their hands?",
+          "applicability_condition": "A2 is initiated.",
+          "related_requirement_ids": [
+            "A2_post_worn"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "hands",
+              "gloves"
+            ],
+            "observable_cues": [
+              "presence of gloves on hands"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Cannot identify if the glove is clean."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "medium",
+      "skip_impact": "The hands remain unprotected by gloves.",
+      "review_notes": [
+        "The requirement for clean gloves is marked as human_required as the current system cannot determine cleanliness.",
+        "Postcondition confirms presence of gloves on hands."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Action A2 updated to include explicit constraint verification.",
+    "Global error criteria are not requested per user input include_procedure_error_criteria: false."
+  ]
+}

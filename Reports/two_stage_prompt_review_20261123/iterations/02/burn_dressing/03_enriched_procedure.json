@@ -1,0 +1,1224 @@
+{
+  "procedure_title": "Minor burn dressing change",
+  "instruction": "Wash your hands with soap and water, then put on clean gloves. Gently remove the old dressing. If it sticks, soak it with clean water before lifting it. Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters. Use a cotton swab to apply a thin layer of burn ointment to the burn. Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll. Secure the gauze with medical tape, keeping the tape off the burned skin. Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+  "steps": [
+    {
+      "step_id": "S1",
+      "step_name": "Preparation",
+      "step_description": "Prepare hands and remove old dressing.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A1",
+          "instruction": "Wash your hands with soap and water.",
+          "original_text": "Wash your hands with soap and water",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "soap"
+          ],
+          "materials": [
+            "water"
+          ],
+          "contact_media": [
+            "water"
+          ],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A1_POST1",
+              "condition": "Hands appear clean with no visible soil.",
+              "source": "inferred",
+              "source_reference": "Wash your hands with soap and water",
+              "requires_expert_review": true,
+              "vqa_question": "Do the hands appear free of visible soil or contamination?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "hands"
+                ],
+                "observable_cues": [
+                  "visible soil",
+                  "soap residue"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Visual assessment of hygiene is not equivalent to clinical sterility or soap effectiveness.",
+                  "Requires high-resolution image of the hands."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [],
+          "in_progress_criteria": [
+            "presence of water and soap suds on hands"
+          ],
+          "skip_risk": "high",
+          "skip_impact": "Neglect of hand hygiene introduces risk of infection.",
+          "review_notes": [
+            "Verification of 'clean' is subjective and not clinically verifiable by RGB alone."
+          ]
+        },
+        {
+          "action_id": "A2",
+          "instruction": "Put on clean gloves.",
+          "original_text": "put on clean gloves",
+          "dependencies": [
+            "A1"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "clean gloves"
+          ],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "preconditions": [
+            {
+              "requirement_id": "A2_PRE1",
+              "condition": "Hands are clean after A1.",
+              "source": "graph_dependency",
+              "source_reference": "A1",
+              "requires_expert_review": false,
+              "vqa_question": "Are the hands visible and dry before putting on gloves?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "hands"
+                ],
+                "observable_cues": [
+                  "hands appear dry"
+                ],
+                "temporal_scope": "before_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Cannot confirm hygiene state, only readiness for glove application."
+                ]
+              }
+            }
+          ],
+          "postconditions": [
+            {
+              "requirement_id": "A2_POST1",
+              "condition": "Clean gloves are worn on the hands.",
+              "source": "explicit_instruction",
+              "source_reference": "put on clean gloves",
+              "requires_expert_review": false,
+              "vqa_question": "Are clean gloves visibly worn on both hands?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "hands",
+                  "gloves"
+                ],
+                "observable_cues": [
+                  "gloves present on hands"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "supported",
+                "limitations": [
+                  "Cannot verify if gloves are 'clean' or sterile, only their presence."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A2_TECH1",
+              "error_type": "technique_error",
+              "violation_condition": "Gloves are not worn or are worn improperly (e.g., torn).",
+              "compliance_condition": "Gloves are intact and fully covering the hands.",
+              "compliance_question": "Are the gloves intact and correctly covering the hands?",
+              "applicability_condition": "A2 is initiated.",
+              "related_requirement_ids": [
+                "A2_POST1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "put on clean gloves",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "gloves"
+                ],
+                "observable_cues": [
+                  "visible tears",
+                  "misalignment"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Small tears may be invisible in sparse frames."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "hands inserting into gloves"
+          ],
+          "skip_risk": "high",
+          "skip_impact": "Increases risk of infection to the patient and contamination of the user.",
+          "review_notes": []
+        },
+        {
+          "action_id": "A3",
+          "instruction": "Soak the old dressing with clean water.",
+          "original_text": "soak it with clean water",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "the old dressing sticks",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "clean water"
+          ],
+          "contact_media": [
+            "clean water"
+          ],
+          "targets": [
+            "old dressing"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A3_POST1",
+              "condition": "Old dressing is saturated with water.",
+              "source": "explicit_instruction",
+              "source_reference": "soak it with clean water",
+              "requires_expert_review": true,
+              "vqa_question": "Does the old dressing appear saturated with water?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "old dressing"
+                ],
+                "observable_cues": [
+                  "darkened/wet appearance of dressing material"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Appearance of wetness is subjective and lacks clinical depth verification."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A3_TECH1",
+              "error_type": "technique_error",
+              "violation_condition": "Dressing not soaked (no visual change/moisture indicator).",
+              "compliance_condition": "Dressing appears thoroughly dampened.",
+              "compliance_question": "Does the dressing appear fully dampened?",
+              "applicability_condition": "The old dressing is visible.",
+              "related_requirement_ids": [
+                "A3_POST1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "soak it with clean water",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "old dressing"
+                ],
+                "observable_cues": [
+                  "visual change indicating absorption"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Requires comparative analysis before and after soaking which is not guaranteed by current system."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "water contacting the dressing"
+          ],
+          "skip_risk": "medium",
+          "skip_impact": "If the dressing sticks, removing it without soaking may cause trauma to the wound.",
+          "review_notes": [
+            "Soaking definition (duration/amount) is missing; assumes visual saturation is sufficient."
+          ]
+        },
+        {
+          "action_id": "A4",
+          "instruction": "Gently remove the old dressing.",
+          "original_text": "Gently remove the old dressing.",
+          "dependencies": [
+            "A2"
+          ],
+          "conditional_dependencies": [
+            {
+              "action_id": "A3",
+              "condition": "the old dressing sticks"
+            }
+          ],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "old dressing"
+          ],
+          "associated_constraints": [],
+          "preconditions": [
+            {
+              "requirement_id": "A4_PRE1",
+              "condition": "The old dressing is removed gently.",
+              "source": "explicit_instruction",
+              "source_reference": "Gently remove the old dressing.",
+              "requires_expert_review": true,
+              "vqa_question": "Does the removal appear to be performed gently without jerky motions or excessive force?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_video",
+                  "hand_trajectory",
+                  "relative_motion"
+                ],
+                "relevant_entities": [
+                  "old dressing",
+                  "user's hands"
+                ],
+                "observable_cues": [
+                  "slow movement",
+                  "lack of sudden tearing motion"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "VLM",
+                "observability": "partially_observable",
+                "current_support": "unsupported",
+                "limitations": [
+                  "Requires continuous video to assess gentleness; a single frame is insufficient."
+                ]
+              }
+            }
+          ],
+          "postconditions": [
+            {
+              "requirement_id": "A4_POST1",
+              "condition": "The old dressing is no longer covering the burn.",
+              "source": "explicit_instruction",
+              "source_reference": "remove the old dressing",
+              "requires_expert_review": false,
+              "vqa_question": "Is the old dressing completely removed from the burn site?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "old dressing",
+                  "burn"
+                ],
+                "observable_cues": [
+                  "absence of dressing material over the wound"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "supported",
+                "limitations": [
+                  "Cannot confirm complete removal if debris is small or occluded."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A4_TECH1",
+              "error_type": "technique_error",
+              "violation_condition": "The dressing is pulled off abruptly or with excessive force.",
+              "compliance_condition": "The removal occurs using slow, deliberate, and gentle movements.",
+              "compliance_question": "Is the removal action observed to be gentle?",
+              "applicability_condition": "The action A4 is performed.",
+              "related_requirement_ids": [
+                "A4_PRE1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "Gently remove the old dressing.",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_video",
+                  "hand_trajectory"
+                ],
+                "relevant_entities": [
+                  "old dressing",
+                  "user's hands"
+                ],
+                "observable_cues": [
+                  "slow hand trajectory",
+                  "absence of sudden tearing motion"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "VLM",
+                "observability": "partially_observable",
+                "current_support": "unsupported",
+                "limitations": [
+                  "Requires temporal resolution for motion analysis, not available in current system."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "Hands are positioned near the dressing",
+            "Dressing edges are being lifted"
+          ],
+          "skip_risk": "medium",
+          "skip_impact": "Leaving old dressing on will impede cleaning and healing, and risk infection.",
+          "review_notes": [
+            "Gentleness is a subjective term requiring expert definition for operational VLM evaluation."
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S2",
+      "step_name": "Cleaning the Burn",
+      "step_description": "Clean the area and prepare it for dressing.",
+      "dependencies": [
+        "S1"
+      ],
+      "actions": [
+        {
+          "action_id": "A5",
+          "instruction": "Rinse the burn with cool running water.",
+          "original_text": "Rinse the burn with cool running water",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "cool running water"
+          ],
+          "contact_media": [
+            "cool running water"
+          ],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A5_POST1",
+              "condition": "Burn site is visibly wet/rinsed.",
+              "source": "explicit_instruction",
+              "source_reference": "Rinse the burn with cool running water",
+              "requires_expert_review": true,
+              "vqa_question": "Does the burn area show evidence of recent rinsing (e.g., dampness or water droplets)?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_mask"
+                ],
+                "relevant_entities": [
+                  "burn",
+                  "water"
+                ],
+                "observable_cues": [
+                  "wet skin appearance",
+                  "droplets on surface"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Cannot verify water temperature or 'running' status; only existence of moisture."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A5_TECH1",
+              "error_type": "technique_error",
+              "violation_condition": "Water flow is directed forcefully at the burn.",
+              "compliance_condition": "Water is applied in a gentle rinse or stream.",
+              "compliance_question": "Does the water application appear gentle?",
+              "applicability_condition": "The action A5 is performed.",
+              "related_requirement_ids": [],
+              "source": "explicit_instruction",
+              "source_reference": "Rinse the burn with cool running water",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_video"
+                ],
+                "relevant_entities": [
+                  "water source",
+                  "burn"
+                ],
+                "observable_cues": [
+                  "gentle flow vs high pressure spray"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "VLM",
+                "observability": "partially_observable",
+                "current_support": "unsupported",
+                "limitations": [
+                  "Requires continuous video; cannot verify pressure from a single frame."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "Running water is visible over the burn"
+          ],
+          "skip_risk": "high",
+          "skip_impact": "Incomplete cleaning can lead to infection.",
+          "review_notes": [
+            "Cannot verify 'cool' temperature of water. Relying on user to judge temperature."
+          ]
+        },
+        {
+          "action_id": "A6",
+          "instruction": "Pat the skin dry with a clean towel.",
+          "original_text": "pat the skin dry with a clean towel",
+          "dependencies": [
+            "A5"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "clean towel"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "skin"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn",
+            "do not break any blisters"
+          ],
+          "preconditions": [
+            {
+              "requirement_id": "A6_PRE1",
+              "condition": "Use a clean towel for drying.",
+              "source": "explicit_instruction",
+              "source_reference": "pat the skin dry with a clean towel",
+              "requires_expert_review": false,
+              "vqa_question": "Is the material being used for drying a clean towel?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "clean towel"
+                ],
+                "observable_cues": [
+                  "towel appearance",
+                  "lack of visible soil"
+                ],
+                "temporal_scope": "before_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Visual appearance cannot guarantee clinical sterility or 'cleanliness'."
+                ]
+              }
+            }
+          ],
+          "postconditions": [
+            {
+              "requirement_id": "A6_POST1",
+              "condition": "Skin is dry.",
+              "source": "explicit_instruction",
+              "source_reference": "pat the skin dry",
+              "requires_expert_review": false,
+              "vqa_question": "Does the skin surrounding the burn appear dry?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "skin",
+                  "burn"
+                ],
+                "observable_cues": [
+                  "absence of moisture/droplets"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "supported",
+                "limitations": []
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A6_TECH1",
+              "error_type": "technique_error",
+              "violation_condition": "The burn is rubbed instead of patted, or blisters are broken.",
+              "compliance_condition": "The drying motion is a gentle patting motion.",
+              "compliance_question": "Is the drying action performed by patting rather than rubbing?",
+              "applicability_condition": "The action A6 is performed.",
+              "related_requirement_ids": [
+                "A6_POST1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "Do not rub the burn and do not break any blisters.",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_video",
+                  "hand_trajectory"
+                ],
+                "relevant_entities": [
+                  "burn",
+                  "user's hands"
+                ],
+                "observable_cues": [
+                  "repetitive vertical motion (patting) vs lateral friction (rubbing)"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "VLM",
+                "observability": "partially_observable",
+                "current_support": "unsupported",
+                "limitations": [
+                  "Requires continuous video to differentiate between patting and rubbing."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "Towel held against skin",
+            "Vertical patting motion"
+          ],
+          "skip_risk": "medium",
+          "skip_impact": "Rubbing or breaking blisters can cause secondary tissue damage and infection risk.",
+          "review_notes": [
+            "Cannot verify absence of blister breakage from visual frames alone if blisters were already present; this would require high-resolution comparison."
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S3",
+      "step_name": "Application of Dressing",
+      "step_description": "Apply ointment and apply new dressing.",
+      "dependencies": [
+        "S2"
+      ],
+      "actions": [
+        {
+          "action_id": "A7",
+          "instruction": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "original_text": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "cotton swab"
+          ],
+          "materials": [
+            "burn ointment"
+          ],
+          "contact_media": [
+            "burn ointment"
+          ],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A7_POST1",
+              "condition": "A thin layer of burn ointment is applied to the burn.",
+              "source": "explicit_instruction",
+              "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+              "requires_expert_review": true,
+              "vqa_question": "Is a thin layer of burn ointment visible on the burn surface?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "burn",
+                  "burn ointment"
+                ],
+                "observable_cues": [
+                  "ointment presence on burn area",
+                  "lack of thick glob"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Thin layer is a qualitative term lacking operational thickness definition.",
+                  "VLM cannot definitively distinguish layer thickness."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A7_ERR1",
+              "error_type": "technique_error",
+              "violation_condition": "Burn ointment applied using hands or other tools instead of cotton swab.",
+              "compliance_condition": "Cotton swab is used to apply ointment.",
+              "compliance_question": "Is a cotton swab being used to apply the ointment?",
+              "applicability_condition": "none",
+              "related_requirement_ids": [],
+              "source": "explicit_instruction",
+              "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "hand_object_contact"
+                ],
+                "relevant_entities": [
+                  "cotton swab",
+                  "burn ointment"
+                ],
+                "observable_cues": [
+                  "cotton swab held by user",
+                  "cotton swab in contact with ointment or burn"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Requires continuous observation or video evidence to confirm application tool usage.",
+                  "Cannot confirm tool usage with a single frame."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "user holding cotton swab",
+            "cotton swab moving toward or on burn"
+          ],
+          "skip_risk": "medium",
+          "skip_impact": "Applying ointment without a swab increases contamination risk, and skipping application leaves the burn untreated.",
+          "review_notes": [
+            "Definition of 'thin layer' is missing and requires expert input for verification."
+          ]
+        },
+        {
+          "action_id": "A8",
+          "instruction": "Cover the burn with a non-stick pad.",
+          "original_text": "Cover the burn with a non-stick pad",
+          "dependencies": [
+            "A7"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "non-stick pad"
+          ],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [],
+          "preconditions": [
+            {
+              "requirement_id": "A8_PRE1",
+              "condition": "Burn ointment has been applied.",
+              "source": "graph_dependency",
+              "source_reference": "A8 depends on A7",
+              "requires_expert_review": false,
+              "vqa_question": "Is there visible evidence of ointment on the burn surface?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "burn",
+                  "burn ointment"
+                ],
+                "observable_cues": [
+                  "shiny or moist texture on burn"
+                ],
+                "temporal_scope": "before_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Cannot confirm previous action success via current observation alone."
+                ]
+              }
+            }
+          ],
+          "postconditions": [
+            {
+              "requirement_id": "A8_POST1",
+              "condition": "Burn is covered by a non-stick pad.",
+              "source": "explicit_instruction",
+              "source_reference": "Cover the burn with a non-stick pad",
+              "requires_expert_review": true,
+              "vqa_question": "Is the burn completely covered by a non-stick dressing pad?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "burn",
+                  "non-stick pad"
+                ],
+                "observable_cues": [
+                  "pad centered over burn",
+                  "pad edges covering burn site"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "VLM cannot confirm the pad's 'non-stick' property based on appearance."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [],
+          "in_progress_criteria": [
+            "user holding pad",
+            "pad being placed over burn"
+          ],
+          "skip_risk": "high",
+          "skip_impact": "Skipping this leaves the burn exposed, increasing risk of infection.",
+          "review_notes": [
+            "Non-stick property of the pad is not visually verifiable; this requirement relies on product identity."
+          ]
+        },
+        {
+          "action_id": "A9",
+          "instruction": "Wrap the area loosely with a gauze roll.",
+          "original_text": "wrap it loosely with a gauze roll",
+          "dependencies": [
+            "A8"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "gauze roll"
+          ],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A9_POST1",
+              "condition": "Area is wrapped loosely with a gauze roll.",
+              "source": "explicit_instruction",
+              "source_reference": "wrap it loosely with a gauze roll",
+              "requires_expert_review": true,
+              "vqa_question": "Does the gauze wrapping appear loose around the limb/area?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "gauze roll",
+                  "burn"
+                ],
+                "observable_cues": [
+                  "visible gap or lack of indentation under gauze",
+                  "layers of gauze not tightly pulled"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "unsupported",
+                "limitations": [
+                  "'Loosely' is a subjective qualitative term lacking defined tension/pressure limits.",
+                  "VLM cannot measure tension or determine clinical 'looseness'."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A9_ERR1",
+              "error_type": "technique_error",
+              "violation_condition": "Wrapping is applied tightly, restricting blood flow.",
+              "compliance_condition": "Gauze is applied loosely.",
+              "compliance_question": "Does the gauze wrap appear loose?",
+              "applicability_condition": "none",
+              "related_requirement_ids": [
+                "A9_POST1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "wrap it loosely with a gauze roll",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "gauze roll"
+                ],
+                "observable_cues": [
+                  "no indentations in tissue",
+                  "ability to slide finger under gauze"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "unsupported",
+                "limitations": [
+                  "Cannot confirm absence of tight wrapping visually without touch/sensor verification."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "user unwinding gauze around the site"
+          ],
+          "skip_risk": "medium",
+          "skip_impact": "Leaving the pad unsecured with gauze increases risk of the dressing moving or falling off.",
+          "review_notes": [
+            "Definition of 'loosely' is missing and requires expert interpretation."
+          ]
+        },
+        {
+          "action_id": "A10",
+          "instruction": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+          "original_text": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+          "dependencies": [
+            "A9"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "medical tape"
+          ],
+          "contact_media": [],
+          "targets": [
+            "gauze"
+          ],
+          "associated_constraints": [
+            "keeping the tape off the burned skin"
+          ],
+          "preconditions": [
+            {
+              "requirement_id": "A10_PRE1",
+              "condition": "The gauze roll is wrapped around the burn area.",
+              "source": "graph_dependency",
+              "source_reference": "A10 depends on A9",
+              "requires_expert_review": false,
+              "vqa_question": "Is the gauze roll wrapped over the non-stick pad on the burn area?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "gauze",
+                  "burn"
+                ],
+                "observable_cues": [
+                  "Gauze material visible covering the pad area"
+                ],
+                "temporal_scope": "before_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "supported",
+                "limitations": [
+                  "Only confirms the presence of gauze after A9; does not verify if it was wrapped 'loosely'."
+                ]
+              }
+            }
+          ],
+          "postconditions": [
+            {
+              "requirement_id": "A10_POST1",
+              "condition": "Medical tape is secured without touching the burned skin.",
+              "source": "explicit_instruction",
+              "source_reference": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+              "requires_expert_review": true,
+              "vqa_question": "Is the medical tape only in contact with the gauze or healthy skin and NOT touching the underlying burn?",
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_mask"
+                ],
+                "relevant_entities": [
+                  "medical tape",
+                  "burned skin"
+                ],
+                "observable_cues": [
+                  "Tape edges visible on gauze or healthy skin adjacent to the burn"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Requires high-resolution identification of burn boundaries beneath the dressing."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A10_TECH1",
+              "error_type": "technique_error",
+              "violation_condition": "Medical tape is applied directly to the burned skin.",
+              "compliance_condition": "Medical tape is only applied to healthy skin or the gauze roll.",
+              "compliance_question": "Is the medical tape completely clear of the burn area?",
+              "applicability_condition": "Burned skin is visible or identifiable.",
+              "related_requirement_ids": [
+                "A10_POST1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "keeping the tape off the burned skin",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "medical tape",
+                  "burned skin"
+                ],
+                "observable_cues": [
+                  "Tape edge touching red/discolored skin"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Visibility of the burn boundary is obscured by the dressing/gauze."
+                ]
+              }
+            }
+          ],
+          "in_progress_criteria": [
+            "User handling medical tape near the edge of the gauze"
+          ],
+          "skip_risk": "medium",
+          "skip_impact": "Gauze might shift or become loose, failing to protect the burn.",
+          "review_notes": [
+            "Interpretation of 'keeping the tape off the burned skin' requires visual distinction between burn tissue and surrounding healthy skin, which is often difficult once the dressing is applied."
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S4",
+      "step_name": "Monitoring",
+      "step_description": "Instructions for when to seek professional help.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A11",
+          "instruction": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+          "original_text": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "phone"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "nurse"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": [],
+          "in_progress_criteria": [],
+          "skip_risk": "none",
+          "skip_impact": "This is a post-procedure monitoring instruction and not part of the active treatment task.",
+          "review_notes": [
+            "A11 is a conditional post-procedure instruction rather than a procedural step, included as per objective requirements. No action possible for verification as it depends on future patient status."
+          ]
+        }
+      ]
+    }
+  ],
+  "context_notes": [],
+  "review_notes": [
+    "A11 is a conditional post-procedure instruction rather than a procedural step, included as per objective requirements.",
+    "The constraints 'Do not rub the burn' and 'do not break any blisters' apply to the drying process in S2. The constraints are preserved on A6.",
+    "Dependencies follow the logical progression of cleaning, treating, and dressing the wound."
+  ],
+  "procedure_error_criteria": [
+    {
+      "criterion_id": "P_RUBBING_PROHIBITION",
+      "error_type": "technique_error",
+      "violation_condition": "Patient rubs the burn area during the drying process.",
+      "compliance_condition": "Patient pats the skin dry without lateral or rubbing motion.",
+      "relevant_step_ids": [
+        "S2"
+      ],
+      "relevant_action_ids": [
+        "A6"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "rgb_video",
+          "hand_trajectory"
+        ],
+        "relevant_entities": [
+          "hand",
+          "clean towel",
+          "skin",
+          "burn"
+        ],
+        "observable_cues": [
+          "hand motion pattern",
+          "towel skin contact"
+        ],
+        "temporal_scope": "during_action",
+        "verification_method": "VLM",
+        "observability": "partially_observable",
+        "current_support": "unsupported",
+        "limitations": [
+          "Requires continuous video or high-frequency frame sampling to distinguish between patting and rubbing; current system baseline lacks video input."
+        ]
+      },
+      "detection_timing": "during_action",
+      "source_reference": "Do not rub the burn",
+      "limitations": [
+        "No video input available to verify motion technique."
+      ],
+      "compliance_question": "Did the patient pat the skin dry instead of rubbing the burn area?",
+      "applicability_condition": "true",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_BLISTER_PROHIBITION",
+      "error_type": "technique_error",
+      "violation_condition": "Patient breaks blisters during cleaning or drying.",
+      "compliance_condition": "Visible integrity of existing blisters maintained throughout procedure.",
+      "relevant_step_ids": [
+        "S2"
+      ],
+      "relevant_action_ids": [
+        "A5",
+        "A6"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "rgb_frame"
+        ],
+        "relevant_entities": [
+          "burn",
+          "blisters"
+        ],
+        "observable_cues": [
+          "blister appearance"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "VLM",
+        "observability": "visually_observable",
+        "current_support": "partial",
+        "limitations": [
+          "Visual comparison of before and after states cannot definitively rule out rupture during the procedure; depends on resolution and initial blister state clarity."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "do not break any blisters",
+      "limitations": [
+        "Blisters may be small or obscured; evidence only compares final state to visual history."
+      ],
+      "compliance_question": "Are the blisters intact after cleaning and drying the burn?",
+      "applicability_condition": "blisters are present at the start",
+      "source": "explicit_instruction",
+      "requires_expert_review": true
+    }
+  ],
+  "verification_review_notes": [
+    "Evidence support for action-level motion (e.g., 'patting' vs 'rubbing') is currently unsupported due to the lack of video stream in the system capabilities.",
+    "A11 is a conditional post-procedure instruction rather than a procedural step, included as per objective requirements.",
+    "A10_POST1 and A10_TECH1 rely on identifying the burn boundary under the dressing; this is visually ambiguous.",
+    "Procedure error criteria added for rubbing and blister protection, as these are critical technique constraints specified in the instructions.",
+    "The system lacks continuous temporal monitoring (video), making technique-based error detection (like rubbing) difficult to guarantee; current evidence is marked unsupported for real-time motion analysis.",
+    "A11 (nurse call) is treated as an optional follow-up and no procedural failure criteria are created for it."
+  ]
+}

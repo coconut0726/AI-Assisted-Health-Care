@@ -1,0 +1,82 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A11",
+      "preconditions": [
+        {
+          "requirement_id": "A11_pre_01",
+          "condition": "The burn is showing signs of increased redness, swelling, foul odor, pus leakage, or the user has developed a fever.",
+          "source": "explicit_instruction",
+          "source_reference": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+          "requires_expert_review": true,
+          "vqa_question": "Does the burn appear redder, more swollen, leaking pus, smelling unusual, or is there a fever?",
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "burn",
+              "user"
+            ],
+            "observable_cues": [
+              "redness",
+              "swelling",
+              "leakage",
+              "smell",
+              "fever"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Signs such as smell, internal feelings of fever, or subtle changes in redness/swelling are not detectable via RGB imagery.",
+              "Requires user/expert assessment."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A11_post_01",
+          "condition": "The nurse has been contacted.",
+          "source": "explicit_instruction",
+          "source_reference": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+          "requires_expert_review": false,
+          "vqa_question": "Was the nurse contacted following the observation of warning signs?",
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "nurse"
+            ],
+            "observable_cues": [
+              "contact initiation"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Cannot verify communication through camera imagery.",
+              "Requires human confirmation."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "none",
+      "skip_impact": "This action is conditional based on the observation of warning signs (redness, swelling, infection, fever).",
+      "review_notes": [
+        "A11 is a contingency action. It is only applicable when specific clinical indicators are present.",
+        "Clinical warning signs cannot be objectively diagnosed or confirmed via standard RGB imagery."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A11 is triggered by post-procedural complications. The evidence requirement is set to human_required as the system cannot assess medical symptoms like infection or fever."
+  ]
+}

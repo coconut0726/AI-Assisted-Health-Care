@@ -1,0 +1,375 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "preconditions": [
+        {
+          "requirement_id": "A7_PRE_1",
+          "condition": "The user has a cotton swab and burn ointment ready for use.",
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "cotton swab",
+              "burn ointment"
+            ],
+            "observable_cues": [
+              "presence of cotton swab and ointment container in the workspace"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "No before_action frame provided; presence in final scene does not confirm prior availability."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A7_POST_1",
+          "condition": "A layer of burn ointment has been applied specifically to the burned area using the cotton swab.",
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "burn",
+              "burn ointment"
+            ],
+            "observable_cues": [
+              "glistening or translucent layer visible over the burn target"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Ointment may be transparent or obscured by ambient lighting; RGB appearance alone cannot confirm specific medical identity of the substance."
+            ]
+          }
+        },
+        {
+          "requirement_id": "A7_POST_2",
+          "condition": "The applied layer of ointment is thin.",
+          "source": "explicit_instruction",
+          "source_reference": "apply a thin layer of burn ointment to the burn",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "burn ointment"
+            ],
+            "observable_cues": [
+              "ointment layer does not obscure skin texture or form thick clumps"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "No quantitative definition of thin provided; RGB image lacks depth/thickness measurement capabilities."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A7_ERR_1",
+          "error_type": "technique_error",
+          "violation_condition": "The user rubbed the burn while applying the ointment.",
+          "compliance_condition": "The user applied the ointment without rubbing the burn.",
+          "applicability_condition": "always",
+          "related_requirement_ids": [
+            "A7_POST_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Do not rub the burn",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "interaction_history"
+            ],
+            "relevant_entities": [
+              "burn"
+            ],
+            "observable_cues": [
+              "recorded motion patterns of the swab across the burn surface"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "not_verifiable",
+            "observability": "not_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Static after_step RGB frames cannot detect rubbing motions occurring during the task."
+            ]
+          }
+        },
+        {
+          "criterion_id": "A7_ERR_2",
+          "error_type": "technique_error",
+          "violation_condition": "The user broke a blister while applying ointment.",
+          "compliance_condition": "The user did not break any blisters.",
+          "applicability_condition": "blisters are present on the burn",
+          "related_requirement_ids": [
+            "A7_POST_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "do not break any blisters",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "blisters"
+            ],
+            "observable_cues": [
+              "newly ruptured or deflated blister membranes compared to previous state"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Requires high resolution and clear view of pre-action blister states which are not supplied."
+            ]
+          }
+        }
+      ],
+      "review_notes": [
+        "Ointment layer thickness is subjective and requires expert interpretation of the RGB appearance. Absense of rubbing cannot be verified from a single final frame."
+      ]
+    },
+    {
+      "action_id": "A8",
+      "preconditions": [
+        {
+          "requirement_id": "A8_PRE_1",
+          "condition": "A pad identified as non-stick is available.",
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "object_identity",
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "non-stick pad"
+            ],
+            "observable_cues": [
+              "labeling on pad packaging or specific material texture"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "requires_external_sensor",
+            "current_support": "human_required",
+            "limitations": [
+              "Non-stick property is a material specification not reliably determined from RGB appearance; human verification of provenance is necessary."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A8_POST_1",
+          "condition": "The burn is fully covered by the non-stick pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "spatial_position"
+            ],
+            "relevant_entities": [
+              "burn",
+              "non-stick pad"
+            ],
+            "observable_cues": [
+              "pad positioned directly over the burn area, obscuring the ointment layer"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Occlusion by the pad prevents verification of the underlying burn state."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A8_ERR_1",
+          "error_type": "wrong_object",
+          "violation_condition": "The user used a standard gauze or adhesive bandage that is not a non-stick pad.",
+          "compliance_condition": "The user used a non-stick pad.",
+          "applicability_condition": "always",
+          "related_requirement_ids": [
+            "A8_POST_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "non-stick pad"
+            ],
+            "observable_cues": [
+              "presence of standard fibrous gauze texture instead of non-stick coating"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Difficulty distinguishing non-stick versus standard pads in post-application RGB images."
+            ]
+          }
+        }
+      ],
+      "review_notes": [
+        "Non-stick material identity is the critical safety factor here; material provenance verification is needed."
+      ]
+    },
+    {
+      "action_id": "A9",
+      "preconditions": [
+        {
+          "requirement_id": "A9_PRE_1",
+          "condition": "A gauze roll is available.",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "gauze roll"
+            ],
+            "observable_cues": [
+              "presence of rolled medical gauze"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "No before_action frame provided."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A9_POST_1",
+          "condition": "The gauze roll is wrapped around the burn area.",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "gauze roll",
+              "burn"
+            ],
+            "observable_cues": [
+              "multiple layers of gauze encircling the limb/area where the burn is located"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Total coverage may obscure whether the gauze is specifically over the burn."
+            ]
+          }
+        },
+        {
+          "requirement_id": "A9_POST_2",
+          "condition": "The gauze wrap is loose in tension.",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "gauze roll"
+            ],
+            "observable_cues": [
+              "absence of skin indentation or bulging at the edges of the wrap; visible gaps/softness in the gauze layers"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Tension cannot be accurately measured from RGB; visual cues for 'loose' are subjective and unreliable without haptic feedback or video of application."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A9_ERR_1",
+          "error_type": "technique_error",
+          "violation_condition": "The gauze is wrapped tightly, causing constriction or skin indentation.",
+          "compliance_condition": "The gauze is wrapped loosely.",
+          "applicability_condition": "always",
+          "related_requirement_ids": [
+            "A9_POST_2"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "gauze roll",
+              "skin"
+            ],
+            "observable_cues": [
+              "tightness markers such as skin discoloration or physical compression of the tissue"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Static RGB cannot confirm absence of constriction; requires human physical check."
+            ]
+          }
+        }
+      ],
+      "review_notes": [
+        "Wrap tension ('loosely') is a qualitative safety constraint requiring expert/human confirmation as current system cannot measure pressure/force."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

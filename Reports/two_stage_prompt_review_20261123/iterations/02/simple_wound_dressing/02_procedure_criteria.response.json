@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4183,
+    "total_input_tokens": 3489,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3489
+      }
+    ],
+    "total_cached_tokens": 1934,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1934
+      }
+    ],
+    "total_output_tokens": 694,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3489
+  },
+  "created": "2026-11-23T10:27:51Z",
+  "updated": "2026-11-23T10:27:51Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRMmEa01GxNHp6Y4FgCx9v7U0wyYxWt/O0oNRTEgPcj7vxPJX+SsYfBypmb17nmdYeH3OJgnHF1FLAvJDzatcdDSCgXZrO8TsCQRtgV+Jf0e7JubWKqQ3RXNPRLLQ59kuMSYk8mpNGi5CuyiKjTg8rFSpdX46vjKSzR9MKSvzcPUXpe6mnLaqVsohh1R9HvqhFIUuB+WpU763Ho=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [\n    {\n      \"criterion_id\": \"P_MISSING_ACTION_FLOW\",\n      \"error_type\": \"missing_step\",\n      \"violation_condition\": \"The user skips hand washing at start or finish, or fails to perform the inspection of the wound before applying the dressing.\",\n      \"compliance_condition\": \"All ordered steps A1, A2, A3, A4, A5, A6, A7, and A8 are observed to be performed sequentially.\",\n      \"relevant_step_ids\": [\n        \"S1\",\n        \"S2\",\n        \"S3\",\n        \"S4\"\n      ],\n      \"relevant_action_ids\": [\n        \"A1\",\n        \"A2\",\n        \"A3\",\n        \"A4\",\n        \"A5\",\n        \"A6\",\n        \"A7\",\n        \"A8\"\n      ],\n      \"evidence_specification\": {\n        \"evidence_types\": [\n          \"rgb_video\"\n        ],\n        \"relevant_entities\": [\n          \"user\",\n          \"soap\",\n          \"hands\",\n          \"gloves\",\n          \"cut\",\n          \"non-stick pad\",\n          \"zip bag\"\n        ],\n        \"observable_cues\": [\n          \"visual confirmation of hand washing motion\",\n          \"presence of gloves on hands\",\n          \"visual inspection of cut\",\n          \"placement of pad\",\n          \"sealing zip bag\",\n          \"removal of gloves\"\n        ],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"VLM\",\n        \"observability\": \"partially_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\n          \"System only provides 5-second interval snapshots, which are insufficient to verify entire procedural workflows or ensure no steps were skipped between samples.\"\n        ]\n      },\n      \"detection_timing\": \"Throughout procedure\",\n      \"source_reference\": \"Original instruction linear sequence.\",\n      \"limitations\": [\n        \"Cannot guarantee continuity of actions across snapshots.\"\n      ],\n      \"compliance_question\": \"Were all actions completed in the correct order?\",\n      \"applicability_condition\": \"Procedure initiation.\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": false\n    }\n  ],\n  \"review_notes\": [\n    \"The current system capabilities (periodic RGB snapshots) are insufficient to verify clinical actions like hand washing (A1, A8), glove removal (A7), or a continuous inspection (A4) due to lack of temporal resolution and action-aligned video.\",\n    \"The inspection criteria for the wound (A4) - specifically red, swollen, or leaking - are subjective clinical findings that a VLM cannot reliably diagnose from a single RGB image.\",\n    \"The instruction 'Place a non-stick pad over the whole cut' implies a spatial requirement (coverage) that may be ambiguous depending on the angle of the provided snapshot.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

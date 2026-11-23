@@ -9,7 +9,7 @@ namespace HomeCare.Authoring
     public static class RequirementsPrototypeChecks
     {
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tools/Home Care/Run Requirements Checks")]
+        // [UnityEditor.MenuItem("Tools/Home Care/Run Requirements Checks")]
         public static void RunInEditor()
         {
             int count = Run("Assets/_Project/Content/Procedures/requirements_example.json");

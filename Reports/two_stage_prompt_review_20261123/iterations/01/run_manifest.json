@@ -1,0 +1,31 @@
+{
+  "experiment": "two-stage authoring draft v1; no execution_constraint array",
+  "created_utc": "2026-11-23T07:46:41.979716+00:00",
+  "calls": [],
+  "cases": {
+    "burn_dressing": {
+      "status": "failed_or_requires_repair",
+      "error": "Bridge HTTP 502: {\"error\": \"gemini rejected the request\", \"provider_status\": 401}"
+    },
+    "simple_wound_dressing": {
+      "status": "failed_or_requires_repair",
+      "error": "Bridge HTTP 502: {\"error\": \"gemini rejected the request\", \"provider_status\": 401}"
+    }
+  },
+  "protected_file_sha256": {
+    "Assets/_Project/Runtime/Procedures/RequirementsPrompts.cs": "1d9d18dd8e96bf221438ffab6c0f3db2fb8b9f9883b6f55c5f883d383f3e0cc1",
+    "Assets/_Project/Runtime/Procedures/RequirementsJson.cs": "30f8f24c526f6de01ec29a44b3502c308cd6c7c5d657d7667dcbc6f1b40aff0c",
+    "Assets/_Project/Runtime/Procedures/ProcedureRequirements.cs": "5a71134a14b3fd7c43b3db15c905c36222219a49145001510d3719bddb91b35a",
+    "Assets/_Project/Runtime/Procedures/ProcedureSession.cs": "c4c2bf99ecae3c390fdb0443fa3f7045fb986d78204ad62125e716f236ea7a53",
+    "Assets/_Project/Content/Procedures/burn_care_procedure.json": "043d87eef136d7cd247f914a9a63076d5a081689a3830556d18c0ca19aba8a04",
+    "Assets/_Project/Content/Procedures/wound_dressing_procedure.json": "5216a02f4482c4b1504bb47e4cd47e1f188475421e8e6eadeefe4924ffa93573"
+  },
+  "prompt_sha256": {
+    "prompt_1": "98cdbef593e49d3f5c0aa36262e0cc2427997f027f1cf4574b4ebe21ca52a93c",
+    "prompt_2": "0053a155d2b1efbdc31d15c9390690dea1664096625ebe6ef3647247cae60e07"
+  },
+  "nurse_prior_supplied": false,
+  "source_policy": "Only each AHC case JSON instruction field; existing requirements, supplies, completion_note and demo data excluded from generation.",
+  "protected_files_unchanged": true,
+  "completed_utc": "2026-11-23T07:57:46.153299+00:00"
+}

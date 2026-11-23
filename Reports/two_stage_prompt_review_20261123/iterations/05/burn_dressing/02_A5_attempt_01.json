@@ -1,0 +1,147 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "preconditions": [
+        {
+          "requirement_id": "A5_pre_1",
+          "condition": "The burn area is accessible for rinsing after the old dressing has been removed.",
+          "source": "graph_dependency",
+          "source_reference": "A4",
+          "requires_expert_review": false,
+          "vqa_question": "Has the old dressing been removed to expose the burn?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "burn",
+              "old dressing"
+            ],
+            "observable_cues": [
+              "absence of old dressing over burn"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "current frame only provides snapshot of dressing state"
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A5_post_1",
+          "condition": "The burn is rinsed with cool running water.",
+          "source": "explicit_instruction",
+          "source_reference": "Rinse the burn with cool running water",
+          "requires_expert_review": true,
+          "vqa_question": "Was the burn rinsed with cool running water?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video",
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "burn",
+              "water source"
+            ],
+            "observable_cues": [
+              "water flow over burn area"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "partially_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "cannot verify water temperature from visual input alone",
+              "requires confirmation of running water flow"
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A5_err_1",
+          "error_type": "technique_error",
+          "violation_condition": "The burn is rubbed during rinsing.",
+          "compliance_condition": "The burn is rinsed without rubbing.",
+          "compliance_question": "Was the burn rinsed without any physical rubbing of the area?",
+          "applicability_condition": "applicable",
+          "related_requirement_ids": [
+            "A5_post_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Do not rub the burn",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video"
+            ],
+            "relevant_entities": [
+              "burn",
+              "hand"
+            ],
+            "observable_cues": [
+              "rubbing motion"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "cannot determine contact force or friction"
+            ]
+          }
+        },
+        {
+          "criterion_id": "A5_err_2",
+          "error_type": "technique_error",
+          "violation_condition": "Any blister is broken during rinsing.",
+          "compliance_condition": "The burn is rinsed without breaking any blisters.",
+          "compliance_question": "Was the burn rinsed without breaking any blisters?",
+          "applicability_condition": "applicable",
+          "related_requirement_ids": [
+            "A5_post_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "do not break any blisters",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video",
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "burn",
+              "blister"
+            ],
+            "observable_cues": [
+              "blister damage"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "partially_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "blister integrity may be difficult to assess visually"
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "failure to rinse the burn as instructed per procedure steps",
+      "review_notes": [
+        "Requires human confirmation for water temperature and blister integrity."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A5 postcondition includes cool temperature which cannot be validated without human confirmation. Rubbing and blister breakage are split into distinct local criteria as requested."
+  ]
+}

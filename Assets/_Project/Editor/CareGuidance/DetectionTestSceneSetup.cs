@@ -10,7 +10,7 @@ namespace HomeCare.Guidance.EditorTools
         public const string ScenePath = "Assets/_Project/Scenes/3DGuidanceTestScence.unity";
         const string CameraRigPrefab = "Packages/com.meta.xr.sdk.core/Prefabs/OVRCameraRig.prefab";
 
-        [MenuItem("Tools/Home Care/Set Up 3D Guidance Test Scene")]
+        // [MenuItem("Tools/Home Care/Set Up 3D Guidance Test Scene")]
         public static void SetUp()
         {
             var scene = EditorSceneManager.GetActiveScene();
@@ -52,7 +52,7 @@ namespace HomeCare.Guidance.EditorTools
         /// Builds an APK with only the test scene, without changing the project's Build Settings
         /// (the V2 scene stays the default build). Returns a one-line result.
         /// </summary>
-        [MenuItem("Tools/Home Care/Build 3D Guidance Test APK")]
+        // [MenuItem("Tools/Home Care/Build 3D Guidance Test APK")]
         public static string BuildApk()
         {
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)

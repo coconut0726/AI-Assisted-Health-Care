@@ -1,0 +1,26 @@
+{
+  "experiment": "two-stage prompt revision 08; actual Gemini responses only",
+  "created_utc": "2026-11-23T10:59:48.333588+00:00",
+  "calls": [],
+  "cases": {},
+  "protected_file_sha256": {
+    "Assets/_Project/Runtime/Procedures/RequirementsPrompts.cs": "09655abba1a75fe107c6544f9943cd9d475357d64c1d15843c9899e0e86fb3e7",
+    "Assets/_Project/Runtime/Procedures/RequirementsJson.cs": "30f8f24c526f6de01ec29a44b3502c308cd6c7c5d657d7667dcbc6f1b40aff0c",
+    "Assets/_Project/Runtime/Procedures/ProcedureRequirements.cs": "5a71134a14b3fd7c43b3db15c905c36222219a49145001510d3719bddb91b35a",
+    "Assets/_Project/Runtime/Procedures/ProcedureSession.cs": "c4c2bf99ecae3c390fdb0443fa3f7045fb986d78204ad62125e716f236ea7a53",
+    "Assets/_Project/Content/Procedures/burn_care_procedure.json": "043d87eef136d7cd247f914a9a63076d5a081689a3830556d18c0ca19aba8a04",
+    "Assets/_Project/Content/Procedures/wound_dressing_procedure.json": "5216a02f4482c4b1504bb47e4cd47e1f188475421e8e6eadeefe4924ffa93573"
+  },
+  "prompt_sha256": {
+    "prompt_1": "e3d405aad7d9c908f83371c421328f14a9e7ac496493b73b0d75b833ccdcc3ad",
+    "prompt_2": "f40cf69edd892b117c46267224b2e3c0f62f0e72607e4968a513595a0e52d788"
+  },
+  "source_policy": "Only AHC case instruction; old rubrics, supplies, completion_note and demo data excluded.",
+  "nurse_prior_supplied": false,
+  "last_failure": {
+    "utc": "2026-11-23T11:03:04.372002+00:00",
+    "case": "burn_dressing",
+    "message": "Bridge HTTP 502: {\"error\": \"gemini could not be reached or timed out\"}"
+  },
+  "protected_files_unchanged": true
+}

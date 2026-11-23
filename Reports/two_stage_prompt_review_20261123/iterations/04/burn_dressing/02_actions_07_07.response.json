@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4253,
+    "total_input_tokens": 3332,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3332
+      }
+    ],
+    "total_cached_tokens": 1887,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1887
+      }
+    ],
+    "total_output_tokens": 921,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3332
+  },
+  "created": "2026-11-23T10:38:23Z",
+  "updated": "2026-11-23T10:38:23Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfROFJmSVrqJVDpjsIntow+m+1WhYjtCycLavDexv6Lj0TT2qmmEoo0Mq5oPDpd7uECVlVg989Yq2gUtVU/ILPy1cQvoieraH04Pl/87Ihx5ClBpRPfQZSbCyj82k89RsldKBnvQyVAscAYH/5j/lWojGIW5py8tqQGtKd5/yi6T1lWafX6SE/w3YS+enCEvNxqfdyx/ndcqgHPM=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A7_pre_01\",\n          \"condition\": \"The burn area is dry following completion of the previous skin-drying step.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A6\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Does the skin surrounding the burn appear dry?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"skin\", \"burn\"],\n            \"observable_cues\": [\"absence of moisture on skin\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Visual observation cannot confirm clinical dryness.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_post_01\",\n          \"condition\": \"A thin layer of burn ointment has been applied to the burn using a cotton swab.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Use a cotton swab to apply a thin layer of burn ointment to the burn\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Is a thin layer of ointment present on the burn with a cotton swab visible in the scene?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"cotton swab\", \"burn\", \"burn ointment\"],\n            \"observable_cues\": [\"swab presence\", \"ointment appearance on burn\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Visual appearance cannot confirm the thickness or uniformity of the ointment layer.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A7_err_01\",\n          \"error_type\": \"technique_error\",\n          \"violation_condition\": \"Ointment applied in a thick or uneven manner inconsistent with a thin layer.\",\n          \"compliance_condition\": \"Ointment layer appears thin across the burn area.\",\n          \"compliance_question\": \"Does the ointment appear to be applied in a thin, uniform layer?\",\n          \"applicability_condition\": \"ointment is applied\",\n          \"related_requirement_ids\": [\"A7_post_01\"],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"apply a thin layer of burn ointment\",\n          \"requires_expert_review\": true,\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"burn\", \"burn ointment\"],\n            \"observable_cues\": [\"ointment coverage thickness\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"partially_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Visual estimation of 'thin' is subjective and not clinically validated.\"]\n          }\n        }\n      ],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"medium\",\n      \"skip_impact\": \"Applying too much or too little ointment may impede proper healing or therapeutic effect.\",\n      \"review_notes\": [\"A thin layer is a qualitative descriptor requiring clinical interpretation.\", \"The use of a cotton swab is assumed visually observable, but correct technique during application is not confirmed by single-frame imagery.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"The manual assumes the user can distinguish between thin and thick layers based on visual assessment.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

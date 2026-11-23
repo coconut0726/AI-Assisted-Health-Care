@@ -1,0 +1,164 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A1_POST1",
+          "condition": "Hands appear clean.",
+          "source": "explicit_instruction",
+          "source_reference": "Wash your hands",
+          "requires_expert_review": true,
+          "vqa_question": "Do the user's hands appear clean after the washing action?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "hands"
+            ],
+            "observable_cues": [
+              "visual cleanliness of skin surface"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Visual appearance is not evidence of microbial cleanliness.",
+              "Requires definition of 'clean' in a clinical context."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [
+        "Hands under water or applying soap",
+        "Visible rubbing of hands"
+      ],
+      "skip_risk": "high",
+      "skip_impact": "Compromises aseptic technique for subsequent steps.",
+      "review_notes": [
+        "Cleanliness is not objectively verifiable by standard RGB imaging."
+      ]
+    },
+    {
+      "action_id": "A2",
+      "preconditions": [
+        {
+          "requirement_id": "A2_PRE1",
+          "condition": "Hands are clean.",
+          "source": "graph_dependency",
+          "source_reference": "A1",
+          "requires_expert_review": true,
+          "vqa_question": "Are the hands clean prior to donning gloves?",
+          "evidence_specification": {
+            "evidence_types": [
+              "interaction_history"
+            ],
+            "relevant_entities": [
+              "hands"
+            ],
+            "observable_cues": [
+              "A1 completion"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "state_machine",
+            "observability": "not_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "No capability to track action history or ensure state persistence."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A2_POST1",
+          "condition": "Clean gloves are worn on both hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "vqa_question": "Are clean gloves visible on both hands?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "hands",
+              "gloves"
+            ],
+            "observable_cues": [
+              "gloves covering both hands"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Cannot confirm sterility or 'cleanliness' of gloves from appearance."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A2_ERR1",
+          "error_type": "wrong_object",
+          "violation_condition": "Gloves are not worn or wrong type of object worn on hands.",
+          "compliance_condition": "Hands are covered with gloves.",
+          "compliance_question": "Are gloves present on both hands?",
+          "applicability_condition": "Action A2 is attempted.",
+          "related_requirement_ids": [
+            "A2_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "hands",
+              "gloves"
+            ],
+            "observable_cues": [
+              "glove presence on hands"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": []
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "Hands interacting with glove material"
+      ],
+      "skip_risk": "high",
+      "skip_impact": "Violation of aseptic practice.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A3",
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "in_progress_criteria": [
+        "User gaze directed toward the cut on the skin pad"
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "Necessary for identifying potential infection signs.",
+      "review_notes": [
+        "Cannot verify 'looking' intent; only verify gaze direction if supported by capabilities, which is not."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

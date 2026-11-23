@@ -8,7 +8,7 @@ namespace HomeCare.Authoring
     public static class ARPrototypeChecks
     {
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tools/Home Care/Run AR Prototype Checks")]
+        // [UnityEditor.MenuItem("Tools/Home Care/Run AR Prototype Checks")]
         public static void RunInEditor()
         {
             int count = Run("Assets/_Project/Content/Procedures/ar_example.json");

@@ -1,0 +1,55 @@
+{
+  "general": [
+    "This is an actual rejected candidate, not a correct example. Apply these corrections to the JSON fields, not just review_notes. Preserve unaffected IDs and exact source quotes. No supplied nurse expert knowledge. No added clinical rules, diagnoses, material properties, manual tests or numerical values.",
+    "Remove preconditions that only repeat a graph dependency. No invented supplies-available or camera-visible gate. Claims of past operation occurrence cannot use appearance or nearby tools as evidence. Mark required human/process evidence honestly. No state_machine supported when action history is absent.",
+    "Remove all Action-local copies of cross-action no-rubbing/no-blister-breaking prohibitions; globals cover each once. Local order-before clauses should not masquerade as Technique Error. Do not equate pre-existing abnormal target state with user's execution error.",
+    "Every field claiming source explicit_instruction needs a single exact source quotation. Graph dependencies need source graph_dependency and concrete IDs/relations in source_reference. Unknown/unobserved does not mean satisfied, omitted or violated."
+  ],
+  "burn_dressing": {
+    "02_actions_01_03": [
+      "A2_1: remove unused from observable_cues. Source says clean, not unused/sterile. Ask for source-grounded human confirmation of clean condition/provenance, no extra requirement.",
+      "A2_2 condition must ONLY claim gloves are worn on hands. Remove clean from this RGB-supported claim because A2_1 separately covers cleanliness. Preserve visible wearing evidence.",
+      "A3_1 should claim the source-required soaking with clean water occurred when sticking; the before-lifting relation is already in the graph. Remove A3_E1 order-as-technique duplication. Keep human evidence for soaking and clean water, no saturation/duration proxy."
+    ],
+    "02_actions_04_06": [
+      "Delete A4_pre_1, A5_pre_1 and A6_pre_1: they copy graph completion dependencies. Keep A6 clean-towel property precondition.",
+      "Delete A4_E1/A4_E2/A5_E1/A6_E1 local prohibition copies: reserve no-rub/no-blister for globals only. Preserve gentle removal as a real requirement/criterion with human evidence and review, no speed/force threshold. Preserve clean towel and completed pat-drying.",
+      "A6_post_1 claims actual pat-drying with a clean towel, so after-frame dryness/towel-nearby cues cannot establish it. Use human confirmation of the actual completed pat-drying operation, current_support human_required. If a visible dry-state claim is retained it must be separate from occurrence. Cool-water rinse remains human-required and marked for undefined cool interpretation."
+    ],
+    "02_actions_07_09": [
+      "Remove invented supplies-available preconditions A7_PRE_1 and A9_PRE_1. Keep source-supported non-stick property identity as a separate human/provenance requirement.",
+      "A7_POST_1 includes actual cotton-swab use and burn-ointment identity. A sheen/nearby swab cannot establish those. Require human confirmation of actual source-specified application/tool/material; do not mark whole claim RGB supported. Thin-layer requirement stays reviewed/human-required, without invented visual/numerical thickness tests.",
+      "Remove A7_ERR_1/A7_ERR_2 prohibition duplicates. No local no-rub/no-blister copies. A8_POST_1 spatial coverage should not reassert unseen non-stick property as visually proved; separate pad placement/coverage from material identity and mark coverage partial because boundaries/interfaces may be hidden. Do not claim generic material texture proves non-stick.",
+      "A9_POST_2 loosely needs human confirmation with an expert-reviewed qualitative definition; no invented indentation/constriction/discoloration/gap tests. Prefer no redundant A9_ERR_1, or describe ONLY source-grounded non-loose wrapping with that same human/review evidence, not added clinical effects. Preserve actual gauze-wrap end state."
+    ],
+    "02_actions_10_11": [
+      "Remove A10_pre_1 copied graph dependency. A10_post_1 claims actual securement, which projection overlap alone does not establish: use human confirmation or partial evidence, not unqualified supported.",
+      "Keep source rule that tape is kept off burned skin throughout application as a local spatial criterion requiring interval/human evidence. A final tape position alone cannot prove that history. Do not require tape only on gauze, and do not duplicate this rule globally. End-position state may remain separate and partial.",
+      "A11_post_1 must explicitly preserve the source conditional nurse call and all OR triggers (more red, more swollen, starts to smell, leak pus, fever). Do not replace them with an infection diagnosis, generic clinical signs or a new message tool. Human confirmation of the call when applicable; no nurse acknowledgment requirement, whole-procedure prerequisite or invented deadline."
+    ],
+    "02_procedure_criteria": [
+      "P_ORDER_ERROR must use source graph_dependency, with concrete actual graph relations in source_reference: A1->A2; A4->A5; A5->A6; A4->A7; A7->A8; A8->A9; A9->A10; A3->A4 ONLY if sticking. No A11 ordering prerequisite. Do not cite a non-quote as explicit_instruction.",
+      "Missing-step coverage must include ALL eleven IDs, including A3 WHEN sticking and A11 WHEN a source notification trigger holds. Unknown applicability is unresolved. Not observed in sparse frames is not omitted. A valid dependent-event/completion boundary plus adequate human/event records is needed; notification has no specified deadline and any automatic omission timing needs expert review, not an invented care-completion deadline.",
+      "No-rub and no-blister-break are TWO globals over relevant contact A3-A10; do not forbid contact itself. Blister rule applies only to existing intact blisters when present, with unknown applicability unresolved. Whole-interval non-breakage needs baseline/history plus adequate human observation, NOT a final RGB appearance. Do not require already-broken blisters to be intact. Set human_required or unsupported, not RGB partial as sufficient proof."
+    ]
+  },
+  "simple_wound_dressing": {
+    "02_actions_01_03": [
+      "A1 evidence cues must not add soap/water: original only instructs handwashing. Ask for confirmation that source-instructed handwashing occurred, without specifying agents, sink or duration.",
+      "A2 clean-property human precondition: do not strengthen clean to unused/sterile or visual absence of dirt. A2_post_1 must ONLY claim gloves worn on hands for RGB-supported evidence; cleanliness is separate. No object_mask sensor output is supplied as a dedicated channel; VLM may reason over RGB appearances but do not claim an upstream mask stream.",
+      "A3 actual inspection completion must mean the user checked ALL specified redness, swelling and leakage features, not merely looked at the cut. Preserve a separate target-state finding as partially observable/reviewed or human-confirmed, not clinical clearance. DELETE A3_E1: a pre-existing red/swollen/leaking cut is NOT a user's Technique Error. Do not invent an extra taxonomy or response Action."
+    ],
+    "02_actions_04_06": [
+      "Keep source non-stick identity/provenance separate from whole-cut spatial coverage, with coverage partial when boundaries are hidden. Do not add white/sterile/clinical safety requirements.",
+      "Wrapper-inside-bag is actual containment, not projected overlap; retain depth/occlusion limitations. Sealed bag requires actual seal engagement, not merely aligned edges. No invented test Action. Avoid pointless negative duplicates of every postcondition; only keep useful specific source-grounded spatial diagnostics."
+    ],
+    "02_actions_07_08": [
+      "Keep bare-hand final state distinct from evidence actual removal occurred; no invented removal technique. A8 final handwashing must remain distinct from A1.",
+      "A8 evidence cues must not add a sink, water, soap or duration. Source only specifies wash hands; confirmation concerns that operation, without adding an implementation. Do not duplicate A7 as a precondition."
+    ],
+    "02_procedure_criteria": [
+      "Order criteria must use source graph_dependency with EXACT graph IDs/relations in source_reference: A1->A2, A3->A4, A5->A6, A6->A7, A7->A8 only. A2->A3 and A4->A5 are not mandatory graph edges. Do not serialize all array positions.",
+      "Missing Step covers all A1-A8, requires adequate history/human records and justified dependent-event or completion boundary, never absence in a snapshot. No new no-contact/clinical/sterility/notification rules. Preserve all existing valid source/evidence limitations."
+    ]
+  }
+}

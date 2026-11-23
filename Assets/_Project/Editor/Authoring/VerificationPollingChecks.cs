@@ -8,7 +8,7 @@ namespace HomeCare.Authoring
     public static class VerificationPollingChecks
     {
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tools/Home Care/Run Verification Polling Checks")]
+        // [UnityEditor.MenuItem("Tools/Home Care/Run Verification Polling Checks")]
         public static void RunInEditor() => UnityEngine.Debug.Log("Verification polling: " +
             Run("Assets/_Project/Content/Procedures/ar_example.json") + " checks passed.");
 #endif

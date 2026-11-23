@@ -2,23 +2,13 @@
 
 This project explores an AI-assisted augmented reality system for home healthcare procedure guidance and verification. The system converts urse-provided instructions into structured procedural requirements, provides step-by-step AR guidance, and evaluates user execution.
 
-# Key Features
-- Enable displaying step-by-step instructions through a Meta Quest headset.
-- Enable generating and manually refining structured procedural requirements from nurse instructions.
-- Enable capturing an image after step completion and using VLMs to evaluate procedural requirements.
-- Enable managing verification results, retries, and progression through a structured session state machine.
-
-# Progress
-Version_1: Focuses on after-step verification, allowing users to review feedback and retry a step before proceeding.
-Version_2: Add local lightweight model(Qwen3-VL-4B) for quick verification and periodical sampling module. 
-
-# V3: Periodical Sampling with Lightweight VLM  
+# Start Preperation
 
 The main workflow is **VRGuidanceDemo + Quest Link + local Qwen**. Follow steps 1–4 below using the reviewed procedure already assigned to the scene. The launcher prepares missing local-model dependencies automatically; Unity and Quest Link must already be installed.
 
 ### 1. Connect the local VLM
 
-1. Open **Tools → Home Care → VLM Backend** in Unity.
+1. Open **AHC → VLM Backend** in Unity.
 2. Select **Qwen** (`qwen3-vl:4b-instruct`) and click **Apply & Start**.
 3. Wait for **Applied** and confirm **Running** shows `ollama / qwen3-vl:4b-instruct`. Unity is now connected to the local model.
 
@@ -28,66 +18,29 @@ To use Gemini instead, select **Gemini**, enter your model ID and API key, and c
 
 ### 2. Connect the headset through Quest Link
 
-Start a working Quest Link session on the same PC. Use OpenXR for the real headset path and disable XR Simulation for that path. Prepare the headset camera access required by the Link setup.
+Start a working Quest Link session on the same PC. Use OpenXR for the real headset path and disable XR Simulation for that path. Prepare the headset camera access required by the Link setup. Unity runs in the Editor and appears in the headset. There is no APK installation in this workflow.
 
-Unity runs in the Editor and appears in the headset. There is no APK installation in this workflow.
-
-### 3. Open the configured main scene
-
-Open `Assets/_Project/Scenes/VRGuidanceDemo.unity` and enter Play mode. Choose **Caregiver / patient**.
-
-The saved scene is already configured with:
-
-| Setting | Saved value |
-| --- | --- |
-| `RealCareSession.procedureJson` | `wound_dressing_procedure.json`: 4 steps, 5 checks |
-| `autoVerify` / `verificationInterval` | Enabled / 5 seconds |
-| `AfterStepCamera.editorTestImage` | Empty |
-| `captureViewCameraInEditor` | Disabled, requesting real passthrough over Link |
-| Editor placeholder props | Disabled |
-| Automatic supply detection, per-step object finding, touch-triggered relocalization | Disabled |
-
-No setup menu is needed for the saved main scene. On the supply screen, **Look again** optionally checks supplies; **Start** begins the procedure without requiring a supply check.
-
-### 4. Perform the procedure and review verification
-
-Press **Start** on the supply screen. The current instruction and its requirements appear on the headset.
-
-1. Perform the step while keeping the relevant work area in view.
-2. After five seconds, the app captures a fresh image and sends the current step's requirements for verification. Further polling slots occur at five-second intervals.
-3. The panel shows **Pass / Not met / Not sure** per requirement. Failed or uncertain checks keep the step active for a later attempt. Request errors also leave the step available for retry.
-4. Once every requirement passes, polling stops and **Next** or **Finish** unlocks. Click it to advance or complete the procedure. A new step starts a fresh interval.
-
-The interval controls when a request may start, not how quickly Qwen returns an answer. Slots are skipped while capture, verification, or an object search is busy; missed slots do not become queued requests.
-
-**Check step / Check again** still performs a manual check with the photo countdown. Automatic checks skip that countdown. **Skip**, available after an unsuccessful check, is a presenter override and is recorded as skipped. Home, application pause, and disabling the component cancel step work; stale replies cannot update another step or a restarted session. Resuming waits a fresh interval.
-
-| Input | Main-scene action |
-| --- | --- |
-| Hand ray + pinch, or fingertip touch | Press a panel button |
-| Controller A / Editor Right Arrow, Space, or Enter | Start, check manually, or advance, depending on screen/state |
-| Controller B / Editor Left Arrow or Backspace | Skip after an unsuccessful check; Home from the supply screen |
-| Controller X / Editor R | Look for supplies or find the current step's items |
-| Controller Y / Editor H or Escape | Home |
-
-### 5. generate a custom procedure
+### 3. generate a custom procedure
 
 This is a preparation workflow. Skip it when using the procedure already assigned to the scene. Start the selected backend using step 1 before generating.
 
-1. Exit Play mode and open **Tools → Home Care → Requirements Prototype**.
+1. Exit Play mode, open **AHC → Requirements Prototype**, and click **Legacy requirements editor…** for this original demo.
 2. In **1. Author**, enter the nurse's instruction, keep **ProjectBackend** selected to follow the VLM Backend window, and click **Generate step requirements**. Explicit Gemini/Claude/LocalOllama overrides remain available.
 3. Review the steps, requirements, VQA questions, evidence scopes, and source quotations. In **3. Edit JSON**, apply any corrections with **Validate and apply JSON**.
 4. Return to **1. Author** and click **Save requirements**. Save under `Assets/_Project/Content/Procedures/` so Unity imports the JSON as a TextAsset.
-5. Select **AHC VR Demo** in `VRGuidanceDemo` and assign that asset to **RealCareSession → Procedure Json**. Save the scene outside Play mode.
-6. Continue with Testing steps 2–4 to run the custom procedure.
 
-The same window's **2. Verify** tab supports manually selected before/after images for a selected step. Local VQA explicitly rejects whole-step MP4 video; it does not discard video or relabel it as after-step evidence.
+# V3: Periodical Sampling with LocalVLM (`VRGuidanceDemoActions.unity`)
 
-The older **Tools → Home Care → Decompose Instruction** window generates the earlier `steps → subgoals → actions` schema. Use **Requirements Prototype** for the requirement JSON consumed by `RealCareSession`.
+V3 adds **periodical sampling** and **Action-level verification**. 
 
-To switch between included care cases, use **AHC → Care Case → Simple Wound Dressing (prop test)** or **Burn Dressing**. These menus change the main scene's assigned procedure.
+1. In **AHC → VLM Backend**, select **Qwen** and click **Apply & Start**.
+2. Open **AHC → Open Action Requirements Demo**, or `Assets/_Project/Scenes/VRGuidanceDemoActions.unity`, then Play and **Begin**.
+3. The app first checks the current Action's applicability and preconditions, then checks its completion requirements and applicable execution rules together. New polling slots occur every **1 second**; a busy request skips slots without a queue. Model inference can take much longer than one second.
+4. **Next Action** requires all active checks confirmed and graph prerequisites resolved. Unknown never passes. Checks continue until Next; a failed fresh check removes an earlier model pass. Recorded execution-rule violations remain blocked until an explicit retry, and global violations require a new procedure run.
 
+**Current verification logic:** Current Action → preconditions satisfied → postconditions and error criteria checked together → Next Action. Conditional Actions first require applicability confirmation; Actions without preconditions enter postcondition/error checks directly. The Session maintains the current Action rather than recognizing it from the image. Passed preconditions are recorded and are not continuously rechecked in the next phase.
 
+Current verification request contains: task goal, current Step and Action, current phase and its active requirements, one current RGB frame, confirmed history from this run (last 12 relevant records), graph prerequisite states, a compact task outline, and request/action/phase IDs.
 
 # V2: Hands-only care guidance (`VRGuidanceDemo_V2.unity`)
 
@@ -147,12 +100,3 @@ Code: `Assets/_Project/Runtime/Detection/`. Added automatically to the V2 contro
 3. Each box becomes a 3D box in the room. Objects smaller than 5 cm get a pulsing dot instead. `move_to_target` / `apply_to_target` adds an arrow and a ghost box that moves to the target, and `wait` adds a countdown.
 
 The request defaults to the items the current step names. `FindItems("any object name")` takes free text, so voice input can call it later. Inspector (`ObjectDetectionGuidance`): `testPrompt` (used by `F`), `findOnNewStep`, `defaultDistance` (used when there is no depth), `minBoxEdge`. Each request is saved in the session report with its image (`detect_step*.jpg`), boxes, 3D position, and depth source. The headset asks for the spatial data permission (`USE_SCENE`) for depth. Without it, boxes are placed at `defaultDistance`.
-
-### Stand-alone test scene (`3DGuidanceTestScence.unity`)
-
-Tests detection without the procedure flow. Rebuild it with **Tools → Home Care → Set Up 3D Guidance Test Scene**. It contains an OVRCameraRig, stand-in supplies (Editor only, hidden on the headset), and `ObjectDetectionTestRig`.
-
-- In the Inspector, set `stepInstruction` (the step the guidance follows) and `prompts` (one panel button each).
-- Editor: keys `1`–`4` run the prompts, `F` runs `testPrompt`, `X` clears, `C` moves the panel. Editor captures leave out the UI layer, as the headset camera does.
-- Every request is saved as an image and JSON (boxes, 3D size, depth source, latency) in `persistentDataPath/HomeCareDetectionTests/`.
-- The bridge handles one request at a time, so wait for a result (about 10–25 s) before pressing the next prompt.

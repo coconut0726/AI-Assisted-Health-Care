@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 5569,
+    "total_input_tokens": 4070,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4070
+      }
+    ],
+    "total_cached_tokens": 2091,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2091
+      }
+    ],
+    "total_output_tokens": 1499,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4070
+  },
+  "created": "2026-11-23T10:32:38Z",
+  "updated": "2026-11-23T10:32:38Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfROKKQ9PztreMCn+AdLon4LjnRjQaLIJFhu6eAOowVsTZhRpjDj8eHe6cVlFdT8sTS7m/7fdnKDeAcwoCRFLGpSUrvZbmhdhsPLKW+DlqRu8Zxhy0Q+EqEGNZDIxxPBKgtg1F5zE4QaL9INnJeS1EwmTklBo8OLit0Tqzg1zfSd+flRJLvlxM4SOio/K1OMG90xhOOOKN25SKMA=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [\n    {\n      \"criterion_id\": \"P_order_flow\",\n      \"error_type\": \"order_error\",\n      \"violation_condition\": \"An action was attempted before its required dependency: (A1->A2), (A2->A3), (A3->A4), (A3->A5), (A5->A6), (A6->A7), (A8->A9), (A9->A10), (A10->A11).\",\n      \"compliance_condition\": \"All steps were executed sequentially following their defined dependencies in the task graph.\",\n      \"relevant_step_ids\": [\"S1\", \"S2\", \"S3\"],\n      \"relevant_action_ids\": [\"A1\", \"A2\", \"A3\", \"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\", \"A11\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"interaction_history\"],\n        \"relevant_entities\": [\"user_actions\"],\n        \"observable_cues\": [\"execution_order\"],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"state_machine\",\n        \"observability\": \"not_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"System does not have access to complete temporal action history or state tracking.\"]\n      },\n      \"detection_timing\": \"continuous\",\n      \"source_reference\": \"task_graph\",\n      \"limitations\": [\"Requires full procedure state tracking which is not available in the current system capabilities.\"],\n      \"compliance_question\": \"Was every action performed after its prerequisite dependencies were met?\",\n      \"applicability_condition\": \"Always applicable\",\n      \"source\": \"graph_dependency\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_prohibit_rubbing\",\n      \"error_type\": \"technique_error\",\n      \"violation_condition\": \"The burn was rubbed during drying.\",\n      \"compliance_condition\": \"The skin was patted dry with a clean towel without rubbing.\",\n      \"relevant_step_ids\": [\"S2\"],\n      \"relevant_action_ids\": [\"A7\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_video\", \"relative_motion\"],\n        \"relevant_entities\": [\"clean towel\", \"skin\", \"burn\"],\n        \"observable_cues\": [\"towel motion\"],\n        \"temporal_scope\": \"during_action\",\n        \"verification_method\": \"not_verifiable\",\n        \"observability\": \"requires_external_sensor\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"Cannot distinguish between 'patting' and 'rubbing' using periodic RGB snapshots.\"]\n      },\n      \"detection_timing\": \"during_action\",\n      \"source_reference\": \"Do not rub the burn\",\n      \"limitations\": [\"Continuous video is required to distinguish action techniques.\"],\n      \"compliance_question\": \"Did the user pat the skin dry instead of rubbing it?\",\n      \"applicability_condition\": \"A7\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_prohibit_blister_break\",\n      \"error_type\": \"technique_error\",\n      \"violation_condition\": \"Any blisters on the burn were broken during cleaning or dressing.\",\n      \"compliance_condition\": \"Blisters remain intact throughout the procedure.\",\n      \"relevant_step_ids\": [\"S2\", \"S3\"],\n      \"relevant_action_ids\": [\"A3\", \"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_frame\"],\n        \"relevant_entities\": [\"burn\", \"blisters\"],\n        \"observable_cues\": [\"blister appearance\"],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"VLM\",\n        \"observability\": \"visually_observable\",\n        \"current_support\": \"partial\",\n        \"limitations\": [\"Occlusion or low resolution may prevent accurate assessment of blister integrity.\"]\n      },\n      \"detection_timing\": \"after_action\",\n      \"source_reference\": \"do not break any blisters\",\n      \"limitations\": [\"Requires comparison of blister state across the entire procedure.\"],\n      \"compliance_question\": \"Are all blisters still intact after the dressing application?\",\n      \"applicability_condition\": \"Always applicable\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_tape_placement\",\n      \"error_type\": \"spatial_error\",\n      \"violation_condition\": \"Medical tape is touching the burned skin.\",\n      \"compliance_condition\": \"Medical tape is used only on the gauze and not touching the burned skin.\",\n      \"relevant_step_ids\": [\"S3\"],\n      \"relevant_action_ids\": [\"A11\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_frame\", \"object_mask\"],\n        \"relevant_entities\": [\"medical tape\", \"burn\"],\n        \"observable_cues\": [\"tape position\"],\n        \"temporal_scope\": \"after_action\",\n        \"verification_method\": \"VLM\",\n        \"observability\": \"visually_observable\",\n        \"current_support\": \"partial\",\n        \"limitations\": [\"Occlusion by the dressing may prevent clear visibility of the tape's interface with skin.\"]\n      },\n      \"detection_timing\": \"after_action\",\n      \"source_reference\": \"keeping the tape off the burned skin\",\n      \"limitations\": [\"Tape placement beneath the outer gauze layer cannot be verified.\"],\n      \"compliance_question\": \"Is the medical tape secured only on the gauze roll and not on the burned skin?\",\n      \"applicability_condition\": \"A11\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": false\n    }\n  ],\n  \"review_notes\": [\"The requirement to 'gently' remove the dressing and 'loosely' wrap the gauze are qualitative and require expert review to establish operational thresholds.\", \"Detection of 'clean' materials (towel, water, gloves) is limited by visual classification and cannot guarantee sterility.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

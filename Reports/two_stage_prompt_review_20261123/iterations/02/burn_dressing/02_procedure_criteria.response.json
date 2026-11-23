@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4888,
+    "total_input_tokens": 4091,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4091
+      }
+    ],
+    "total_cached_tokens": 2096,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2096
+      }
+    ],
+    "total_output_tokens": 797,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4091
+  },
+  "created": "2026-11-23T10:27:19Z",
+  "updated": "2026-11-23T10:27:19Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfROg4LWTJZ6r2m0kzUceVquOS+MEtBoTLtwFN24rRi0OLkPnYL+KMuWfY7sLPx4Z3/2eUaANTZ+uM2n4Kb6xN8rm9AOXWZubz0cjLKFgqyVReBVLd70b1dKKcuG8VLfzoohjloupyObXNGgGItNUHotEOkv2LdNQ98o1HLsaWDoDabSVzXkqhAkpF5qWE9kYjO6MRYqf0DCOjb0=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [\n    {\n      \"criterion_id\": \"P_RUBBING_PROHIBITION\",\n      \"error_type\": \"technique_error\",\n      \"violation_condition\": \"Patient rubs the burn area during the drying process.\",\n      \"compliance_condition\": \"Patient pats the skin dry without lateral or rubbing motion.\",\n      \"relevant_step_ids\": [\"S2\"],\n      \"relevant_action_ids\": [\"A6\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_video\", \"hand_trajectory\"],\n        \"relevant_entities\": [\"hand\", \"clean towel\", \"skin\", \"burn\"],\n        \"observable_cues\": [\"hand motion pattern\", \"towel skin contact\"],\n        \"temporal_scope\": \"during_action\",\n        \"verification_method\": \"VLM\",\n        \"observability\": \"partially_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"Requires continuous video or high-frequency frame sampling to distinguish between patting and rubbing; current system baseline lacks video input.\"]\n      },\n      \"detection_timing\": \"during_action\",\n      \"source_reference\": \"Do not rub the burn\",\n      \"limitations\": [\"No video input available to verify motion technique.\"],\n      \"compliance_question\": \"Did the patient pat the skin dry instead of rubbing the burn area?\",\n      \"applicability_condition\": \"true\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_BLISTER_PROHIBITION\",\n      \"error_type\": \"technique_error\",\n      \"violation_condition\": \"Patient breaks blisters during cleaning or drying.\",\n      \"compliance_condition\": \"Visible integrity of existing blisters maintained throughout procedure.\",\n      \"relevant_step_ids\": [\"S2\"],\n      \"relevant_action_ids\": [\"A5\", \"A6\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_frame\"],\n        \"relevant_entities\": [\"burn\", \"blisters\"],\n        \"observable_cues\": [\"blister appearance\"],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"VLM\",\n        \"observability\": \"visually_observable\",\n        \"current_support\": \"partial\",\n        \"limitations\": [\"Visual comparison of before and after states cannot definitively rule out rupture during the procedure; depends on resolution and initial blister state clarity.\"]\n      },\n      \"detection_timing\": \"after_action\",\n      \"source_reference\": \"do not break any blisters\",\n      \"limitations\": [\"Blisters may be small or obscured; evidence only compares final state to visual history.\"],\n      \"compliance_question\": \"Are the blisters intact after cleaning and drying the burn?\",\n      \"applicability_condition\": \"blisters are present at the start\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": true\n    }\n  ],\n  \"review_notes\": [\n    \"Procedure error criteria added for rubbing and blister protection, as these are critical technique constraints specified in the instructions.\",\n    \"The system lacks continuous temporal monitoring (video), making technique-based error detection (like rubbing) difficult to guarantee; current evidence is marked unsupported for real-time motion analysis.\",\n    \"A11 (nurse call) is treated as an optional follow-up and no procedural failure criteria are created for it.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

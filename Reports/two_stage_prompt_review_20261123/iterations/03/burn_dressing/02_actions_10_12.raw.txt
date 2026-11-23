@@ -1,0 +1,177 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A10",
+      "preconditions": [
+        {
+          "requirement_id": "A10_01",
+          "condition": "The burn is covered with a non-stick pad.",
+          "source": "graph_dependency",
+          "source_reference": "A9",
+          "requires_expert_review": false,
+          "vqa_question": "Is the burn covered with a non-stick pad?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["burn", "non-stick pad"],
+            "observable_cues": ["non-stick pad covers the burn area"],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["occlusion by subsequent materials"]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A10_02",
+          "condition": "The burn is wrapped loosely with a gauze roll.",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": true,
+          "vqa_question": "Is the burn wrapped with a gauze roll, and does the wrapping appear loose?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame"],
+            "relevant_entities": ["gauze roll", "burn"],
+            "observable_cues": ["gauze roll positioned over the burn site", "appearance of loose wrapping"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": ["looseness is a qualitative judgment without physical measurement", "occlusion of burn underneath"]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A10_E01",
+          "error_type": "technique_error",
+          "violation_condition": "The gauze roll is wrapped tightly around the burn site.",
+          "compliance_condition": "The gauze roll is wrapped loosely around the burn site.",
+          "compliance_question": "Is the gauze roll wrapped loosely, not tightly, around the burn site?",
+          "applicability_condition": "Action A10 is performed.",
+          "related_requirement_ids": ["A10_02"],
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame"],
+            "relevant_entities": ["gauze roll", "burn"],
+            "observable_cues": ["absence of indentation or visible tension in the gauze"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "partial",
+            "limitations": ["visual assessment of tension is subjective"]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "high",
+      "skip_impact": "Prevents proper retention of the non-stick pad and protection of the burn.",
+      "review_notes": ["Definition of 'loosely' is missing; qualitative assessment remains expert review subject."]
+    },
+    {
+      "action_id": "A11",
+      "preconditions": [
+        {
+          "requirement_id": "A11_01",
+          "condition": "The burn is wrapped with a gauze roll.",
+          "source": "graph_dependency",
+          "source_reference": "A10",
+          "requires_expert_review": false,
+          "vqa_question": "Is the burn wrapped with a gauze roll?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["gauze roll", "burn"],
+            "observable_cues": ["gauze roll visible over the burn site"],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["occlusion by tape"]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A11_02",
+          "condition": "The gauze is secured with medical tape and the tape is not on the burned skin.",
+          "source": "explicit_instruction",
+          "source_reference": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+          "requires_expert_review": true,
+          "vqa_question": "Is medical tape securing the gauze, and is it placed only on skin outside the burn area?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame"],
+            "relevant_entities": ["medical tape", "gauze", "burn"],
+            "observable_cues": ["medical tape visible on gauze edges", "tape edges not touching burned skin"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": ["burn boundary may be obscured by gauze/tape/ointment"]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A11_E01",
+          "error_type": "spatial_error",
+          "violation_condition": "The medical tape is in contact with the burned skin.",
+          "compliance_condition": "The medical tape is on healthy skin or gauze, avoiding the burned skin.",
+          "compliance_question": "Is the medical tape completely off the burned skin?",
+          "applicability_condition": "Action A11 is performed.",
+          "related_requirement_ids": ["A11_02"],
+          "source": "explicit_instruction",
+          "source_reference": "keeping the tape off the burned skin",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame"],
+            "relevant_entities": ["medical tape", "burn"],
+            "observable_cues": ["tape location relative to visible burn edge"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "partial",
+            "limitations": ["exact burn margin is often hidden beneath dressings"]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "medium",
+      "skip_impact": "Gauze may fall off, potentially exposing the burn.",
+      "review_notes": ["Requires judgment of burn boundaries which may be obscured by dressings."]
+    },
+    {
+      "action_id": "A12",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A12_01",
+          "condition": "Nurse is called if specific conditions occur.",
+          "source": "explicit_instruction",
+          "source_reference": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+          "requires_expert_review": true,
+          "vqa_question": "Has the user been instructed to call the nurse given these symptoms, and is this a notification-type requirement?",
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["nurse", "user"],
+            "observable_cues": ["documented communication or user acknowledgment"],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["action is a verbal/telephonic communication and not observable by camera"]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "high",
+      "skip_impact": "Failure to report signs of infection could result in delayed medical intervention.",
+      "review_notes": ["This is a communication instruction. Cannot be verified via visual input."]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": ["A12 requires human confirmation; the system cannot verify verbal communication or private health states (fever)."]
+}

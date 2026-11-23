@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4181,
+    "total_input_tokens": 3332,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3332
+      }
+    ],
+    "total_cached_tokens": 1887,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1887
+      }
+    ],
+    "total_output_tokens": 849,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3332
+  },
+  "created": "2026-11-23T10:38:27Z",
+  "updated": "2026-11-23T10:38:27Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRNv3IU8tzJQhVI5pH52KFJUI41vPXKXZxrJCqDdOjAAKcEqWMNywH5dKjjLjNd3BmcOOBLlyAb+Q2HmYXBWtZhw4so0b77klaTvdUfOonHOMnmI/s3K1wvZkk6v7fd6rQGN9gaOnCTjv+7nKhbLWLqWsXGlmVhEH71F6ryUgP83vjn5pgLOcuMULEUnYIWqqfL5jV+vL5CTjzs=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A8\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A8_P1\",\n          \"condition\": \"The burn area is clean and prepared for dressing.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"S3\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Does the burn appear clean and free of previous materials?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"burn\", \"skin\"],\n            \"observable_cues\": [\"lack of old dressing debris\", \"clean skin surface\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Requires history or before-frame to verify full cleanliness.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A8_C1\",\n          \"condition\": \"The non-stick pad is placed over the burn.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Cover the burn with a non-stick pad\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the non-stick pad covering the burn area?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"spatial_position\"],\n            \"relevant_entities\": [\"non-stick pad\", \"burn\"],\n            \"observable_cues\": [\"pad covering burn\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Occlusion may prevent verifying full contact coverage of the burn.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A8_E1\",\n          \"error_type\": \"wrong_object\",\n          \"violation_condition\": \"Material other than a non-stick pad is used to cover the burn.\",\n          \"compliance_condition\": \"A non-stick pad is identified covering the burn.\",\n          \"compliance_question\": \"Is the material identified as a non-stick pad?\",\n          \"applicability_condition\": \"Action A8 is performed.\",\n          \"related_requirement_ids\": [\"A8_C1\"],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Cover the burn with a non-stick pad\",\n          \"requires_expert_review\": false,\n          \"evidence_specification\": {\n            \"evidence_types\": [\"object_identity\"],\n            \"relevant_entities\": [\"non-stick pad\"],\n            \"observable_cues\": [\"distinct appearance of non-stick pad vs other materials\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Requires ability to differentiate materials visually.\"]\n          }\n        }\n      ],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"medium\",\n      \"skip_impact\": \"Infection risk due to lack of sterile barrier.\",\n      \"review_notes\": [\"Current system cannot confirm if the pad is non-stick, only that it is a pad covering the burn.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

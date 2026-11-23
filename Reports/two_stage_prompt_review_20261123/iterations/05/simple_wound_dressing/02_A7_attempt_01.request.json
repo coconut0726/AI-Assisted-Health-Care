@@ -1,0 +1,698 @@
+{
+  "model": "gemini-3.1-flash-lite-preview",
+  "store": false,
+  "system_instruction": "Author verification specifications, not execution verdicts or medical advice. Return JSON matching the schema.\n\nInput: original_instruction,task_graph,nurse_prior,current_system_capabilities,requested_action_ids,include_procedure_error_criteria. Update exactly the requested Actions in order; no graph mutation. If no Action IDs requested, action_updates:[]. Global criteria are [] unless include_procedure_error_criteria=true.\n\nOnly preconditions, postconditions and error_criteria. NO execution_constraints. Each requested Action MUST have a completion postcondition, even when it requires unavailable evidence or conditional human confirmation.\n\nSource fidelity:\n- Use only original_instruction and actually supplied expert notes. Empty nurse_prior means expert_prior is FORBIDDEN. A graph is a draft, not authorization to invent clinical requirements.\n- explicit_instruction requires a single exact contiguous quote as source_reference. graph_dependency requires concrete IDs and the relation. inferred requires requires_expert_review=true. Prefer not generating inferred conditions.\n- No added objects, washing agents, glove-removal techniques, clinical diagnoses/risks, force limits, temperature ranges, durations or tolerances. skip_impact explains dependency/task-outcome effects only; do not discuss infection, asepsis, blood flow etc unless explicitly supplied.\n\nMake every condition, question and evidence specification express the SAME claim. A yes answer means that whole claim holds. Separate state claims that need different evidence. Missing evidence never changes the source meaning.\n\nMandatory examples:\n1. \"Wash hands\": completion = the handwashing operation occurred. NOT hands appear clean/wet, absence of dirt or supplies nearby. Use human confirmation or adequate action video/history; the current single-frame app cannot establish occurrence.\n2. \"Put on clean gloves\": cleanliness of gloves is a source-supported PREcondition requiring human/provenance evidence; gloves worn on hands is the separate visible POSTcondition. Do NOT combine these into a supposedly visible clean-gloves claim. Do NOT add a precondition repeating the graph's earlier handwashing dependency.\n3. \"Inspect X for P,Q,R\": completion = the user checked all three named features. Human confirmation may be necessary. X being visible, camera gaze direction or apparent absence of P/Q/R does not prove the inspection occurred. Any separate target-state finding is distinct and does not equal a clinical diagnosis.\n4. A conditional notification still needs a completion postcondition specifying the source-requested notification was made when its trigger held. Do NOT return no requirements or make it optional because the current camera cannot verify it.\n5. A manner term (e.g., gently), material qualifier, tool-use rule, quantitative qualifier (e.g., thin), tightness qualifier (e.g., loosely) or prohibition must remain in a requirement or a specific error criterion. Do not drop it merely into review_notes. Undefined qualitative interpretation requires expert review; do not invent a measurement or test maneuver.\n\nCategories:\n- Preconditions are states before the Action, not its ongoing behavior. Do not duplicate graph edges as VQAs.\n- Postconditions are actual resulting states or actual completion of the specified operation. A plausible end state does not establish action history. Every Action has at least one.\n- Local error criteria diagnose only source-supported wrong_object,spatial_error,technique_error,measurement_error,timing_parameter_error. No generic imaginary mistakes. Not doing the Action is not Wrong Object; that belongs to Missing Step. Existing requirement IDs may be referenced; [] is allowed for a standalone explicit execution rule. No duplicate requirement merely to manufacture an ID.\n- Every criterion states a specific violation, sufficient positive compliance, and a matching positive compliance question. No detected violation is not proof of compliance. Inherit the Action's applicability. False is not applicable, unknown unresolved.\n- A cross-action prohibition belongs once in globals, never copied locally. An Action-specific rule stays local. Do not combine different rules into one question.\n\nEvidence:\nUse schema fields and enums. Describe evidence sufficient for the WHOLE claim, its time window and limitations. current_support: supported only if all needed evidence is supplied; partial if relevant but inconclusive evidence is supplied; unsupported if required process/history/sensor data are missing; human_required if human confirmation is needed (the current app has no such channel).\n- Single after_step RGB is not aligned before_action evidence, video, hand joints, contact measurements, event history or a physical sensor. Before checks and temporal operations are not fully supported by this app.\n- Surface appearance does not establish cleanliness, material non-stick property, temperature, tension, smell, fever or successful communication. Explicit human/provenance evidence may be needed.\n- Do not infer contact/containment/coverage from 2D overlap/boxes, grasping from co-motion, or use from a nearby tool. Occluded target boundaries/interfaces can make pad coverage, tape position and seal engagement unknown.\n- Continuous prohibitions require sufficient observation of the relevant whole interval; a compliant final photo or absence of visible change cannot establish no earlier violation. Sparse image timestamps do not measure action duration.\n- For quantitative/qualitative uncertainty retain the requirement, mark review, and explain the missing definition. Never output satisfied/failed/runtime status when no execution observations were supplied.\n\nGlobals when include_procedure_error_criteria=true:\nA. MUST include order_error for actual mandatory Step/Action/conditional dependency relations. Enumerate concrete predecessor/successor IDs, including Step dependencies, and specify conditional activation. No invented total sequential order. source=graph_dependency with these IDs in source_reference.\nB. MUST include missing_step covering ALL applicable Action IDs. State a dependent-event or procedure-completion boundary and sufficient observation/history or reliable human records. Unobserved between snapshots is not omitted; unknown applicability/history prevents a conclusive omission finding. Conditional notification is included when triggered, without an invented response-time deadline.\nC. Include each explicit cross-action prohibition once, covering all relevant contact Actions. If conditional (e.g., target feature is present), preserve that condition; never assume it always applies. Full-interval behavior cannot be verified using only final-frame appearance.\nDo not omit A/B because current evidence is missing: specify them with unsupported/human_required evidence. Do not duplicate a local criterion globally.\n\nIDs: local requirements/criteria begin action_id plus _; globals begin P_. All unique. Optional in_progress_criteria can be [] rather than assumed sensor cues. skip_risk concerns progression/stated outcome ONLY; unknown is preferable to invented clinical severity.\n\nFinal audit: authorized source; exact quote or explicit graph relation; inferred implies review=true; actual completion specified for each Action; question matches condition; no redundant prerequisite copies; no lost manner/tool/prohibition; evidence label consistent; conditional applicability preserved. For globals explicitly check presence of Order Error, Missing Step, and cross-action rules. JSON only.\n\nVALIDATION / REVIEW RETRY\nInput may include previous_response and review_feedback from rejection of a candidate. That candidate is NOT authoritative. Correct every source-supported feedback item; do not simply repeat the failed candidate. Return the COMPLETE replacement JSON for the requested scope, not a patch. Preserve unaffected IDs where possible. Review does not authorize invented clinical requirements. This is a retry of the same verification-authoring stage, not a new procedural stage.\n",
+  "input": [
+    {
+      "type": "text",
+      "text": "{\"original_instruction\": \"Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.\", \"task_graph\": {\"procedure_title\": \"Simple wound dressing\", \"instruction\": \"Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.\", \"steps\": [{\"step_id\": \"S1\", \"step_name\": \"Preparation\", \"step_description\": \"Hand hygiene and glove application.\", \"dependencies\": [], \"actions\": [{\"action_id\": \"A1\", \"instruction\": \"Wash your hands.\", \"original_text\": \"Wash your hands\", \"dependencies\": [], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [], \"materials\": [], \"contact_media\": [], \"targets\": [\"hands\"], \"associated_constraints\": []}, {\"action_id\": \"A2\", \"instruction\": \"Put on clean gloves.\", \"original_text\": \"put on clean gloves\", \"dependencies\": [\"A1\"], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [\"gloves\"], \"materials\": [], \"contact_media\": [], \"targets\": [\"hands\"], \"associated_constraints\": [\"clean\"]}]}, {\"step_id\": \"S2\", \"step_name\": \"Inspection\", \"step_description\": \"Inspect the cut on the skin pad.\", \"dependencies\": [], \"actions\": [{\"action_id\": \"A3\", \"instruction\": \"Look at the cut on the skin pad and check that it is not red, swollen or leaking.\", \"original_text\": \"Look at the cut on the skin pad. Check that it is not red, swollen or leaking.\", \"dependencies\": [], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [], \"materials\": [], \"contact_media\": [], \"targets\": [\"cut\", \"skin pad\"], \"associated_constraints\": [\"not red, swollen or leaking\"]}]}, {\"step_id\": \"S3\", \"step_name\": \"Application\", \"step_description\": \"Apply dressing to the wound.\", \"dependencies\": [], \"actions\": [{\"action_id\": \"A4\", \"instruction\": \"Place a non-stick pad over the whole cut on the skin pad.\", \"original_text\": \"Place a non-stick pad over the whole cut on the skin pad.\", \"dependencies\": [\"A3\"], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [\"non-stick pad\"], \"materials\": [], \"contact_media\": [], \"targets\": [\"cut\", \"skin pad\"], \"associated_constraints\": []}]}, {\"step_id\": \"S4\", \"step_name\": \"Cleanup\", \"step_description\": \"Dispose of materials and clean hands.\", \"dependencies\": [], \"actions\": [{\"action_id\": \"A5\", \"instruction\": \"Put the pad wrapper into the zip bag.\", \"original_text\": \"Put the pad wrapper into the zip bag\", \"dependencies\": [], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [\"zip bag\"], \"materials\": [\"pad wrapper\"], \"contact_media\": [], \"targets\": [\"zip bag\"], \"associated_constraints\": []}, {\"action_id\": \"A6\", \"instruction\": \"Seal the zip bag.\", \"original_text\": \"seal it\", \"dependencies\": [\"A5\"], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [], \"materials\": [], \"contact_media\": [], \"targets\": [\"zip bag\"], \"associated_constraints\": []}, {\"action_id\": \"A7\", \"instruction\": \"Take off the gloves.\", \"original_text\": \"take off the gloves\", \"dependencies\": [\"A6\"], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [\"gloves\"], \"materials\": [], \"contact_media\": [], \"targets\": [\"gloves\"], \"associated_constraints\": []}, {\"action_id\": \"A8\", \"instruction\": \"Wash your hands.\", \"original_text\": \"wash your hands\", \"dependencies\": [\"A7\"], \"conditional_dependencies\": [], \"applicability_condition\": \"\", \"actor\": [\"user\"], \"tools\": [], \"materials\": [], \"contact_media\": [], \"targets\": [\"hands\"], \"associated_constraints\": []}]}], \"context_notes\": [\"The source uses 'it' to refer to both the zip bag and the cut; dependencies clarify scope.\"], \"review_notes\": [\"Dependencies between steps are removed to favor precise Action-level dependencies. The dependencies of A3 on A2 and A5 on A4 are suggested by source flow but not explicitly stated as physical requirements; they are noted as customary for review.\", \"Constraint 'not red, swollen or leaking' is quoted exactly as a contiguous unit.\"]}, \"nurse_prior\": null, \"current_system_capabilities\": {\"runtime\": \"VRGuidanceDemo periodic verification baseline\", \"input\": \"one RGB image labelled after_step for the selected step at each free 5-second polling slot\", \"can_reason_about\": \"visible object appearances and relations in that image, subject to visibility/identity ambiguity\", \"not_supplied\": [\"before_action images with known alignment\", \"action-aligned video\", \"continuous observation coverage\", \"tracked action history\", \"hand joints or contact data in the verification request\", \"physical force, temperature or other sensor measurements\"], \"progression\": \"manual Next after the current step passes; no automatic action-level recognition\", \"missing_observations\": \"unknown, not proof of omission\", \"human_confirmation\": \"not currently implemented as a verification evidence channel\"}, \"requested_action_ids\": [\"A7\"], \"include_procedure_error_criteria\": false, \"review_feedback\": [\"You are correcting an actually rejected candidate. Apply the concrete feedback, not just a generic review note. Do not handwave missing requirements as user adherence. Keep source-named qualifiers in executable requirement/error fields.\", \"No clinical explanations in skip_impact. Use only source-stated outcome or explicit dependency impact; use unknown if impact is not established. Do not assert contamination/infection/trauma/healing/asepsis/sterility/circulation claims absent from the source.\", \"Remove redundant preconditions that only repeat a prerequisite Action's completion. An independent clean-material property is different and must not disappear. Do not invent preconditions such as object must be camera-visible or wound must be clean/prepared.\", \"Every compliance_question must ask whether compliance holds; YES MUST NOT mean an error. Do not ask whether there is evidence of rubbing or whether tape touches the burn as a positive compliance question. Do not combine rubbing and blister breakage into one criterion.\", \"A requirement includes exactly the properties asked by its question and supported by its evidence. If a condition needs occurrence of a specified operation, nearby objects or plausible final appearance are insufficient. Pick human_confirmation/human_required or adequate process evidence, not unavailable inferred sensor data.\", \"The supplied nurse_prior is empty. No expert_prior items. Preserve exact source quotes; inferred always requires review. Do not add quantities, uniformity, extra tools or additional technique prohibitions. Global Order/Missing criteria must use real graph IDs in source_reference.\", \"Postcondition gloves no longer worn, visually assessable when hands clear. No general-medical glove-removal contact technique or expert_prior. No duplicate A6 completion precondition.\"]}"
+    }
+  ],
+  "response_format": {
+    "type": "text",
+    "mime_type": "application/json",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "action_updates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action_id": {
+                "type": "string"
+              },
+              "preconditions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "requirement_id": {
+                      "type": "string"
+                    },
+                    "condition": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string",
+                      "enum": [
+                        "explicit_instruction",
+                        "graph_dependency",
+                        "expert_prior",
+                        "inferred"
+                      ]
+                    },
+                    "source_reference": {
+                      "type": "string"
+                    },
+                    "requires_expert_review": {
+                      "type": "boolean"
+                    },
+                    "vqa_question": {
+                      "type": "string"
+                    },
+                    "evidence_specification": {
+                      "type": "object",
+                      "properties": {
+                        "evidence_types": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "rgb_frame",
+                              "rgb_video",
+                              "object_identity",
+                              "object_mask",
+                              "hand_pose",
+                              "hand_object_contact",
+                              "hand_trajectory",
+                              "object_trajectory",
+                              "relative_motion",
+                              "spatial_position",
+                              "interaction_history",
+                              "measurement_reading",
+                              "duration",
+                              "external_sensor",
+                              "human_confirmation"
+                            ]
+                          }
+                        },
+                        "relevant_entities": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "observable_cues": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "temporal_scope": {
+                          "type": "string",
+                          "enum": [
+                            "before_action",
+                            "during_action",
+                            "after_action",
+                            "procedure_history"
+                          ]
+                        },
+                        "verification_method": {
+                          "type": "string",
+                          "enum": [
+                            "VLM",
+                            "deterministic_rule",
+                            "state_machine",
+                            "external_sensor",
+                            "human_confirmation",
+                            "not_verifiable"
+                          ]
+                        },
+                        "observability": {
+                          "type": "string",
+                          "enum": [
+                            "visually_observable",
+                            "partially_observable",
+                            "requires_external_sensor",
+                            "not_observable"
+                          ]
+                        },
+                        "current_support": {
+                          "type": "string",
+                          "enum": [
+                            "supported",
+                            "partial",
+                            "unsupported",
+                            "human_required"
+                          ]
+                        },
+                        "limitations": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "evidence_types",
+                        "relevant_entities",
+                        "observable_cues",
+                        "temporal_scope",
+                        "verification_method",
+                        "observability",
+                        "current_support",
+                        "limitations"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "requirement_id",
+                    "condition",
+                    "source",
+                    "source_reference",
+                    "requires_expert_review",
+                    "vqa_question",
+                    "evidence_specification"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "postconditions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "requirement_id": {
+                      "type": "string"
+                    },
+                    "condition": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string",
+                      "enum": [
+                        "explicit_instruction",
+                        "graph_dependency",
+                        "expert_prior",
+                        "inferred"
+                      ]
+                    },
+                    "source_reference": {
+                      "type": "string"
+                    },
+                    "requires_expert_review": {
+                      "type": "boolean"
+                    },
+                    "vqa_question": {
+                      "type": "string"
+                    },
+                    "evidence_specification": {
+                      "type": "object",
+                      "properties": {
+                        "evidence_types": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "rgb_frame",
+                              "rgb_video",
+                              "object_identity",
+                              "object_mask",
+                              "hand_pose",
+                              "hand_object_contact",
+                              "hand_trajectory",
+                              "object_trajectory",
+                              "relative_motion",
+                              "spatial_position",
+                              "interaction_history",
+                              "measurement_reading",
+                              "duration",
+                              "external_sensor",
+                              "human_confirmation"
+                            ]
+                          }
+                        },
+                        "relevant_entities": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "observable_cues": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "temporal_scope": {
+                          "type": "string",
+                          "enum": [
+                            "before_action",
+                            "during_action",
+                            "after_action",
+                            "procedure_history"
+                          ]
+                        },
+                        "verification_method": {
+                          "type": "string",
+                          "enum": [
+                            "VLM",
+                            "deterministic_rule",
+                            "state_machine",
+                            "external_sensor",
+                            "human_confirmation",
+                            "not_verifiable"
+                          ]
+                        },
+                        "observability": {
+                          "type": "string",
+                          "enum": [
+                            "visually_observable",
+                            "partially_observable",
+                            "requires_external_sensor",
+                            "not_observable"
+                          ]
+                        },
+                        "current_support": {
+                          "type": "string",
+                          "enum": [
+                            "supported",
+                            "partial",
+                            "unsupported",
+                            "human_required"
+                          ]
+                        },
+                        "limitations": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "evidence_types",
+                        "relevant_entities",
+                        "observable_cues",
+                        "temporal_scope",
+                        "verification_method",
+                        "observability",
+                        "current_support",
+                        "limitations"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "requirement_id",
+                    "condition",
+                    "source",
+                    "source_reference",
+                    "requires_expert_review",
+                    "vqa_question",
+                    "evidence_specification"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "error_criteria": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "criterion_id": {
+                      "type": "string"
+                    },
+                    "error_type": {
+                      "type": "string",
+                      "enum": [
+                        "wrong_object",
+                        "spatial_error",
+                        "technique_error",
+                        "measurement_error",
+                        "timing_parameter_error"
+                      ]
+                    },
+                    "violation_condition": {
+                      "type": "string"
+                    },
+                    "compliance_condition": {
+                      "type": "string"
+                    },
+                    "compliance_question": {
+                      "type": "string"
+                    },
+                    "applicability_condition": {
+                      "type": "string"
+                    },
+                    "related_requirement_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "source": {
+                      "type": "string",
+                      "enum": [
+                        "explicit_instruction",
+                        "graph_dependency",
+                        "expert_prior",
+                        "inferred"
+                      ]
+                    },
+                    "source_reference": {
+                      "type": "string"
+                    },
+                    "requires_expert_review": {
+                      "type": "boolean"
+                    },
+                    "evidence_specification": {
+                      "type": "object",
+                      "properties": {
+                        "evidence_types": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "rgb_frame",
+                              "rgb_video",
+                              "object_identity",
+                              "object_mask",
+                              "hand_pose",
+                              "hand_object_contact",
+                              "hand_trajectory",
+                              "object_trajectory",
+                              "relative_motion",
+                              "spatial_position",
+                              "interaction_history",
+                              "measurement_reading",
+                              "duration",
+                              "external_sensor",
+                              "human_confirmation"
+                            ]
+                          }
+                        },
+                        "relevant_entities": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "observable_cues": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "temporal_scope": {
+                          "type": "string",
+                          "enum": [
+                            "before_action",
+                            "during_action",
+                            "after_action",
+                            "procedure_history"
+                          ]
+                        },
+                        "verification_method": {
+                          "type": "string",
+                          "enum": [
+                            "VLM",
+                            "deterministic_rule",
+                            "state_machine",
+                            "external_sensor",
+                            "human_confirmation",
+                            "not_verifiable"
+                          ]
+                        },
+                        "observability": {
+                          "type": "string",
+                          "enum": [
+                            "visually_observable",
+                            "partially_observable",
+                            "requires_external_sensor",
+                            "not_observable"
+                          ]
+                        },
+                        "current_support": {
+                          "type": "string",
+                          "enum": [
+                            "supported",
+                            "partial",
+                            "unsupported",
+                            "human_required"
+                          ]
+                        },
+                        "limitations": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "evidence_types",
+                        "relevant_entities",
+                        "observable_cues",
+                        "temporal_scope",
+                        "verification_method",
+                        "observability",
+                        "current_support",
+                        "limitations"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "criterion_id",
+                    "error_type",
+                    "violation_condition",
+                    "compliance_condition",
+                    "compliance_question",
+                    "applicability_condition",
+                    "related_requirement_ids",
+                    "source",
+                    "source_reference",
+                    "requires_expert_review",
+                    "evidence_specification"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "in_progress_criteria": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "skip_risk": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "medium",
+                  "high",
+                  "unknown"
+                ]
+              },
+              "skip_impact": {
+                "type": "string"
+              },
+              "review_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "action_id",
+              "preconditions",
+              "postconditions",
+              "error_criteria",
+              "in_progress_criteria",
+              "skip_risk",
+              "skip_impact",
+              "review_notes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "procedure_error_criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "criterion_id": {
+                "type": "string"
+              },
+              "error_type": {
+                "type": "string",
+                "enum": [
+                  "order_error",
+                  "missing_step",
+                  "wrong_object",
+                  "spatial_error",
+                  "technique_error",
+                  "measurement_error",
+                  "timing_parameter_error"
+                ]
+              },
+              "violation_condition": {
+                "type": "string"
+              },
+              "compliance_condition": {
+                "type": "string"
+              },
+              "relevant_step_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "relevant_action_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "evidence_specification": {
+                "type": "object",
+                "properties": {
+                  "evidence_types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "rgb_frame",
+                        "rgb_video",
+                        "object_identity",
+                        "object_mask",
+                        "hand_pose",
+                        "hand_object_contact",
+                        "hand_trajectory",
+                        "object_trajectory",
+                        "relative_motion",
+                        "spatial_position",
+                        "interaction_history",
+                        "measurement_reading",
+                        "duration",
+                        "external_sensor",
+                        "human_confirmation"
+                      ]
+                    }
+                  },
+                  "relevant_entities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "observable_cues": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "temporal_scope": {
+                    "type": "string",
+                    "enum": [
+                      "before_action",
+                      "during_action",
+                      "after_action",
+                      "procedure_history"
+                    ]
+                  },
+                  "verification_method": {
+                    "type": "string",
+                    "enum": [
+                      "VLM",
+                      "deterministic_rule",
+                      "state_machine",
+                      "external_sensor",
+                      "human_confirmation",
+                      "not_verifiable"
+                    ]
+                  },
+                  "observability": {
+                    "type": "string",
+                    "enum": [
+                      "visually_observable",
+                      "partially_observable",
+                      "requires_external_sensor",
+                      "not_observable"
+                    ]
+                  },
+                  "current_support": {
+                    "type": "string",
+                    "enum": [
+                      "supported",
+                      "partial",
+                      "unsupported",
+                      "human_required"
+                    ]
+                  },
+                  "limitations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "evidence_types",
+                  "relevant_entities",
+                  "observable_cues",
+                  "temporal_scope",
+                  "verification_method",
+                  "observability",
+                  "current_support",
+                  "limitations"
+                ],
+                "additionalProperties": false
+              },
+              "detection_timing": {
+                "type": "string"
+              },
+              "source_reference": {
+                "type": "string"
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "compliance_question": {
+                "type": "string"
+              },
+              "applicability_condition": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "explicit_instruction",
+                  "graph_dependency",
+                  "expert_prior",
+                  "inferred"
+                ]
+              },
+              "requires_expert_review": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "criterion_id",
+              "error_type",
+              "violation_condition",
+              "compliance_condition",
+              "relevant_step_ids",
+              "relevant_action_ids",
+              "evidence_specification",
+              "detection_timing",
+              "source_reference",
+              "limitations",
+              "compliance_question",
+              "applicability_condition",
+              "source",
+              "requires_expert_review"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "review_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "action_updates",
+        "procedure_error_criteria",
+        "review_notes"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

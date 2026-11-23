@@ -1,0 +1,54 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "preconditions": [
+        {
+          "requirement_id": "A3_PRE1",
+          "condition": "The old dressing is observed to adhere to the skin, necessitating soaking.",
+          "source": "explicit_instruction",
+          "source_reference": "If it sticks, soak it with clean water",
+          "requires_expert_review": false,
+          "vqa_question": "Does the old dressing appear to be sticking to the burn site?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "spatial_position"],
+            "relevant_entities": ["old dressing", "burn"],
+            "observable_cues": ["dressing resistance during attempted lift"],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": ["Visual observation cannot confirm physical adhesion force."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A3_POST1",
+          "condition": "The old dressing is saturated with clean water.",
+          "source": "explicit_instruction",
+          "source_reference": "soak it with clean water",
+          "requires_expert_review": false,
+          "vqa_question": "Is the old dressing visibly wet from clean water?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["old dressing", "water"],
+            "observable_cues": ["saturated material appearance"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": ["Appearance of wetness does not verify liquid identity as clean water."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "none",
+      "skip_impact": "If omitted when the dressing is stuck, removing the dressing may cause trauma to the burn site.",
+      "review_notes": ["Requires user judgment to determine if the dressing 'sticks' before applying this action."]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": ["A3 is conditionally applicable based on the state of the dressing; therefore, missing step criteria cannot be enforced without human input."]
+}

@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 5228,
+    "total_input_tokens": 4652,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4652
+      }
+    ],
+    "total_cached_tokens": 3342,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3342
+      }
+    ],
+    "total_output_tokens": 576,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4652
+  },
+  "created": "2026-11-23T10:48:16Z",
+  "updated": "2026-11-23T10:48:16Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRNpPFlbxYONp1cQiK+6uH1O4M+C/zaFXzdW1JWglr5aFvMwnQGdIOG5WDpLYVWIYp1hCWrMBLGi0bV08G39ICXACVJ8F1Mc/05Bs4kJ/wgbdbJbP/WIOKEBbFgVbU1gidqyppBHycUTzjgW3s9wM7PjETR2vE7TCSbhU46lTxTDNeQRaN910AQsB/iYpC05xZk907YF+w72dpo=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A2\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A2_P1\",\n          \"condition\": \"The gloves selected for use are clean.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Are the gloves intended for use clean and in good condition?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"human_confirmation\"],\n            \"relevant_entities\": [\"gloves\"],\n            \"observable_cues\": [\"cleanliness of gloves\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"System cannot verify material cleanliness or state from visual data.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_POST1\",\n          \"condition\": \"The user is wearing gloves on their hands.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Are the hands covered by gloves?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"hands\", \"gloves\"],\n            \"observable_cues\": [\"hands covered by gloves\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Visual confirmation of presence only; cannot verify cleanliness.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"unknown\",\n      \"skip_impact\": \"Missing step prevents completion of the procedure as specified.\",\n      \"review_notes\": [\"Removed redundant handwashing dependency; A1->A2 dependency preserved in graph.\", \"Removed error criteria conflating missing step and technique.\", \"Added clean-material precondition requiring human confirmation.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"All criteria updated per feedback. No expert_prior used.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

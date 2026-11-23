@@ -1,0 +1,218 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [
+    {
+      "criterion_id": "P_order_error",
+      "error_type": "order_error",
+      "violation_condition": "A2 performed before A1, A4 performed before A3 if A3 is triggered, A5 or A7 performed before A4, A6 performed before A5, A8 performed before A7, A9 performed before A8, A10 performed before A9.",
+      "compliance_condition": "Actions followed the sequence specified by explicit graph dependencies: A1->A2, A3->A4 (if A3 triggered), A4->A5, A5->A6, A4->A7, A7->A8, A8->A9, A9->A10.",
+      "relevant_step_ids": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "relevant_action_ids": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history"
+        ],
+        "relevant_entities": [
+          "action sequence"
+        ],
+        "observable_cues": [
+          "execution sequence order"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "state_machine",
+        "observability": "not_observable",
+        "current_support": "unsupported",
+        "limitations": [
+          "Requires full procedure interaction history not available in current system."
+        ]
+      },
+      "detection_timing": "after each step",
+      "source_reference": "task_graph",
+      "limitations": [
+        "System lacks persistent state tracking for complete procedure history."
+      ],
+      "compliance_question": "Was every action performed in the sequence dictated by the procedure dependencies?",
+      "applicability_condition": "always",
+      "source": "graph_dependency",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_missing_step",
+      "error_type": "missing_step",
+      "violation_condition": "Any action A1-A10 was not completed, or A11 was not performed if its trigger conditions were met.",
+      "compliance_condition": "All applicable actions were completed.",
+      "relevant_step_ids": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "relevant_action_ids": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10",
+        "A11"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history"
+        ],
+        "relevant_entities": [
+          "all actions"
+        ],
+        "observable_cues": [
+          "action completion log"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "state_machine",
+        "observability": "not_observable",
+        "current_support": "unsupported",
+        "limitations": [
+          "System cannot determine if a skipped action is an omission or just not yet performed."
+        ]
+      },
+      "detection_timing": "procedure_end",
+      "source_reference": "explicit_instruction",
+      "limitations": [
+        "Cannot distinguish between missing step and unobserved action."
+      ],
+      "compliance_question": "Were all applicable procedural steps completed?",
+      "applicability_condition": "always",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_prohibit_rubbing",
+      "error_type": "technique_error",
+      "violation_condition": "The burn is rubbed during removal, rinsing, patting dry, or dressing application.",
+      "compliance_condition": "The burn is treated without rubbing.",
+      "relevant_step_ids": [
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "relevant_action_ids": [
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "rgb_video",
+          "hand_object_contact",
+          "relative_motion"
+        ],
+        "relevant_entities": [
+          "burn",
+          "hand",
+          "towel",
+          "cotton swab",
+          "gauze roll"
+        ],
+        "observable_cues": [
+          "rubbing motion",
+          "lateral friction"
+        ],
+        "temporal_scope": "during_action",
+        "verification_method": "human_confirmation",
+        "observability": "partially_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "Visual observation cannot definitively rule out rubbing without motion analysis."
+        ]
+      },
+      "detection_timing": "during_action",
+      "source_reference": "explicit_instruction",
+      "limitations": [
+        "Requires human confirmation of contact quality."
+      ],
+      "compliance_question": "Was the burn treated without rubbing?",
+      "applicability_condition": "during contact with burn",
+      "source": "explicit_instruction",
+      "requires_expert_review": true
+    },
+    {
+      "criterion_id": "P_prohibit_blister_breakage",
+      "error_type": "technique_error",
+      "violation_condition": "Visible blisters on the burn are broken during the procedure.",
+      "compliance_condition": "All existing blisters remain intact throughout the procedure.",
+      "relevant_step_ids": [
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "relevant_action_ids": [
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "rgb_frame",
+          "object_identity"
+        ],
+        "relevant_entities": [
+          "burn",
+          "blisters"
+        ],
+        "observable_cues": [
+          "blister integrity"
+        ],
+        "temporal_scope": "during_action",
+        "verification_method": "human_confirmation",
+        "observability": "visually_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "Cannot distinguish between blister rupture and dressing obscuration."
+        ]
+      },
+      "detection_timing": "during_action",
+      "source_reference": "explicit_instruction",
+      "limitations": [
+        "Requires human confirmation of blister state."
+      ],
+      "compliance_question": "Were all blisters left intact during the procedure?",
+      "applicability_condition": "if blisters are present",
+      "source": "explicit_instruction",
+      "requires_expert_review": true
+    }
+  ],
+  "review_notes": [
+    "Global constraints are now distinct for rubbing and blister breakage.",
+    "Order error and missing step criteria strictly reference graph IDs.",
+    "All evidence for global criteria is human_required or unsupported as per capabilities."
+  ]
+}

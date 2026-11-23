@@ -1,0 +1,209 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "preconditions": [
+        {
+          "requirement_id": "A4_P1",
+          "condition": "The old dressing is stuck.",
+          "source": "explicit_instruction",
+          "source_reference": "If it sticks, soak it with clean water before lifting it.",
+          "requires_expert_review": false,
+          "vqa_question": "Is the old dressing stuck to the burn site?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "burn"
+            ],
+            "observable_cues": [
+              "dressing resistance during removal attempt"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "requires_external_sensor",
+            "current_support": "human_required",
+            "limitations": [
+              "Visual observation cannot determine physical adhesion of a dressing to a wound."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A4_POST1",
+          "condition": "The old dressing is soaked with clean water.",
+          "source": "explicit_instruction",
+          "source_reference": "soak it with clean water",
+          "requires_expert_review": false,
+          "vqa_question": "Does the old dressing appear saturated with water?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "clean water"
+            ],
+            "observable_cues": [
+              "visual dampness on dressing"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Appearance of dampness does not confirm saturation or liquid identity."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "medium",
+      "skip_impact": "Prevents proper removal if the dressing is stuck.",
+      "review_notes": [
+        "Requires human confirmation for adhesion detection."
+      ]
+    },
+    {
+      "action_id": "A5",
+      "preconditions": [
+        {
+          "requirement_id": "A5_P1",
+          "condition": "Old dressing is removed.",
+          "source": "graph_dependency",
+          "source_reference": "A3",
+          "requires_expert_review": false,
+          "vqa_question": "Is the old dressing detached from the skin?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "burn"
+            ],
+            "observable_cues": [
+              "old dressing separated from skin"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Occlusion may hide edges of dressing."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A5_POST1",
+          "condition": "Old dressing is lifted/removed from the burn area.",
+          "source": "explicit_instruction",
+          "source_reference": "before lifting it",
+          "requires_expert_review": false,
+          "vqa_question": "Has the old dressing been removed from the burn site?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "burn"
+            ],
+            "observable_cues": [
+              "burn site exposed"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Requires full visibility of the burn site."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "high",
+      "skip_impact": "Incomplete wound exposure for subsequent steps.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A6",
+      "preconditions": [
+        {
+          "requirement_id": "A6_P1",
+          "condition": "Old dressing removed.",
+          "source": "graph_dependency",
+          "source_reference": "A5",
+          "requires_expert_review": false,
+          "vqa_question": "Is the burn site clear of old dressing material?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "burn",
+              "old dressing"
+            ],
+            "observable_cues": [
+              "burn site clear of dressing"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": []
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A6_POST1",
+          "condition": "Burn site rinsed with cool running water.",
+          "source": "explicit_instruction",
+          "source_reference": "Rinse the burn with cool running water",
+          "requires_expert_review": true,
+          "vqa_question": "Was the burn rinsed with cool running water?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "burn",
+              "cool running water"
+            ],
+            "observable_cues": [
+              "running water over site"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "requires_external_sensor",
+            "current_support": "human_required",
+            "limitations": [
+              "Visual observation cannot confirm water temperature or 'running' status."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "high",
+      "skip_impact": "Cleansing the wound is essential for subsequent care.",
+      "review_notes": [
+        "Cool temperature and running status require expert review for verification feasibility."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A4 is conditional on adhesion, which is not visually observable.",
+    "A6 rinsing temperature/process cannot be confirmed visually."
+  ]
+}

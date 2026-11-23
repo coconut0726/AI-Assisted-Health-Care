@@ -30,7 +30,10 @@ namespace HomeCare.Authoring
         int _stepIndex;
         Vector2 _scroll;
 
-        [MenuItem("Tools/Home Care/Requirements Prototype")]
+        [MenuItem("AHC/Requirements Prototype")]
+        public static void OpenActionFlow() => ActionRequirementsWindow.Open();
+
+        // Retained explicitly for the original step-level/postcondition demo.
         public static void Open() => GetWindow<RequirementsPrototypeWindow>("Requirements Prototype");
 
         void OnGUI()
@@ -60,7 +63,7 @@ namespace HomeCare.Authoring
             if (_provider == Provider.Gemini) _geminiModel = EditorGUILayout.TextField("Model", _geminiModel);
             else if (_provider == Provider.Claude) _claudeModel = EditorGUILayout.TextField("Model", _claudeModel);
             else EditorGUILayout.HelpBox(_provider == Provider.ProjectBackend
-                ? "Follows Tools → Home Care → VLM Backend."
+                ? "Follows AHC → VLM Backend."
                 : "Requires the bridge to be set to Qwen in VLM Backend.", MessageType.Info);
             using (new EditorGUI.DisabledScope(string.IsNullOrWhiteSpace(_instruction)))
                 if (GUILayout.Button("Generate step requirements", GUILayout.Height(28))) Generate();

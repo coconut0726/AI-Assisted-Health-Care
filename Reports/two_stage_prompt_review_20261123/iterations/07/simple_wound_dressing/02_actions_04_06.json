@@ -1,0 +1,237 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_1",
+          "condition": "The pad used is a non-stick pad.",
+          "source": "explicit_instruction",
+          "source_reference": "non-stick pad",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "non-stick pad"
+            ],
+            "observable_cues": [
+              "confirmation of pad material type or packaging label"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Material identity (non-stick) is not verifiable from RGB appearance."
+            ]
+          }
+        },
+        {
+          "requirement_id": "A4_2",
+          "condition": "The pad is placed over the whole cut on the skin pad.",
+          "source": "explicit_instruction",
+          "source_reference": "over the whole cut on the skin pad",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_mask"
+            ],
+            "relevant_entities": [
+              "non-stick pad",
+              "cut",
+              "skin pad"
+            ],
+            "observable_cues": [
+              "pad covering the entire visible cut area"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Target/interface occlusion can make pad coverage inconclusive; 'whole' requires expert interpretation."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A4_E1",
+          "error_type": "technique_error",
+          "violation_condition": "The pad does not cover the entire cut.",
+          "compliance_condition": "The pad covers the whole cut.",
+          "applicability_condition": "A pad is placed on the skin pad.",
+          "related_requirement_ids": [
+            "A4_2"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "over the whole cut on the skin pad",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "non-stick pad",
+              "cut"
+            ],
+            "observable_cues": [
+              "visible portions of the cut not covered by the pad"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Perspective and occlusion may hide parts of the cut."
+            ]
+          }
+        }
+      ],
+      "review_notes": [
+        "'Whole' and 'non-stick' require interpretation or confirmation beyond simple detection."
+      ]
+    },
+    {
+      "action_id": "A5",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A5_1",
+          "condition": "The pad wrapper is inside the zip bag.",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "pad wrapper",
+              "zip bag"
+            ],
+            "observable_cues": [
+              "pad wrapper contained within the zip bag volume"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Occlusion by the bag or other objects can make containment inconclusive."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A5_E1",
+          "error_type": "spatial_error",
+          "violation_condition": "The pad wrapper is left outside the zip bag.",
+          "compliance_condition": "The pad wrapper is fully contained within the zip bag.",
+          "applicability_condition": "The user attempts to dispose of the pad wrapper.",
+          "related_requirement_ids": [
+            "A5_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "pad wrapper",
+              "zip bag"
+            ],
+            "observable_cues": [
+              "pad wrapper visible outside the bag boundaries"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Occlusion may mask the actual location of the wrapper."
+            ]
+          }
+        }
+      ],
+      "review_notes": []
+    },
+    {
+      "action_id": "A6",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A6_1",
+          "condition": "The zip bag is sealed.",
+          "source": "explicit_instruction",
+          "source_reference": "seal it",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "zip bag"
+            ],
+            "observable_cues": [
+              "mechanical seal engagement verified"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Seal engagement is not verifiable from after-step RGB snapshots."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A6_E1",
+          "error_type": "technique_error",
+          "violation_condition": "The zip bag is not sealed.",
+          "compliance_condition": "The zip bag is completely sealed.",
+          "applicability_condition": "The pad wrapper has been placed in the zip bag.",
+          "related_requirement_ids": [
+            "A6_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "seal it",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "zip bag"
+            ],
+            "observable_cues": [
+              "visible gap in the zip seal"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Visual appearance of the seal can be deceptive; requires human verification."
+            ]
+          }
+        }
+      ],
+      "review_notes": [
+        "The source text 'seal it' refers to the zip bag used in A5."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

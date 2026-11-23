@@ -1,0 +1,142 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A1_1",
+          "condition": "The user washed their hands with soap and water.",
+          "source": "explicit_instruction",
+          "source_reference": "Wash your hands with soap and water",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "hands",
+              "soap",
+              "water"
+            ],
+            "observable_cues": [
+              "Confirmation that the handwashing operation with soap and water was completed."
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "The process history and material usage for handwashing are not captured in post-action RGB snapshots."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Handwashing is a process-based requirement requiring human confirmation as final-state imagery is insufficient to prove the operation occurred."
+      ]
+    },
+    {
+      "action_id": "A2",
+      "preconditions": [
+        {
+          "requirement_id": "A2_1",
+          "condition": "The gloves are clean.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "gloves"
+            ],
+            "observable_cues": [
+              "Confirmation that the gloves are from a clean, uncontaminated source."
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Cleanliness is a provenance and history property that cannot be determined by the visual appearance of the gloves."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A2_2",
+          "condition": "Gloves are worn on the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "hands",
+              "gloves"
+            ],
+            "observable_cues": [
+              "The appearance of gloves covering both hands in the post-step image."
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "VLM can verify the presence of gloves but not their clean status, which is handled separately."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "The cleanliness of gloves is a history/provenance requirement; the wearing state is visually observable."
+      ]
+    },
+    {
+      "action_id": "A3",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A3_1",
+          "condition": "The old dressing was soaked with clean water.",
+          "source": "explicit_instruction",
+          "source_reference": "If it sticks, soak it with clean water",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "water"
+            ],
+            "observable_cues": [
+              "Confirmation that the dressing was soaked with clean water prior to lifting if it adhered to the skin."
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "The tactile state of sticking and the transient soaking act are not verifiable from post-step RGB imagery."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Action A3 is applicable only if the dressing sticks. Occurrence and water cleanliness must be verified via human confirmation."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

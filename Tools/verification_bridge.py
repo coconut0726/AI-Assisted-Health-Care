@@ -1,6 +1,6 @@
 """Serve Unity's existing Interactions protocol with local Ollama (default) or explicit Gemini.
 
-Tools > Home Care > VLM Backend selects the provider and models. Start-LocalVlm.cmd
+AHC > VLM Backend selects the provider and models. Start-LocalVlm.cmd
 uses those saved settings; --provider optionally overrides the initial selection.
 Gemini requires an explicitly selected route and a session API key.
 USB: adb reverse tcp:8765 tcp:8765. Editor + Quest Link uses localhost directly.

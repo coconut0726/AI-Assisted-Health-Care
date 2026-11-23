@@ -52,7 +52,7 @@ namespace HomeCare.Guidance.EditorTools
         /// turns off the controller rig from the MR template, and adds the hands-only care guidance
         /// with stand-in supplies. Safe to run again (it replaces what it created before).
         /// </summary>
-        [MenuItem("Tools/Home Care/Set Up Care Guidance V2 Scene")]
+        // [MenuItem("Tools/Home Care/Set Up Care Guidance V2 Scene")]
         public static void SetUpV2Scene()
         {
             var scene = EditorSceneManager.GetActiveScene();

@@ -1,0 +1,95 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A10",
+      "preconditions": [
+        {
+          "requirement_id": "A10_P1",
+          "condition": "The gauze roll is wrapped around the burn.",
+          "source": "graph_dependency",
+          "source_reference": "A9",
+          "requires_expert_review": false,
+          "vqa_question": "Is the gauze roll wrapped around the burn area?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["gauze roll", "burn"],
+            "observable_cues": ["gauze covering burn"],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": ["Requires state history or pre-action image which is not available."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A10_S1",
+          "condition": "The gauze is secured with medical tape.",
+          "source": "explicit_instruction",
+          "source_reference": "Secure the gauze with medical tape",
+          "requires_expert_review": false,
+          "vqa_question": "Is the medical tape placed to secure the gauze roll?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity", "spatial_position"],
+            "relevant_entities": ["medical tape", "gauze"],
+            "observable_cues": ["tape applied over gauze ends"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Visual overlap does not guarantee securement strength."]
+          }
+        },
+        {
+          "requirement_id": "A10_S2",
+          "condition": "The medical tape is not touching the burned skin.",
+          "source": "explicit_instruction",
+          "source_reference": "keeping the tape off the burned skin",
+          "requires_expert_review": true,
+          "vqa_question": "Is the medical tape clearly separated from the underlying burned skin?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_mask"],
+            "relevant_entities": ["medical tape", "burn"],
+            "observable_cues": ["tape edges on healthy skin or gauze only"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "supported",
+            "limitations": ["Occlusion of tape-skin interface may hide contact."]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A10_E1",
+          "error_type": "spatial_error",
+          "violation_condition": "Medical tape is placed directly on the burned skin.",
+          "compliance_condition": "Medical tape is only placed on the gauze or healthy skin.",
+          "compliance_question": "Is any medical tape touching the burn?",
+          "applicability_condition": "Action A10 is performed.",
+          "related_requirement_ids": ["A10_S2"],
+          "source": "explicit_instruction",
+          "source_reference": "keeping the tape off the burned skin",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame"],
+            "relevant_entities": ["medical tape", "burn"],
+            "observable_cues": ["tape over burn"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "supported",
+            "limitations": ["May be hidden by tape."]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "none",
+      "skip_impact": "Leaving the dressing unsecured may lead to displacement of the non-stick pad.",
+      "review_notes": ["Requires clear visibility of the tape perimeter relative to the burn."]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

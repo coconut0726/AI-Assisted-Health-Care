@@ -1,0 +1,87 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A1_post_1",
+          "condition": "The user washed their hands using soap and water.",
+          "source": "explicit_instruction",
+          "source_reference": "Wash your hands with soap and water",
+          "requires_expert_review": false,
+          "vqa_question": "Did the user perform the complete operation of washing hands with both soap and water?",
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "user",
+              "hands",
+              "soap",
+              "water"
+            ],
+            "observable_cues": [
+              "human verification of handwashing action"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Single-frame RGB images cannot confirm the historical completion of a multi-stage process like handwashing."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A1_technique_1",
+          "error_type": "technique_error",
+          "violation_condition": "Handwashing was performed without using soap.",
+          "compliance_condition": "The user used soap during handwashing.",
+          "compliance_question": "Did the user use soap for the handwashing operation?",
+          "applicability_condition": "handwashing attempted",
+          "related_requirement_ids": [
+            "A1_post_1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Wash your hands with soap and water",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "soap"
+            ],
+            "observable_cues": [
+              "presence of soap use recorded"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Requires external confirmation that soap was applied."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Requirement of step S1 for procedure preparation.",
+      "review_notes": [
+        "Handwashing with soap and water is an explicit requirement.",
+        "Visual verification of soap use or handwashing completion is not possible with current system capabilities.",
+        "Human confirmation is required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 requires handwashing with soap and water, which necessitates human confirmation as per current system limitations.",
+    "No expert_prior used. Dependencies follow the task graph.",
+    "Action-specific error criteria are local; no procedure-wide error criteria included as per instructions."
+  ]
+}

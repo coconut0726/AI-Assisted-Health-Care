@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 6741,
+    "total_input_tokens": 5140,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 5140
+      }
+    ],
+    "total_cached_tokens": 3493,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3493
+      }
+    ],
+    "total_output_tokens": 1601,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 5140
+  },
+  "created": "2026-11-23T10:49:01Z",
+  "updated": "2026-11-23T10:49:01Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRN3Gu9OMXN1zHqxbRZslK5+7I5F3PNfHAfbnanYQyl4Ti6K8sWJZxIswSk0nxvqC2rvvpUaINPPFZfV0RY4vPRE/1m7cLAKZQy4Xtgl1tHmuCGihamX+2aPhebRW1Br1JYYaFQ+du2N9PiwBRrOpj22TnKQCjgkwaZqQiEJv1GCNPqYu8ajLtFACKCHLDBGoaCFDrlRzH5sAnc=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [\n    {\n      \"criterion_id\": \"P_order_error\",\n      \"error_type\": \"order_error\",\n      \"violation_condition\": \"A2 performed before A1, A4 performed before A3 if A3 is triggered, A5 or A7 performed before A4, A6 performed before A5, A8 performed before A7, A9 performed before A8, A10 performed before A9.\",\n      \"compliance_condition\": \"Actions followed the sequence specified by explicit graph dependencies: A1->A2, A3->A4 (if A3 triggered), A4->A5, A5->A6, A4->A7, A7->A8, A8->A9, A9->A10.\",\n      \"relevant_step_ids\": [\"S1\", \"S2\", \"S3\", \"S4\"],\n      \"relevant_action_ids\": [\"A1\", \"A2\", \"A3\", \"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"interaction_history\"],\n        \"relevant_entities\": [\"action sequence\"],\n        \"observable_cues\": [\"execution sequence order\"],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"state_machine\",\n        \"observability\": \"not_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"Requires full procedure interaction history not available in current system.\"]\n      },\n      \"detection_timing\": \"after each step\",\n      \"source_reference\": \"task_graph\",\n      \"limitations\": [\"System lacks persistent state tracking for complete procedure history.\"],\n      \"compliance_question\": \"Was every action performed in the sequence dictated by the procedure dependencies?\",\n      \"applicability_condition\": \"always\",\n      \"source\": \"graph_dependency\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_missing_step\",\n      \"error_type\": \"missing_step\",\n      \"violation_condition\": \"Any action A1-A10 was not completed, or A11 was not performed if its trigger conditions were met.\",\n      \"compliance_condition\": \"All applicable actions were completed.\",\n      \"relevant_step_ids\": [\"S1\", \"S2\", \"S3\", \"S4\", \"S5\"],\n      \"relevant_action_ids\": [\"A1\", \"A2\", \"A3\", \"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\", \"A11\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"interaction_history\"],\n        \"relevant_entities\": [\"all actions\"],\n        \"observable_cues\": [\"action completion log\"],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"state_machine\",\n        \"observability\": \"not_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"System cannot determine if a skipped action is an omission or just not yet performed.\"]\n      },\n      \"detection_timing\": \"procedure_end\",\n      \"source_reference\": \"explicit_instruction\",\n      \"limitations\": [\"Cannot distinguish between missing step and unobserved action.\"],\n      \"compliance_question\": \"Were all applicable procedural steps completed?\",\n      \"applicability_condition\": \"always\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_prohibit_rubbing\",\n      \"error_type\": \"technique_error\",\n      \"violation_condition\": \"The burn is rubbed during removal, rinsing, patting dry, or dressing application.\",\n      \"compliance_condition\": \"The burn is treated without rubbing.\",\n      \"relevant_step_ids\": [\"S2\", \"S3\", \"S4\"],\n      \"relevant_action_ids\": [\"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_video\", \"hand_object_contact\", \"relative_motion\"],\n        \"relevant_entities\": [\"burn\", \"hand\", \"towel\", \"cotton swab\", \"gauze roll\"],\n        \"observable_cues\": [\"rubbing motion\", \"lateral friction\"],\n        \"temporal_scope\": \"during_action\",\n        \"verification_method\": \"human_confirmation\",\n        \"observability\": \"partially_observable\",\n        \"current_support\": \"human_required\",\n        \"limitations\": [\"Visual observation cannot definitively rule out rubbing without motion analysis.\"]\n      },\n      \"detection_timing\": \"during_action\",\n      \"source_reference\": \"explicit_instruction\",\n      \"limitations\": [\"Requires human confirmation of contact quality.\"],\n      \"compliance_question\": \"Was the burn treated without rubbing?\",\n      \"applicability_condition\": \"during contact with burn\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": true\n    },\n    {\n      \"criterion_id\": \"P_prohibit_blister_breakage\",\n      \"error_type\": \"technique_error\",\n      \"violation_condition\": \"Visible blisters on the burn are broken during the procedure.\",\n      \"compliance_condition\": \"All existing blisters remain intact throughout the procedure.\",\n      \"relevant_step_ids\": [\"S2\", \"S3\", \"S4\"],\n      \"relevant_action_ids\": [\"A3\", \"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n        \"relevant_entities\": [\"burn\", \"blisters\"],\n        \"observable_cues\": [\"blister integrity\"],\n        \"temporal_scope\": \"during_action\",\n        \"verification_method\": \"human_confirmation\",\n        \"observability\": \"visually_observable\",\n        \"current_support\": \"human_required\",\n        \"limitations\": [\"Cannot distinguish between blister rupture and dressing obscuration.\"]\n      },\n      \"detection_timing\": \"during_action\",\n      \"source_reference\": \"explicit_instruction\",\n      \"limitations\": [\"Requires human confirmation of blister state.\"],\n      \"compliance_question\": \"Were all blisters left intact during the procedure?\",\n      \"applicability_condition\": \"if blisters are present\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": true\n    }\n  ],\n  \"review_notes\": [\"Global constraints are now distinct for rubbing and blister breakage.\", \"Order error and missing step criteria strictly reference graph IDs.\", \"All evidence for global criteria is human_required or unsupported as per capabilities.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,77 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "preconditions": [
+        {
+          "requirement_id": "A4_pre_1",
+          "condition": "The non-stick pad is provided as a non-stick material.",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false,
+          "vqa_question": "Is the material being applied a non-stick pad?",
+          "evidence_specification": {
+            "evidence_types": ["object_identity", "human_confirmation"],
+            "relevant_entities": ["non-stick pad"],
+            "observable_cues": ["pad label", "packaging"],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "partially_observable",
+            "current_support": "human_required",
+            "limitations": ["Visual identity of non-stick property is not reliable via RGB."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A4_post_1",
+          "condition": "The non-stick pad is placed over the whole cut on the skin pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false,
+          "vqa_question": "Is the non-stick pad placed so that it fully covers the cut on the skin pad?",
+          "evidence_specification": {
+            "evidence_types": ["spatial_position", "rgb_frame"],
+            "relevant_entities": ["non-stick pad", "cut", "skin pad"],
+            "observable_cues": ["pad edges relative to cut boundaries"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "partial",
+            "limitations": ["Cut boundaries may be occluded by the pad."]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A4_err_1",
+          "error_type": "spatial_error",
+          "violation_condition": "The non-stick pad does not cover the whole cut.",
+          "compliance_condition": "The non-stick pad completely covers the cut.",
+          "compliance_question": "Is the entire cut fully covered by the non-stick pad?",
+          "applicability_condition": "The cut is visible or its boundaries are estimable.",
+          "related_requirement_ids": ["A4_post_1"],
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": ["spatial_position", "rgb_frame"],
+            "relevant_entities": ["non-stick pad", "cut"],
+            "observable_cues": ["cut visible outside pad perimeter"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "partial",
+            "limitations": ["Occlusion may hide edges of the cut."]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "medium",
+      "skip_impact": "The cut remains unprotected.",
+      "review_notes": ["Non-stick identity cannot be confirmed visually; human_confirmation required.", "Full coverage is limited by occlusion of cut boundaries."]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": ["Action A4 updated with coverage requirements.", "No global criteria included as per instruction."]
+}

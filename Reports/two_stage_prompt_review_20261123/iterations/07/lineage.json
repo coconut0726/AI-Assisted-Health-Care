@@ -1,0 +1,12 @@
+{
+  "burn_dressing": {
+    "stage_1_reused_from": "../05/burn_dressing/01_task_graph.json",
+    "method": "Exact copy of actual Gemini output reviewed in revision 5; no author-edited graph",
+    "stage_2": "New simplified prompt and schema; fresh Gemini calls without per-case reviewer feedback"
+  },
+  "simple_wound_dressing": {
+    "stage_1_reused_from": "../05/simple_wound_dressing/01_task_graph.json",
+    "method": "Exact copy of actual Gemini output reviewed in revision 5; no author-edited graph",
+    "stage_2": "New simplified prompt and schema; fresh Gemini calls without per-case reviewer feedback"
+  }
+}

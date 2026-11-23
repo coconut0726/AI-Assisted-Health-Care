@@ -1,0 +1,987 @@
+{
+  "procedure_title": "Simple wound dressing",
+  "instruction": "Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.",
+  "steps": [
+    {
+      "step_id": "S1",
+      "step_name": "Preparation",
+      "step_description": "Hand hygiene and glove application.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A1",
+          "instruction": "Wash your hands.",
+          "original_text": "Wash your hands",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A1_post_1",
+              "condition": "The hand washing operation has been performed.",
+              "source": "explicit_instruction",
+              "source_reference": "Wash your hands",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "human_confirmation"
+                ],
+                "relevant_entities": [
+                  "hands"
+                ],
+                "observable_cues": [
+                  "confirmation that hands were washed with soap and water"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "appearance of wet or clean-looking hands in an after_step RGB frame does not prove the washing operation occurred"
+                ]
+              }
+            }
+          ],
+          "error_criteria": [],
+          "review_notes": [
+            "Hand washing is a process-based requirement; RGB snapshots cannot verify the completion of the washing activity."
+          ]
+        },
+        {
+          "action_id": "A2",
+          "instruction": "Put on clean gloves.",
+          "original_text": "put on clean gloves",
+          "dependencies": [
+            "A1"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "gloves"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [
+            "clean"
+          ],
+          "preconditions": [
+            {
+              "requirement_id": "A2_pre_1",
+              "condition": "The gloves to be used are clean.",
+              "source": "explicit_instruction",
+              "source_reference": "put on clean gloves",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "human_confirmation"
+                ],
+                "relevant_entities": [
+                  "gloves"
+                ],
+                "observable_cues": [
+                  "provenance or visual confirmation that gloves are unused/clean"
+                ],
+                "temporal_scope": "before_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "cleanliness is a material state that cannot be determined by RGB appearance alone"
+                ]
+              }
+            }
+          ],
+          "postconditions": [
+            {
+              "requirement_id": "A2_post_1",
+              "condition": "Clean gloves are worn on both hands.",
+              "source": "explicit_instruction",
+              "source_reference": "put on clean gloves",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_mask"
+                ],
+                "relevant_entities": [
+                  "hands",
+                  "gloves"
+                ],
+                "observable_cues": [
+                  "gloves covering the user's hands"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "supported",
+                "limitations": [
+                  "occlusion may prevent seeing both hands"
+                ]
+              }
+            }
+          ],
+          "error_criteria": [],
+          "review_notes": []
+        }
+      ]
+    },
+    {
+      "step_id": "S2",
+      "step_name": "Inspection",
+      "step_description": "Inspect the cut on the skin pad.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A3",
+          "instruction": "Look at the cut on the skin pad and check that it is not red, swollen or leaking.",
+          "original_text": "Look at the cut on the skin pad. Check that it is not red, swollen or leaking.",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "cut",
+            "skin pad"
+          ],
+          "associated_constraints": [
+            "not red, swollen or leaking"
+          ],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A3_post_1",
+              "condition": "The user has performed a visual inspection of the cut on the skin pad.",
+              "source": "explicit_instruction",
+              "source_reference": "Look at the cut on the skin pad.",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "human_confirmation"
+                ],
+                "relevant_entities": [
+                  "cut",
+                  "skin pad"
+                ],
+                "observable_cues": [
+                  "confirmation that the user looked at the target"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "static RGB frames do not prove the cognitive act of looking"
+                ]
+              }
+            },
+            {
+              "requirement_id": "A3_post_2",
+              "condition": "The cut is confirmed to be not red, not swollen, and not leaking.",
+              "source": "explicit_instruction",
+              "source_reference": "Check that it is not red, swollen or leaking.",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "cut"
+                ],
+                "observable_cues": [
+                  "absence of red discoloration around the cut",
+                  "absence of visible fluid or discharge",
+                  "absence of raised/distended tissue around the cut"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "partially_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "swelling is difficult to assess in 2D RGB frames; clinical clearance requires expert review"
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A3_E1",
+              "error_type": "technique_error",
+              "violation_condition": "The cut on the skin pad is red, swollen, or leaking.",
+              "compliance_condition": "The cut on the skin pad is not red, swollen or leaking.",
+              "applicability_condition": "The user is performing the inspection of the cut.",
+              "related_requirement_ids": [
+                "A3_post_2"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "Check that it is not red, swollen or leaking.",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "cut"
+                ],
+                "observable_cues": [
+                  "redness around the cut",
+                  "fluid leaking from the cut",
+                  "bulging or distended skin around the cut"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "partially_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "lighting may cause false positives for redness; 2D view limits swelling detection"
+                ]
+              }
+            }
+          ],
+          "review_notes": []
+        }
+      ]
+    },
+    {
+      "step_id": "S3",
+      "step_name": "Application",
+      "step_description": "Apply dressing to the wound.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A4",
+          "instruction": "Place a non-stick pad over the whole cut on the skin pad.",
+          "original_text": "Place a non-stick pad over the whole cut on the skin pad.",
+          "dependencies": [
+            "A3"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "non-stick pad"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "cut",
+            "skin pad"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A4_1",
+              "condition": "The pad used is a non-stick pad.",
+              "source": "explicit_instruction",
+              "source_reference": "non-stick pad",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "human_confirmation"
+                ],
+                "relevant_entities": [
+                  "non-stick pad"
+                ],
+                "observable_cues": [
+                  "confirmation of pad material type or packaging label"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "Material identity (non-stick) is not verifiable from RGB appearance."
+                ]
+              }
+            },
+            {
+              "requirement_id": "A4_2",
+              "condition": "The pad is placed over the whole cut on the skin pad.",
+              "source": "explicit_instruction",
+              "source_reference": "over the whole cut on the skin pad",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_mask"
+                ],
+                "relevant_entities": [
+                  "non-stick pad",
+                  "cut",
+                  "skin pad"
+                ],
+                "observable_cues": [
+                  "pad covering the entire visible cut area"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Target/interface occlusion can make pad coverage inconclusive; 'whole' requires expert interpretation."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A4_E1",
+              "error_type": "technique_error",
+              "violation_condition": "The pad does not cover the entire cut.",
+              "compliance_condition": "The pad covers the whole cut.",
+              "applicability_condition": "A pad is placed on the skin pad.",
+              "related_requirement_ids": [
+                "A4_2"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "over the whole cut on the skin pad",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "non-stick pad",
+                  "cut"
+                ],
+                "observable_cues": [
+                  "visible portions of the cut not covered by the pad"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Perspective and occlusion may hide parts of the cut."
+                ]
+              }
+            }
+          ],
+          "review_notes": [
+            "'Whole' and 'non-stick' require interpretation or confirmation beyond simple detection."
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S4",
+      "step_name": "Cleanup",
+      "step_description": "Dispose of materials and clean hands.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A5",
+          "instruction": "Put the pad wrapper into the zip bag.",
+          "original_text": "Put the pad wrapper into the zip bag",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "zip bag"
+          ],
+          "materials": [
+            "pad wrapper"
+          ],
+          "contact_media": [],
+          "targets": [
+            "zip bag"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A5_1",
+              "condition": "The pad wrapper is inside the zip bag.",
+              "source": "explicit_instruction",
+              "source_reference": "Put the pad wrapper into the zip bag",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "pad wrapper",
+                  "zip bag"
+                ],
+                "observable_cues": [
+                  "pad wrapper contained within the zip bag volume"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "partially_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Occlusion by the bag or other objects can make containment inconclusive."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A5_E1",
+              "error_type": "spatial_error",
+              "violation_condition": "The pad wrapper is left outside the zip bag.",
+              "compliance_condition": "The pad wrapper is fully contained within the zip bag.",
+              "applicability_condition": "The user attempts to dispose of the pad wrapper.",
+              "related_requirement_ids": [
+                "A5_1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "Put the pad wrapper into the zip bag",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame"
+                ],
+                "relevant_entities": [
+                  "pad wrapper",
+                  "zip bag"
+                ],
+                "observable_cues": [
+                  "pad wrapper visible outside the bag boundaries"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "partial",
+                "limitations": [
+                  "Occlusion may mask the actual location of the wrapper."
+                ]
+              }
+            }
+          ],
+          "review_notes": []
+        },
+        {
+          "action_id": "A6",
+          "instruction": "Seal the zip bag.",
+          "original_text": "seal it",
+          "dependencies": [
+            "A5"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "zip bag"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A6_1",
+              "condition": "The zip bag is sealed.",
+              "source": "explicit_instruction",
+              "source_reference": "seal it",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "human_confirmation"
+                ],
+                "relevant_entities": [
+                  "zip bag"
+                ],
+                "observable_cues": [
+                  "mechanical seal engagement verified"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "Seal engagement is not verifiable from after-step RGB snapshots."
+                ]
+              }
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A6_E1",
+              "error_type": "technique_error",
+              "violation_condition": "The zip bag is not sealed.",
+              "compliance_condition": "The zip bag is completely sealed.",
+              "applicability_condition": "The pad wrapper has been placed in the zip bag.",
+              "related_requirement_ids": [
+                "A6_1"
+              ],
+              "source": "explicit_instruction",
+              "source_reference": "seal it",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "human_confirmation"
+                ],
+                "relevant_entities": [
+                  "zip bag"
+                ],
+                "observable_cues": [
+                  "visible gap in the zip seal"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "Visual appearance of the seal can be deceptive; requires human verification."
+                ]
+              }
+            }
+          ],
+          "review_notes": [
+            "The source text 'seal it' refers to the zip bag used in A5."
+          ]
+        },
+        {
+          "action_id": "A7",
+          "instruction": "Take off the gloves.",
+          "original_text": "take off the gloves",
+          "dependencies": [
+            "A6"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "gloves"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "gloves"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A7_post1",
+              "condition": "The user has performed the operation of removing their gloves.",
+              "source": "explicit_instruction",
+              "source_reference": "take off the gloves",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "human_confirmation",
+                  "interaction_history"
+                ],
+                "relevant_entities": [
+                  "gloves",
+                  "hands"
+                ],
+                "observable_cues": [
+                  "physical removal of gloves from hands"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "after_step RGB snapshots do not capture the removal process",
+                  "system lacks interaction history or video to verify the event occurred"
+                ]
+              }
+            },
+            {
+              "requirement_id": "A7_post2",
+              "condition": "The user's hands are bare and free of gloves.",
+              "source": "inferred",
+              "source_reference": "take off the gloves",
+              "requires_expert_review": true,
+              "evidence_specification": {
+                "evidence_types": [
+                  "rgb_frame",
+                  "object_identity"
+                ],
+                "relevant_entities": [
+                  "hands"
+                ],
+                "observable_cues": [
+                  "bare hands visible without glove covering"
+                ],
+                "temporal_scope": "after_action",
+                "verification_method": "VLM",
+                "observability": "visually_observable",
+                "current_support": "supported",
+                "limitations": [
+                  "image appearance alone cannot confirm if gloves were previously worn and removed without history",
+                  "subject to occlusion of hands in the camera view"
+                ]
+              }
+            }
+          ],
+          "error_criteria": [],
+          "review_notes": [
+            "A7_post1 focuses on the execution of the glove removal process.",
+            "A7_post2 verifies the resulting bare-hand state."
+          ]
+        },
+        {
+          "action_id": "A8",
+          "instruction": "Wash your hands.",
+          "original_text": "wash your hands",
+          "dependencies": [
+            "A7"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A8_post1",
+              "condition": "The user has performed the handwashing operation.",
+              "source": "explicit_instruction",
+              "source_reference": "wash your hands",
+              "requires_expert_review": false,
+              "evidence_specification": {
+                "evidence_types": [
+                  "human_confirmation"
+                ],
+                "relevant_entities": [
+                  "hands"
+                ],
+                "observable_cues": [
+                  "handwashing at a sink with water"
+                ],
+                "temporal_scope": "during_action",
+                "verification_method": "human_confirmation",
+                "observability": "not_observable",
+                "current_support": "human_required",
+                "limitations": [
+                  "after_step RGB images of the work surface do not confirm handwashing",
+                  "washing typically occurs outside the field of view of the dressing area",
+                  "visual appearance of hands as clean or wet is not definitive proof of washing"
+                ]
+              }
+            }
+          ],
+          "error_criteria": [],
+          "review_notes": [
+            "Handwashing is a process-oriented requirement not verifiable by a final-frame snapshot of the dressing scene."
+          ]
+        }
+      ]
+    }
+  ],
+  "context_notes": [
+    "The source uses 'it' to refer to both the zip bag and the cut; dependencies clarify scope."
+  ],
+  "review_notes": [
+    "Dependencies between steps are removed to favor precise Action-level dependencies. The dependencies of A3 on A2 and A5 on A4 are suggested by source flow but not explicitly stated as physical requirements; they are noted as customary for review.",
+    "Constraint 'not red, swollen or leaking' is quoted exactly as a contiguous unit."
+  ],
+  "procedure_error_criteria": [
+    {
+      "criterion_id": "P_ORD_1",
+      "error_type": "order_error",
+      "violation_condition": "The user put on clean gloves (A2) before washing their hands (A1).",
+      "compliance_condition": "The user washed their hands (A1) before putting on clean gloves (A2).",
+      "relevant_step_ids": [
+        "S1"
+      ],
+      "relevant_action_ids": [
+        "A1",
+        "A2"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history",
+          "human_confirmation"
+        ],
+        "relevant_entities": [
+          "hands",
+          "gloves"
+        ],
+        "observable_cues": [
+          "sequential completion of handwashing before donning gloves"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "human_confirmation",
+        "observability": "not_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "Single snapshots cannot establish temporal ordering of handwashing and glove application.",
+          "No video or tracked history supplied."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "Wash your hands, then put on clean gloves.",
+      "limitations": [
+        "System lacks time-aligned video or interaction history logs."
+      ],
+      "applicability_condition": "True",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_ORD_2",
+      "error_type": "order_error",
+      "violation_condition": "The user sealed the zip bag (A6) before placing the pad wrapper inside (A5).",
+      "compliance_condition": "The user placed the pad wrapper in the zip bag (A5) before sealing it (A6).",
+      "relevant_step_ids": [
+        "S4"
+      ],
+      "relevant_action_ids": [
+        "A5",
+        "A6"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history",
+          "human_confirmation"
+        ],
+        "relevant_entities": [
+          "pad wrapper",
+          "zip bag"
+        ],
+        "observable_cues": [
+          "wrapper presence inside bag prior to sealing"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "human_confirmation",
+        "observability": "not_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "Snapshot at sealing does not prove contents were placed immediately prior.",
+          "Bag occlusion may hide wrapper status."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "Put the pad wrapper into the zip bag and seal it.",
+      "limitations": [
+        "No continuous observation to confirm sequence inside step S4."
+      ],
+      "applicability_condition": "True",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_ORD_3",
+      "error_type": "order_error",
+      "violation_condition": "The user took off their gloves (A7) before sealing the zip bag (A6).",
+      "compliance_condition": "The user sealed the zip bag (A6) before taking off their gloves (A7).",
+      "relevant_step_ids": [
+        "S4"
+      ],
+      "relevant_action_ids": [
+        "A6",
+        "A7"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history",
+          "human_confirmation"
+        ],
+        "relevant_entities": [
+          "gloves",
+          "zip bag"
+        ],
+        "observable_cues": [
+          "bag sealing occurs while gloves are still worn"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "human_confirmation",
+        "observability": "not_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "After-step snapshots provide final states only, not the order of completion."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "Then take off the gloves",
+      "limitations": [
+        "Sequence between A6 and A7 is not verifiable with current snapshot polling."
+      ],
+      "applicability_condition": "True",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_ORD_4",
+      "error_type": "order_error",
+      "violation_condition": "The user washed their hands (A8) before removing their gloves (A7).",
+      "compliance_condition": "The user removed their gloves (A7) before washing their hands (A8).",
+      "relevant_step_ids": [
+        "S4"
+      ],
+      "relevant_action_ids": [
+        "A7",
+        "A8"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history",
+          "human_confirmation"
+        ],
+        "relevant_entities": [
+          "gloves",
+          "hands"
+        ],
+        "observable_cues": [
+          "glove removal occurs prior to final hand hygiene"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "human_confirmation",
+        "observability": "not_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "Handwashing state cannot be visually distinguished from glove removal in static images."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "and wash your hands",
+      "limitations": [
+        "System does not track hand state or hygiene completion timestamps."
+      ],
+      "applicability_condition": "True",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_ORD_5",
+      "error_type": "order_error",
+      "violation_condition": "The user placed the non-stick pad (A4) before checking the cut for redness, swelling, or leaking (A3).",
+      "compliance_condition": "The user inspected the cut (A3) before placing the non-stick pad (A4).",
+      "relevant_step_ids": [
+        "S2",
+        "S3"
+      ],
+      "relevant_action_ids": [
+        "A3",
+        "A4"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history",
+          "human_confirmation"
+        ],
+        "relevant_entities": [
+          "cut",
+          "non-stick pad"
+        ],
+        "observable_cues": [
+          "inspection behavior documented prior to pad coverage"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "human_confirmation",
+        "observability": "not_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "Once the pad is placed (A4), the inspection site (A3) is occluded."
+        ]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad.",
+      "limitations": [
+        "No aligned gaze or inspection history to verify A3 happened before coverage."
+      ],
+      "applicability_condition": "True",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_MSG_1",
+      "error_type": "missing_step",
+      "violation_condition": "One or more required actions (A1, A2, A3, A4, A5, A6, A7, A8) were omitted.",
+      "compliance_condition": "All actions A1 through A8 were performed as instructed.",
+      "relevant_step_ids": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "relevant_action_ids": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8"
+      ],
+      "evidence_specification": {
+        "evidence_types": [
+          "interaction_history",
+          "human_confirmation"
+        ],
+        "relevant_entities": [
+          "hands",
+          "gloves",
+          "cut",
+          "non-stick pad",
+          "pad wrapper",
+          "zip bag"
+        ],
+        "observable_cues": [
+          "Confirmed completion record for every action ID"
+        ],
+        "temporal_scope": "procedure_history",
+        "verification_method": "human_confirmation",
+        "observability": "not_observable",
+        "current_support": "human_required",
+        "limitations": [
+          "Periodic snapshots are insufficient to prove the performance of every required step."
+        ]
+      },
+      "detection_timing": "after_procedure_completion",
+      "source_reference": "Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.",
+      "limitations": [
+        "Missing observations in the system are not proof of omission; human verification is mandatory."
+      ],
+      "applicability_condition": "True",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    }
+  ],
+  "verification_review_notes": [
+    "Verification updates provided only for the requested actions A7 and A8.",
+    "Order and missing step criteria were not generated as include_procedure_error_criteria was false.",
+    "Order errors are derived from sequential imperatives ('then', 'and', 'Then') and graph dependencies.",
+    "System snapshot capabilities are insufficient for verifying process sequence or missing steps without human confirmation.",
+    "A3-A4 sequence is enforced as checking redness/swelling must occur before the site is covered by the pad."
+  ]
+}

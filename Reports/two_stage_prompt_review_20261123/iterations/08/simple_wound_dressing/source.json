@@ -1,0 +1,7 @@
+{
+  "source_path": "Assets/_Project/Content/Procedures/wound_dressing_procedure.json",
+  "procedure_title": "Simple wound dressing",
+  "original_instruction": "Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.",
+  "excluded_completion_note": "Call your nurse if the wound becomes more red, swollen or warm, starts leaking, or if you get a fever.",
+  "nurse_prior": null
+}

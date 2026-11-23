@@ -1,7 +1,7 @@
 {
-  "provider": "ollama",
+  "provider": "gemini",
   "model": "qwen3-vl:4b-instruct",
-  "gemini_model": "gemini-3.8-flash",
+  "gemini_model": "gemini-3.1-flash-lite-preview",
   "ollama_url": "http://127.0.0.1:11434",
   "bridge_port": 8765,
   "num_ctx": 8192,

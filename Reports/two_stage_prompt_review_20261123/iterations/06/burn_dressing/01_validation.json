@@ -1,0 +1,11 @@
+{
+  "schema_valid": true,
+  "exact_original_instruction": true,
+  "unique_ids": true,
+  "valid_references": true,
+  "acyclic": true,
+  "exact_action_source_quotes": true,
+  "exact_associated_constraint_quotes": true,
+  "step_count": 6,
+  "action_count": 11
+}

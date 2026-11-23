@@ -1,0 +1,4 @@
+{
+  "status": 502,
+  "message": "{\"error\": \"gemini could not be reached or timed out\"}"
+}

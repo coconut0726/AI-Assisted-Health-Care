@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 5327,
+    "total_input_tokens": 4593,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4593
+      }
+    ],
+    "total_cached_tokens": 3322,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3322
+      }
+    ],
+    "total_output_tokens": 734,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4593
+  },
+  "created": "2026-11-23T10:48:55Z",
+  "updated": "2026-11-23T10:48:55Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfROtMimW0wYn/btpOOUAXu6o5Nb8GVw7ug/iWMWa/aiXX/OcYacldQm0oQujzdvy7YY4C0ShTH1uf5e+KpsQMlDe5PyJ01XD9X3azJv45YHFvhTUBFSONkweSc9QR7VK2GXcltHEWr2ET8vDSt4YDKWoo3zeM7hV8vh3+OOSLx4T1esAk8MmC9q1OJgfs+lzOWXBymkZ6RDrp/A=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A11\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A11_pre_trigger\",\n          \"condition\": \"The burn is more red, more swollen, starts to smell, leaks pus, or the user develops a fever.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Are any of the following present: increased redness, swelling, unusual smell, pus leakage, or fever?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"human_confirmation\"\n            ],\n            \"relevant_entities\": [\n              \"burn\",\n              \"user\"\n            ],\n            \"observable_cues\": [\n              \"redness\",\n              \"swelling\",\n              \"leakage\",\n              \"odor\",\n              \"fever\"\n            ],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\n              \"Symptoms like fever, internal sensations, or subtle clinical changes cannot be detected via camera.\"\n            ]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A11_post_contact\",\n          \"condition\": \"The user has performed the action of contacting the nurse.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Was the nurse contacted regarding the identified symptoms?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"human_confirmation\"\n            ],\n            \"relevant_entities\": [\n              \"nurse\"\n            ],\n            \"observable_cues\": [\n              \"communication initiation\"\n            ],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\n              \"System cannot detect communication actions.\"\n            ]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"unknown\",\n      \"skip_impact\": \"Unknown procedural impact of missing or delaying contact with the nurse when warning signs appear.\",\n      \"review_notes\": [\n        \"A11 is a conditional action. Trigger detection and communication verification require human confirmation as they are not visually observable through standard RGB sensor data.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A11 is the only action requested for update. Global criteria are excluded as per instructions.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

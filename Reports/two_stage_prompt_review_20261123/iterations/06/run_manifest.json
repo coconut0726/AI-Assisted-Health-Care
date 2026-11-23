@@ -1,0 +1,99 @@
+{
+  "experiment": "two-stage prompt revision 06; actual Gemini responses only",
+  "created_utc": "2026-11-23T10:50:51.490483+00:00",
+  "calls": [
+    {
+      "case": "burn_dressing",
+      "phase": "01_task_graph",
+      "provider": "Gemini",
+      "model": "gemini-3-flash-preview",
+      "elapsed_seconds": 41.777,
+      "usage": {
+        "total_tokens": 11639,
+        "total_input_tokens": 1114,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1114
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 1319,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 9206,
+        "initial_input_tokens": 1114
+      },
+      "request_sha256": "9da9f1eead2832c1ad86205e8cf8c5b53b1f743573adf965a63605db757c2cb6",
+      "output_sha256": "88e30b24d8977276da8ff1082fd7ec3f93b15490b0dc09ac02c8fb913d2f21f7"
+    },
+    {
+      "case": "simple_wound_dressing",
+      "phase": "01_task_graph",
+      "provider": "Gemini",
+      "model": "gemini-3-flash-preview",
+      "elapsed_seconds": 34.587,
+      "usage": {
+        "total_tokens": 9426,
+        "total_input_tokens": 1041,
+        "input_tokens_by_modality": [
+          {
+            "modality": "text",
+            "tokens": 1041
+          }
+        ],
+        "total_cached_tokens": 0,
+        "total_output_tokens": 873,
+        "total_tool_use_tokens": 0,
+        "total_thought_tokens": 7512,
+        "initial_input_tokens": 1041
+      },
+      "request_sha256": "62c76022ea96a81dc3d853c2c371389877264d01f4776bf12164bcc83294ba8d",
+      "output_sha256": "6ed4d135e0011d301a5c5cf7a81d2fcf7c99643528796b8c0298572890e9f12a"
+    }
+  ],
+  "cases": {
+    "burn_dressing": {
+      "status": "graph_generated_requires_semantic_review",
+      "graph": {
+        "schema_valid": true,
+        "exact_original_instruction": true,
+        "unique_ids": true,
+        "valid_references": true,
+        "acyclic": true,
+        "exact_action_source_quotes": true,
+        "exact_associated_constraint_quotes": true,
+        "step_count": 6,
+        "action_count": 11
+      }
+    },
+    "simple_wound_dressing": {
+      "status": "graph_generated_requires_semantic_review",
+      "graph": {
+        "schema_valid": true,
+        "exact_original_instruction": true,
+        "unique_ids": true,
+        "valid_references": true,
+        "acyclic": true,
+        "exact_action_source_quotes": true,
+        "exact_associated_constraint_quotes": true,
+        "step_count": 5,
+        "action_count": 8
+      }
+    }
+  },
+  "protected_file_sha256": {
+    "Assets/_Project/Runtime/Procedures/RequirementsPrompts.cs": "09655abba1a75fe107c6544f9943cd9d475357d64c1d15843c9899e0e86fb3e7",
+    "Assets/_Project/Runtime/Procedures/RequirementsJson.cs": "30f8f24c526f6de01ec29a44b3502c308cd6c7c5d657d7667dcbc6f1b40aff0c",
+    "Assets/_Project/Runtime/Procedures/ProcedureRequirements.cs": "5a71134a14b3fd7c43b3db15c905c36222219a49145001510d3719bddb91b35a",
+    "Assets/_Project/Runtime/Procedures/ProcedureSession.cs": "c4c2bf99ecae3c390fdb0443fa3f7045fb986d78204ad62125e716f236ea7a53",
+    "Assets/_Project/Content/Procedures/burn_care_procedure.json": "043d87eef136d7cd247f914a9a63076d5a081689a3830556d18c0ca19aba8a04",
+    "Assets/_Project/Content/Procedures/wound_dressing_procedure.json": "5216a02f4482c4b1504bb47e4cd47e1f188475421e8e6eadeefe4924ffa93573"
+  },
+  "prompt_sha256": {
+    "prompt_1": "e3d405aad7d9c908f83371c421328f14a9e7ac496493b73b0d75b833ccdcc3ad",
+    "prompt_2": "1fa0c88d1b7c08d4d74e9be70a0dfbecb5117f1c311a16da5dd9b235e04ace97"
+  },
+  "source_policy": "Only AHC case instruction; old rubrics, supplies, completion_note and demo data excluded.",
+  "nurse_prior_supplied": false,
+  "protected_files_unchanged": true
+}

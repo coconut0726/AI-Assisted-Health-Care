@@ -1,0 +1,323 @@
+{
+  "procedure_title": "Minor burn dressing change",
+  "instruction": "Wash your hands with soap and water, then put on clean gloves. Gently remove the old dressing. If it sticks, soak it with clean water before lifting it. Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters. Use a cotton swab to apply a thin layer of burn ointment to the burn. Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll. Secure the gauze with medical tape, keeping the tape off the burned skin. Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+  "steps": [
+    {
+      "step_id": "S1",
+      "step_name": "Preparation",
+      "step_description": "Wash your hands with soap and water, then put on clean gloves.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A1",
+          "instruction": "Wash your hands",
+          "original_text": "Wash your hands with soap and water",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "soap"
+          ],
+          "contact_media": [
+            "water"
+          ],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": []
+        },
+        {
+          "action_id": "A2",
+          "instruction": "put on clean gloves",
+          "original_text": "put on clean gloves",
+          "dependencies": [
+            "A1"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "clean gloves"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "gloves"
+          ],
+          "associated_constraints": []
+        }
+      ]
+    },
+    {
+      "step_id": "S2",
+      "step_name": "Old Dressing Removal",
+      "step_description": "Gently remove the old dressing, soaking it first if it sticks.",
+      "dependencies": [
+        "S1"
+      ],
+      "actions": [
+        {
+          "action_id": "A3",
+          "instruction": "soak it with clean water",
+          "original_text": "soak it with clean water before lifting it",
+          "dependencies": [
+            "A2"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "If it sticks",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [
+            "clean water"
+          ],
+          "targets": [
+            "old dressing"
+          ],
+          "associated_constraints": []
+        },
+        {
+          "action_id": "A4",
+          "instruction": "Gently remove the old dressing",
+          "original_text": "Gently remove the old dressing",
+          "dependencies": [
+            "A2"
+          ],
+          "conditional_dependencies": [
+            {
+              "action_id": "A3",
+              "condition": "If it sticks"
+            }
+          ],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "old dressing"
+          ],
+          "associated_constraints": [
+            "Gently"
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S3",
+      "step_name": "Burn Cleaning",
+      "step_description": "Rinse the burn with cool running water and pat the skin dry.",
+      "dependencies": [
+        "S2"
+      ],
+      "actions": [
+        {
+          "action_id": "A5",
+          "instruction": "Rinse the burn",
+          "original_text": "Rinse the burn with cool running water",
+          "dependencies": [
+            "A4"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [
+            "cool running water"
+          ],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn and do not break any blisters"
+          ]
+        },
+        {
+          "action_id": "A6",
+          "instruction": "pat the skin dry",
+          "original_text": "pat the skin dry with a clean towel",
+          "dependencies": [
+            "A5"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "clean towel"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "skin"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn and do not break any blisters"
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S4",
+      "step_name": "Ointment Application",
+      "step_description": "Apply burn ointment to the burn using a cotton swab.",
+      "dependencies": [
+        "S3"
+      ],
+      "actions": [
+        {
+          "action_id": "A7",
+          "instruction": "apply a thin layer of burn ointment to the burn",
+          "original_text": "Use a cotton swab to apply a thin layer of burn ointment to the burn",
+          "dependencies": [
+            "A6"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "cotton swab"
+          ],
+          "materials": [
+            "burn ointment"
+          ],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn and do not break any blisters"
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S5",
+      "step_name": "Dressing the Burn",
+      "step_description": "Cover the burn with a non-stick pad, wrap with gauze, and secure with tape.",
+      "dependencies": [
+        "S4"
+      ],
+      "actions": [
+        {
+          "action_id": "A8",
+          "instruction": "Cover the burn",
+          "original_text": "Cover the burn with a non-stick pad",
+          "dependencies": [
+            "A7"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "non-stick pad"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn and do not break any blisters"
+          ]
+        },
+        {
+          "action_id": "A9",
+          "instruction": "wrap it loosely with a gauze roll",
+          "original_text": "wrap it loosely with a gauze roll",
+          "dependencies": [
+            "A8"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "gauze roll"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [
+            "loosely"
+          ]
+        },
+        {
+          "action_id": "A10",
+          "instruction": "Secure the gauze",
+          "original_text": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+          "dependencies": [
+            "A9"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "medical tape"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "gauze"
+          ],
+          "associated_constraints": [
+            "keeping the tape off the burned skin"
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "S6",
+      "step_name": "Nurse Notification",
+      "step_description": "Call your nurse if signs of infection or fever develop.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A11",
+          "instruction": "Call your nurse",
+          "original_text": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "nurse"
+          ],
+          "associated_constraints": []
+        }
+      ]
+    }
+  ],
+  "context_notes": [],
+  "review_notes": [
+    "Action A11 is a conditional notification without explicit procedural prerequisites and is placed in its own step."
+  ]
+}

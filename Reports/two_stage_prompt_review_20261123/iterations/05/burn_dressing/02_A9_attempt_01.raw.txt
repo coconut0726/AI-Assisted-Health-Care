@@ -1,0 +1,86 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A9",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A9_C1",
+          "condition": "The burn is covered with a gauze roll.",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": false,
+          "vqa_question": "Is the gauze roll wrapped over the burn dressing?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity",
+              "spatial_position"
+            ],
+            "relevant_entities": [
+              "gauze roll",
+              "burn"
+            ],
+            "observable_cues": [
+              "gauze wrapping visible"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Visual overlap does not prove contact or coverage."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A9_E1",
+          "error_type": "technique_error",
+          "violation_condition": "The gauze is wrapped tightly.",
+          "compliance_condition": "The gauze is wrapped loosely.",
+          "compliance_question": "Is the gauze wrapped loosely according to clinical standards?",
+          "applicability_condition": "Gauze wrapping is observed.",
+          "related_requirement_ids": [
+            "A9_C1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "gauze roll"
+            ],
+            "observable_cues": [
+              "gauze tension"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "Requires expert physical assessment of wrap tension."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "The burn dressing is not covered or secured as instructed.",
+      "review_notes": [
+        "Loosely constraint requires human confirmation for clinical accuracy.",
+        "Dependency on A8 removed as redundant prerequisite condition."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "No global criteria requested; procedure_error_criteria is empty.",
+    "No expert_prior used.",
+    "Verification restricted to post-step RGB frames."
+  ]
+}

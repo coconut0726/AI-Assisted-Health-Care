@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 5028,
+    "total_input_tokens": 4243,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4243
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 785,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4243
+  },
+  "created": "2026-11-23T10:48:13Z",
+  "updated": "2026-11-23T10:48:13Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRNW2VKxZHWnVkm6Ew7KwLocVCC8N53udHxozQi9EniadfAmQQ2S237vYdWMiCAha0C4W8wD/Sfs5ZJfJQ2Rrss+97AcJN4wWAyWITRhFzXJEicRCfpMNdOiO+K3UpSOxq4fHJZj1hQuL8Um+CkHB3JPwoaapoBNkE6RTxej+HAf8hzFIgmczx35uPnakaDgTQ/nSjx7rfvoFvA=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A1_post_1\",\n          \"condition\": \"The user washed their hands using soap and water.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Wash your hands with soap and water\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Did the user perform the complete operation of washing hands with both soap and water?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"human_confirmation\"\n            ],\n            \"relevant_entities\": [\n              \"user\",\n              \"hands\",\n              \"soap\",\n              \"water\"\n            ],\n            \"observable_cues\": [\n              \"human verification of handwashing action\"\n            ],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\n              \"Single-frame RGB images cannot confirm the historical completion of a multi-stage process like handwashing.\"\n            ]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A1_technique_1\",\n          \"error_type\": \"technique_error\",\n          \"violation_condition\": \"Handwashing was performed without using soap.\",\n          \"compliance_condition\": \"The user used soap during handwashing.\",\n          \"compliance_question\": \"Did the user use soap for the handwashing operation?\",\n          \"applicability_condition\": \"handwashing attempted\",\n          \"related_requirement_ids\": [\n            \"A1_post_1\"\n          ],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Wash your hands with soap and water\",\n          \"requires_expert_review\": false,\n          \"evidence_specification\": {\n            \"evidence_types\": [\n              \"human_confirmation\"\n            ],\n            \"relevant_entities\": [\n              \"soap\"\n            ],\n            \"observable_cues\": [\n              \"presence of soap use recorded\"\n            ],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\n              \"Requires external confirmation that soap was applied.\"\n            ]\n          }\n        }\n      ],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"unknown\",\n      \"skip_impact\": \"Requirement of step S1 for procedure preparation.\",\n      \"review_notes\": [\n        \"Handwashing with soap and water is an explicit requirement.\",\n        \"Visual verification of soap use or handwashing completion is not possible with current system capabilities.\",\n        \"Human confirmation is required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 requires handwashing with soap and water, which necessitates human confirmation as per current system limitations.\",\n    \"No expert_prior used. Dependencies follow the task graph.\",\n    \"Action-specific error criteria are local; no procedure-wide error criteria included as per instructions.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

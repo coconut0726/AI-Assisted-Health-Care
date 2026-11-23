@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 5692,
+    "total_input_tokens": 4748,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4748
+      }
+    ],
+    "total_cached_tokens": 3373,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3373
+      }
+    ],
+    "total_output_tokens": 944,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4748
+  },
+  "created": "2026-11-23T10:48:39Z",
+  "updated": "2026-11-23T10:48:39Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRNFJK4ZgqDxFF6zobIFs3uTPtmcT1vivoCAMoSrc8UuBeQ1tsZbYwfBLKFaufAze1PzClz1dZf+ZOFgtoLSXcHuXkeV/sASdfZ9L8iHiOAphQGUjnBhStpZvZUBSVhY5wWBiRutKBW13jd8RJUYcvqs9uwRjr8Snf7khv/Cr9rq9nhq0sN+ltFixmZVHiCop+VfI7t5OWiqIHE=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_post_01\",\n          \"condition\": \"A layer of burn ointment has been applied to the burn using a cotton swab.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Use a cotton swab to apply a thin layer of burn ointment to the burn\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is burn ointment present on the burn and is a used cotton swab present?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"object_identity\", \"rgb_frame\"],\n            \"relevant_entities\": [\"burn\", \"burn ointment\", \"cotton swab\"],\n            \"observable_cues\": [\"ointment visible on burn\", \"used cotton swab present\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Presence does not confirm use technique; visual appearance cannot confirm layer thickness.\"]\n          }\n        },\n        {\n          \"requirement_id\": \"A7_post_02\",\n          \"condition\": \"The burn ointment layer is thin.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"apply a thin layer of burn ointment\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Does the applied ointment layer appear thin?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\"],\n            \"relevant_entities\": [\"burn\", \"burn ointment\"],\n            \"observable_cues\": [\"ointment layer appearance\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"partially_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"Visual evidence is insufficient for clinical definition of 'thin' layer.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A7_err_01\",\n          \"error_type\": \"wrong_object\",\n          \"violation_condition\": \"An object other than a cotton swab is used to apply the ointment.\",\n          \"compliance_condition\": \"A cotton swab is used for application.\",\n          \"compliance_question\": \"Was a cotton swab used to apply the ointment?\",\n          \"applicability_condition\": \"ointment is applied to the burn\",\n          \"related_requirement_ids\": [\"A7_post_01\"],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Use a cotton swab to apply\",\n          \"requires_expert_review\": false,\n          \"evidence_specification\": {\n            \"evidence_types\": [\"human_confirmation\"],\n            \"relevant_entities\": [\"cotton swab\", \"burn ointment\"],\n            \"observable_cues\": [\"applicator used\"],\n            \"temporal_scope\": \"during_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"Visual observation of an applicator nearby does not confirm it was used for the application task.\"]\n          }\n        }\n      ],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"medium\",\n      \"skip_impact\": \"Applying ointment is a treatment step as instructed; omitting it removes the therapeutic application.\",\n      \"review_notes\": [\n        \"A thin layer is a qualitative descriptor requiring clinical interpretation.\",\n        \"Applicator usage requires process-level evidence not available in static frames.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Procedure error criteria are omitted as per requested scope (include_procedure_error_criteria=false).\",\n    \"Requirements separated to distinguish ointment presence from the requested qualitative 'thin' layer constraint.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

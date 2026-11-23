@@ -1,0 +1,135 @@
+{
+  "schema_version": "action_requirements_v1",
+  "procedure_title": "Tabletop requirement flow",
+  "task_goal": "Place the pad and block, then wrap the strap while keeping the block on the pad.",
+  "instruction": "Start with an empty tray. Place the blue pad on the tray. Put the red block on the blue pad. Keep the red block on the blue pad while wrapping the yellow strap around it.",
+  "steps": [
+    {
+      "step_id": "S1",
+      "step_name": "Place the pad",
+      "step_description": "",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A1",
+          "instruction": "Place the blue pad on the tray.",
+          "original_text": "Place the blue pad on the tray.",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [],
+          "associated_constraints": [],
+          "preconditions": [
+            {
+              "requirement_id": "A1_PRE1",
+              "condition": "The tray is empty.",
+              "source": "explicit_instruction",
+              "source_reference": "Start with an empty tray.",
+              "requires_expert_review": false
+            }
+          ],
+          "postconditions": [
+            {
+              "requirement_id": "A1_POST1",
+              "condition": "The blue pad is on the tray.",
+              "source": "explicit_instruction",
+              "source_reference": "Place the blue pad on the tray.",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S2",
+      "step_name": "Place and wrap the block",
+      "step_description": "",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A2",
+          "instruction": "Put the red block on the blue pad.",
+          "original_text": "Put the red block on the blue pad.",
+          "dependencies": [
+            "A1"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A2_POST1",
+              "condition": "The red block is on the blue pad.",
+              "source": "explicit_instruction",
+              "source_reference": "Put the red block on the blue pad.",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A3",
+          "instruction": "Wrap the yellow strap around the red block while keeping the block on the pad.",
+          "original_text": "Keep the red block on the blue pad while wrapping the yellow strap around it.",
+          "dependencies": [
+            "A2"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [],
+          "associated_constraints": [],
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A3_POST1",
+              "condition": "The yellow strap is wrapped around the red block.",
+              "source": "explicit_instruction",
+              "source_reference": "Keep the red block on the blue pad while wrapping the yellow strap around it.",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": [
+            {
+              "criterion_id": "A3_KEEP_ON_PAD",
+              "error_type": "spatial_error",
+              "violation_condition": "The red block left the blue pad during wrapping.",
+              "compliance_condition": "The red block remained on the blue pad throughout wrapping.",
+              "applicability_condition": "",
+              "related_requirement_ids": [],
+              "relevant_action_ids": [],
+              "source": "explicit_instruction",
+              "source_reference": "Keep the red block on the blue pad while wrapping the yellow strap around it.",
+              "requires_expert_review": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "context_notes": [],
+  "review_notes": [
+    "Authored tabletop software example, not a model-generated clinical protocol. A single final frame does not prove the interval-wide rule; operator confirmation may be necessary."
+  ]
+}

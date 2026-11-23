@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 5505,
+    "total_input_tokens": 4081,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 4081
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 1424,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 4081
+  },
+  "created": "2026-11-23T10:32:07Z",
+  "updated": "2026-11-23T10:32:07Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRPbP/ipu0yJUPTVHO1o/Pke9BeSsoXAv27A7Nm8uQPOw8/BDkHId1ycqSnyz7fNLI2jqbgk8mbj2s0dqbprh0vI6DkWspBUatQh/0ySH06mG/ls+mArXUJ5YODKTdehqBWLrqhQ7zuXDWh6imH5SywHR1eqAGco6Y6864XPa/Mw4NkEaPS9x9O7wzSzgJsiztfS1WRGZiHaO40=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A1_post_1\",\n          \"condition\": \"Hands have been washed with soap and water.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Wash your hands with soap and water\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Was the handwashing procedure with soap and water performed?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"human_confirmation\"],\n            \"relevant_entities\": [\"hands\", \"soap\", \"water\"],\n            \"observable_cues\": [\"handwashing procedure\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"human_confirmation\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"human_required\",\n            \"limitations\": [\"The system cannot confirm handwashing occurred or that specified agents were used via after-step images.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"high\",\n      \"skip_impact\": \"Prevents mandatory infection control step.\",\n      \"review_notes\": [\"Handwashing is an operation that cannot be verified by observing the result or after-step images; human confirmation is required.\"]\n    },\n    {\n      \"action_id\": \"A2\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A2_pre_1\",\n          \"condition\": \"Hands have been washed with soap and water.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A1\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Did the user perform handwashing before putting on gloves?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"interaction_history\"],\n            \"relevant_entities\": [\"hands\"],\n            \"observable_cues\": [\"handwashing procedure\"],\n            \"temporal_scope\": \"procedure_history\",\n            \"verification_method\": \"state_machine\",\n            \"observability\": \"not_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"System lacks history/event tracking.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_post_1\",\n          \"condition\": \"Clean gloves are worn on the hands.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Are clean gloves worn on both hands?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\", \"hand_pose\"],\n            \"relevant_entities\": [\"hands\", \"gloves\"],\n            \"observable_cues\": [\"gloves on hands\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"partial\",\n            \"limitations\": [\"Identity of 'clean' cannot be verified visually; occlusions may hide glove coverage on palms or fingers.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"high\",\n      \"skip_impact\": \"Violates infection control and hygiene protocol.\",\n      \"review_notes\": [\"Cleanliness of gloves cannot be verified by the system; assumes standard procedural compliance with supply.\"]\n    },\n    {\n      \"action_id\": \"A3\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A3_pre_1\",\n          \"condition\": \"Clean gloves are worn.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A2\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Are gloves worn before dressing removal?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"hands\", \"gloves\"],\n            \"observable_cues\": [\"gloves on hands\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"partial\",\n            \"limitations\": [\"Requires confirmation of glove presence from previous step.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A3_post_1\",\n          \"condition\": \"The old dressing has been removed.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Gently remove the old dressing.\",\n          \"requires_expert_review\": true,\n          \"vqa_question\": \"Has the old dressing been removed from the wound area?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"old dressing\", \"burn\"],\n            \"observable_cues\": [\"absence of old dressing\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"partial\",\n            \"limitations\": [\"Definition of 'gently' is missing and requires expert review; occlusion may mask the dressing interface with the burn.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"medium\",\n      \"skip_impact\": \"Failure to remove old dressing prevents access to the wound.\",\n      \"review_notes\": [\"Gently remove requires interpretation that the system cannot provide, noted as expert review.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"Verification assumes current system capability of identifying common medical supplies (gloves, dressing, pads, tape).\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

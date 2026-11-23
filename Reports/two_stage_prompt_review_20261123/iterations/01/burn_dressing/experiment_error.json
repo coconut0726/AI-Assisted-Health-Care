@@ -1,0 +1,3 @@
+{
+  "error": "Bridge HTTP 502: {\"error\": \"gemini rejected the request\", \"provider_status\": 401}"
+}

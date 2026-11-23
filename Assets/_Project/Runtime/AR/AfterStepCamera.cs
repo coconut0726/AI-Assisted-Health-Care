@@ -15,6 +15,9 @@ namespace HomeCare.AR
         public Texture2D editorTestImage;
         [Tooltip("Editor only: without a test image, capture what the headset camera renders (the virtual scene). Turn off to use the passthrough camera over Link.")]
         public bool captureViewCameraInEditor = true;
+        [Tooltip("Maximum JPEG width. Legacy scenes retain 1280; the Action-flow scene uses 640 for faster polling.")]
+        public int maxImageWidth = 1280;
+        [Range(20, 100)] public int jpegQuality = 85;
         public bool IsEditorTest { get; private set; }
         PassthroughCameraAccess _access;
         const string CameraPermission = "horizonos.permission.HEADSET_CAMERA";
@@ -126,11 +129,12 @@ namespace HomeCare.AR
             };
         }
 
-        static byte[] RenderView()
+        byte[] RenderView()
         {
             var camera = EditorCamera();
             if (camera == null) throw new InvalidOperationException("No camera to capture in the Editor.");
-            var target = RenderTexture.GetTemporary(1280, 960, 24, RenderTextureFormat.ARGB32);
+            int width = Mathf.Min(1280, Mathf.Max(64, maxImageWidth));
+            var target = RenderTexture.GetTemporary(width, width * 3 / 4, 24, RenderTextureFormat.ARGB32);
             var previousTarget = camera.targetTexture;
             var previousColor = camera.backgroundColor;
             var previousMask = camera.cullingMask;
@@ -154,9 +158,9 @@ namespace HomeCare.AR
         }
 #endif
 
-        static byte[] Encode(Texture source)
+        byte[] Encode(Texture source)
         {
-            int width = Mathf.Min(source.width, 1280);
+            int width = Mathf.Min(source.width, Mathf.Max(64, maxImageWidth));
             int height = Mathf.Max(1, Mathf.RoundToInt((float)source.height * width / source.width));
             var temporary = RenderTexture.GetTemporary(width, height, 0, RenderTextureFormat.ARGB32);
             var previous = RenderTexture.active;
@@ -168,7 +172,7 @@ namespace HomeCare.AR
                 readable = new Texture2D(width, height, TextureFormat.RGB24, false);
                 readable.ReadPixels(new Rect(0, 0, width, height), 0, 0);
                 readable.Apply();
-                return readable.EncodeToJPG(85);
+                return readable.EncodeToJPG(Mathf.Clamp(jpegQuality, 20, 100));
             }
             finally
             {

@@ -1,0 +1,16 @@
+revision 3 不接受。Burn 阶段一结构合格但语义错误：
+- remove 与 before lifting 指同一次去除操作，却生成为先 remove、再条件 soak、再 lift。
+  由此产生 A3->A4 的错误顺序。
+- 条件 nurse call 所在 S4 依赖 S3，违背该条件通知不应等待前面步骤结束的要求。
+- S2 同时有 Step 依赖 S1 与等价 Action 依赖 A2，重复。
+- no rub 仍被收窄到 drying；no blister break 被放入备注而非实际相关 Action 约束。
+因此这个图不该进入 requirement 生成。先前实验串行验证仅验证结构，没有在阶段间
+强制人工语义审查。本轮保留完整原始输出，用于记录这个实验方式的不足。
+
+阶段二：洗手已不再只看外观，但仍有条件/问题不一致、重复依赖前置、clean
+与穿戴合并、临床 skip 后果等问题。Global P_order_flow 的 source_reference
+只写 task_graph，没有引用具体关系，来源校验失败；仍遗漏 missing_step。
+
+revision 4：先只生成并审查两个图，再对每个 Action 单独调用同一个第二阶段
+prompt。两种 prompt 的语义阶段不变；调用分批属于实验执行方式调整。
+不修改模型原始响应，不用 GPT 代写通过结果。

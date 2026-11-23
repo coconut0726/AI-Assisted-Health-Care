@@ -1,0 +1,4 @@
+{
+  "status": 502,
+  "message": "{\"error\": \"gemini rejected the request\", \"provider_status\": 401}"
+}

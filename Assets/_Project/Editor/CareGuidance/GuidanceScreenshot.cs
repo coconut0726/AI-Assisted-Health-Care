@@ -17,7 +17,7 @@ namespace HomeCare.Guidance.EditorTools
     {
         const string Folder = "Reports/visual_guidance";
 
-        [MenuItem("Tools/Home Care/Capture Guidance Screenshot")]
+        // [MenuItem("Tools/Home Care/Capture Guidance Screenshot")]
         static void CaptureMenu() => Debug.Log("[HomeCare] " + Capture(Path.Combine(Folder, "guidance_" + DateTime.Now.ToString("HHmmss") + ".png")));
 
         public static string Capture(string path, int width = 2560, int height = 1600, float margin = 1.15f)

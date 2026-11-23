@@ -1,0 +1,87 @@
+{
+  "general": [
+    "You are correcting an actually rejected candidate. Apply the concrete feedback, not just a generic review note. Do not handwave missing requirements as user adherence. Keep source-named qualifiers in executable requirement/error fields.",
+    "No clinical explanations in skip_impact. Use only source-stated outcome or explicit dependency impact; use unknown if impact is not established. Do not assert contamination/infection/trauma/healing/asepsis/sterility/circulation claims absent from the source.",
+    "Remove redundant preconditions that only repeat a prerequisite Action's completion. An independent clean-material property is different and must not disappear. Do not invent preconditions such as object must be camera-visible or wound must be clean/prepared.",
+    "Every compliance_question must ask whether compliance holds; YES MUST NOT mean an error. Do not ask whether there is evidence of rubbing or whether tape touches the burn as a positive compliance question. Do not combine rubbing and blister breakage into one criterion.",
+    "A requirement includes exactly the properties asked by its question and supported by its evidence. If a condition needs occurrence of a specified operation, nearby objects or plausible final appearance are insufficient. Pick human_confirmation/human_required or adequate process evidence, not unavailable inferred sensor data.",
+    "The supplied nurse_prior is empty. No expert_prior items. Preserve exact source quotes; inferred always requires review. Do not add quantities, uniformity, extra tools or additional technique prohibitions. Global Order/Missing criteria must use real graph IDs in source_reference."
+  ],
+  "burn_dressing": {
+    "graph": [
+      "Keep all current content except this source-grounded access dependency: A7 applies ointment to the burn, which is initially covered by the old dressing. A7 must depend on A4 (old dressing removed) for access to that target, just as A5 does. Set A7.dependencies to [A4], NOT A6. A6-to-A7 remains recommended display order requiring review, not an imposed drying-before-ointment dependency. Keep A8 dependent on A7, conditional A3-before-A4, no prerequisites for A11, empty Step edges and every exact source constraint. Update the review note to distinguish target access from customary ordering. Do not add anything else."
+    ],
+    "A1": [
+      "Completion must explicitly include the source-specified soap AND water, not generic handwashing only. Question must ask that same completed-operation claim. A current hand photograph cannot prove it. Use human confirmation of that operation or unsupported process evidence. No clinical skip-impact claim."
+    ],
+    "A2": [
+      "Delete the prerequisite-handwashing precondition; A1->A2 already encodes it. ADD a real PREcondition that the gloves selected for donning are clean, quoting 'put on clean gloves', with human_confirmation/human_required and review for the undefined clean property. Preserve a separate POSTcondition ONLY that gloves are worn on the hands, which is potentially visible. Remove the generic error mixing absent gloves and wrong objects; no new donning technique is specified. Do not replace the clean-material requirement with a note."
+    ],
+    "A3": [
+      "Do not turn the Action's existing sticking applicability into a redundant precondition requiring a physical force inference. Add a clean-water property precondition requiring human evidence, then a postcondition that the source-specified soaking operation was performed on the old dressing when sticking. Wet-looking/saturated appearance is not sufficient evidence of operation occurrence or liquid identity. Soaking endpoint is unspecified; flag review, no invented saturation threshold/duration. Local applicability inherits the source sticking condition. Do not label this none because it is conditional: it is a prerequisite to lifting when applicable."
+    ],
+    "A4": [
+      "Remove the invented camera-visible precondition. Completion state can say the old dressing no longer covers the burn, with visibility limits; do not use it to prove gentle movement. Keep a separate gentle-removal technique criterion, positive compliance question and human/process evidence. Gently is undefined: requires_expert_review=true. Do not equate all rapid motion with excessive force or invent a clinical-injury endpoint. Reserve rubbing/blister prohibitions for globals."
+    ],
+    "A5": [
+      "The old question only asks whether rinsing is happening while the condition includes completed rinsing with cool running water. Separate cool-water property needing human evidence and undefined-temperature review from completion of the actual running-water rinse, needing process/human evidence. No pressure/force rules. Rubbing and blister breakage are separate cross-action globals, not a combined local criterion."
+    ],
+    "A6": [
+      "Delete the copied prior-rinse-completed precondition. Add a clean-towel property precondition with human evidence. The completed pat-drying operation must have a matching completion question and process/human evidence; towel nearby plus dry-looking skin is not proof. You may separately specify a visible dry-skin end state with limits, but do not call that proof of patting. No local rubbing/blister duplicate; globals cover them. No clinical skip-impact assertions."
+    ],
+    "A7": [
+      "Remove the inferred prior-dryness prerequisite unless the source explicitly requires it as a current state. Preserve burn ointment identity, thin-layer result and cotton-swab USE in actual requirements/criteria. A swab visible nearby does not prove it was used. Separate the visible candidate ointment state from its thinness/material identity/use claims where evidence differs. Thin needs expert definition/review, not invented uniformity. A Wrong Object criterion can specify actual use of another applicator instead of cotton swab, using human/process evidence. No added evenness or clinical-healing claims."
+    ],
+    "A8": [
+      "Remove invented 'clean and prepared' prerequisite. Add source-supported non-stick-pad identity/property as a human/provenance precondition; a pad's generic appearance cannot prove non-stick. A separate placement/coverage postcondition can be partially assessed by RGB, with hidden boundary/actual placement limits. Do not label the whole non-stick-material claim visually supported, and do not call pad sterile. Any local error is only a source-supported specific violation."
+    ],
+    "A9": [
+      "Remove redundant prerequisite completion VQA. Keep observable gauze-wrap end state separate from the loosely constraint. Loosely must be a real criterion with a positive question and human_required evidence, needs expert operational definition. No finger-under test, blood-flow claim, numerical tension, or visual proof from gaps. Use verification_method human_confirmation when evidence is human confirmation; do not pair it with not_verifiable inconsistently."
+    ],
+    "A10": [
+      "Remove redundant A9 completion precondition. Preserve tape securing the gauze, without assuming projection overlap proves mechanical hold. Keep the source restriction keeping tape off burned skin as an Action-local spatial criterion across the tape-application interval; ask positively whether tape was kept off burned skin throughout that interval. A final image alone cannot establish that history, and the burn/tape interface may be hidden. Human/process evidence or unknown is needed. Do not require tape ONLY on gauze: the source excludes burned skin, not all unburned skin. Do not duplicate this single-action rule globally."
+    ],
+    "A11": [
+      "Preserve all OR triggers including MORE red/swollen, smell, pus leakage and fever. Trigger assessment cannot be inferred wholly from RGB. Completion: the nurse was called when a source trigger applied, requiring human/communication evidence not a phone image. Do not require acknowledged receipt or invent a response-time deadline not stated. No phone tool, optional follow-up label or dependency on finishing dressing. Source does not give skip consequences: unknown procedural impact is preferable to none or invented infection severity. Flag unspecified trigger/notification timing for expert review, not an invented rule."
+    ],
+    "global": [
+      "Reject the old P_prohibit_contact: direct contact is NOT forbidden and the task requires contact. Generate TWO distinct source-supported global prohibitions: no rubbing the burn, no breaking blisters. Scope them over potential burn-contact Actions A3-A10. Blister rule applies only where blisters are present; unknown presence is unresolved. Do not combine these violations or infer whole-interval compliance from an intact final photograph. Use sufficient process/human evidence, current support unsupported or human_required.",
+      "Order criteria must enumerate exactly the accepted graph's real edges and their activation conditions, with concrete IDs in source_reference. A3 before A4 is conditional on sticking, not an unconditional sequence. Do not order A11 after other care Actions. Missing-step criteria must cover A1-A11 only WHEN applicable. Gaps in snapshots do not prove omission. State a valid dependent-event/completion boundary with sufficient records. No deadline is supplied for notification: automatic timing/omission conclusions for that Action require expert review rather than assuming it was missed at the last snapshot.",
+      "The tape-off-burn rule is Action-local A10, not a duplicate global criterion. Do not invent extra source rules or clinical risks."
+    ]
+  },
+  "simple_wound_dressing": {
+    "graph": [
+      "Preserve the 8 current Action IDs and meanings, including one inspection, separate wrapper insertion/sealing, and distinct initial/final handwashing. Do not add soap/water/phone/clinical glove technique.",
+      "A3 associated_constraints ['not red','not swollen','not leaking'] are not all contiguous source quotes. Use the complete exact source phrase 'not red, swollen or leaking' or the full inspection sentence instead. Preserve all three meanings.",
+      "Remove duplicated Step edges and unsupported sentence-order gates. All Step dependencies should be empty when represented by these precise Action relations: A2 depends A1 (then); A4 depends A3 (the cut must be inspected before coverage hides it); A6 depends A5 (insert then seal the same bag); A7 depends A6 (Then take off); A8 depends A7 (bare-hand washing follows removal). A3 has no explicit dependency on A2 and A5 no explicit dependency on A4; preserve recommended display order and flag these uncertain customary relations for expert review rather than asserting clinical prerequisites. No other Actions or mandatory edges."
+    ],
+    "A1": [
+      "Only 'Wash your hands' is provided: completed handwashing postcondition with human/process evidence, no soap, water, duration or dry-hand proxy. No clinical skip-impact."
+    ],
+    "A2": [
+      "Do NOT repeat A1 completion as a precondition. Clean-glove property must be an actual human-required precondition, distinct from visually assessable gloves-worn postcondition. No unspecified glove technique, sterility, generic absent/wrong-object error or clinical skip-impact."
+    ],
+    "A3": [
+      "One inspection episode checks ALL red/swollen/leaking features. Include actual inspection completion as human_required; current target image or camera alignment does not prove the person checked. Preserve the instructed target-state finding separately with human/expert review if needed; do not mistake a normal-looking photograph for completed inspection or clinical clearance. No new nurse-call rule, diagnosis, timed gaze test or automatic abnormal-finding response."
+    ],
+    "A4": [
+      "Separate non-stick identity/property (human/provenance evidence) from whole-cut spatial coverage. Coverage remains partial if cut boundaries or contact interfaces are hidden; 2D boxes/absence of exposed cut alone do not prove full correct placement. No white/sterile requirement. A spatial error can be confirmed if the target is visibly exposed, but no observed violation is not proof of correct full coverage."
+    ],
+    "A5": [
+      "Postcondition wrapper actually inside zip bag, not merely overlapping its projected boundary. Current RGB can be partial with clear interior/depth/occlusion limits. No assumption the wrapper is contaminated. No redundant A4-completed precondition or added bag-opening Action."
+    ],
+    "A6": [
+      "Postcondition the zip bag is sealed, not merely visually closed with aligned edges. Human confirmation may be needed if seal engagement cannot be seen. No added force/leak testing Action. Do not repeat A5 completion as a precondition."
+    ],
+    "A7": [
+      "Postcondition gloves no longer worn, visually assessable when hands clear. No general-medical glove-removal contact technique or expert_prior. No duplicate A6 completion precondition."
+    ],
+    "A8": [
+      "This is a DISTINCT final handwashing after glove removal. Completed operation needs human/process evidence; bare hands do not prove it. No source-specified soap/water/duration, so add none. Do not duplicate A7 completion as a precondition."
+    ],
+    "global": [
+      "Enumerate only actual accepted mandatory graph relations, not all array positions sequentially, and put concrete IDs/relations in graph_dependency source_reference. Include Missing Step covering all eight Actions with a sufficiently observed history/human record and appropriate boundary; an unobserved interval is not an omission. The original instruction has no cross-action prohibition needing invention. No extra clinical technique, sterility, hygiene mechanism or nurse notification from excluded completion_note."
+    ]
+  }
+}

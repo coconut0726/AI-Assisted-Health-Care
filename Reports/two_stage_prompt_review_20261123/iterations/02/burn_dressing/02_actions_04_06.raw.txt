@@ -1,0 +1,300 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "preconditions": [
+        {
+          "requirement_id": "A4_PRE1",
+          "condition": "The old dressing is removed gently.",
+          "source": "explicit_instruction",
+          "source_reference": "Gently remove the old dressing.",
+          "requires_expert_review": true,
+          "vqa_question": "Does the removal appear to be performed gently without jerky motions or excessive force?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video",
+              "hand_trajectory",
+              "relative_motion"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "user's hands"
+            ],
+            "observable_cues": [
+              "slow movement",
+              "lack of sudden tearing motion"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Requires continuous video to assess gentleness; a single frame is insufficient."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A4_POST1",
+          "condition": "The old dressing is no longer covering the burn.",
+          "source": "explicit_instruction",
+          "source_reference": "remove the old dressing",
+          "requires_expert_review": false,
+          "vqa_question": "Is the old dressing completely removed from the burn site?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "burn"
+            ],
+            "observable_cues": [
+              "absence of dressing material over the wound"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Cannot confirm complete removal if debris is small or occluded."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A4_TECH1",
+          "error_type": "technique_error",
+          "violation_condition": "The dressing is pulled off abruptly or with excessive force.",
+          "compliance_condition": "The removal occurs using slow, deliberate, and gentle movements.",
+          "compliance_question": "Is the removal action observed to be gentle?",
+          "applicability_condition": "The action A4 is performed.",
+          "related_requirement_ids": [
+            "A4_PRE1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Gently remove the old dressing.",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video",
+              "hand_trajectory"
+            ],
+            "relevant_entities": [
+              "old dressing",
+              "user's hands"
+            ],
+            "observable_cues": [
+              "slow hand trajectory",
+              "absence of sudden tearing motion"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Requires temporal resolution for motion analysis, not available in current system."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "Hands are positioned near the dressing",
+        "Dressing edges are being lifted"
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "Leaving old dressing on will impede cleaning and healing, and risk infection.",
+      "review_notes": [
+        "Gentleness is a subjective term requiring expert definition for operational VLM evaluation."
+      ]
+    },
+    {
+      "action_id": "A5",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A5_POST1",
+          "condition": "Burn site is visibly wet/rinsed.",
+          "source": "explicit_instruction",
+          "source_reference": "Rinse the burn with cool running water",
+          "requires_expert_review": true,
+          "vqa_question": "Does the burn area show evidence of recent rinsing (e.g., dampness or water droplets)?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_mask"
+            ],
+            "relevant_entities": [
+              "burn",
+              "water"
+            ],
+            "observable_cues": [
+              "wet skin appearance",
+              "droplets on surface"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Cannot verify water temperature or 'running' status; only existence of moisture."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A5_TECH1",
+          "error_type": "technique_error",
+          "violation_condition": "Water flow is directed forcefully at the burn.",
+          "compliance_condition": "Water is applied in a gentle rinse or stream.",
+          "compliance_question": "Does the water application appear gentle?",
+          "applicability_condition": "The action A5 is performed.",
+          "related_requirement_ids": [],
+          "source": "explicit_instruction",
+          "source_reference": "Rinse the burn with cool running water",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video"
+            ],
+            "relevant_entities": [
+              "water source",
+              "burn"
+            ],
+            "observable_cues": [
+              "gentle flow vs high pressure spray"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Requires continuous video; cannot verify pressure from a single frame."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "Running water is visible over the burn"
+      ],
+      "skip_risk": "high",
+      "skip_impact": "Incomplete cleaning can lead to infection.",
+      "review_notes": [
+        "Cannot verify 'cool' temperature of water. Relying on user to judge temperature."
+      ]
+    },
+    {
+      "action_id": "A6",
+      "preconditions": [
+        {
+          "requirement_id": "A6_PRE1",
+          "condition": "Use a clean towel for drying.",
+          "source": "explicit_instruction",
+          "source_reference": "pat the skin dry with a clean towel",
+          "requires_expert_review": false,
+          "vqa_question": "Is the material being used for drying a clean towel?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "clean towel"
+            ],
+            "observable_cues": [
+              "towel appearance",
+              "lack of visible soil"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Visual appearance cannot guarantee clinical sterility or 'cleanliness'."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A6_POST1",
+          "condition": "Skin is dry.",
+          "source": "explicit_instruction",
+          "source_reference": "pat the skin dry",
+          "requires_expert_review": false,
+          "vqa_question": "Does the skin surrounding the burn appear dry?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "skin",
+              "burn"
+            ],
+            "observable_cues": [
+              "absence of moisture/droplets"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": []
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A6_TECH1",
+          "error_type": "technique_error",
+          "violation_condition": "The burn is rubbed instead of patted, or blisters are broken.",
+          "compliance_condition": "The drying motion is a gentle patting motion.",
+          "compliance_question": "Is the drying action performed by patting rather than rubbing?",
+          "applicability_condition": "The action A6 is performed.",
+          "related_requirement_ids": [
+            "A6_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Do not rub the burn and do not break any blisters.",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video",
+              "hand_trajectory"
+            ],
+            "relevant_entities": [
+              "burn",
+              "user's hands"
+            ],
+            "observable_cues": [
+              "repetitive vertical motion (patting) vs lateral friction (rubbing)"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Requires continuous video to differentiate between patting and rubbing."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "Towel held against skin",
+        "Vertical patting motion"
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "Rubbing or breaking blisters can cause secondary tissue damage and infection risk.",
+      "review_notes": [
+        "Cannot verify absence of blister breakage from visual frames alone if blisters were already present; this would require high-resolution comparison."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Evidence support for action-level motion (e.g., 'patting' vs 'rubbing') is currently unsupported due to the lack of video stream in the system capabilities."
+  ]
+}

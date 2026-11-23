@@ -1,0 +1,60 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [
+    {
+      "criterion_id": "P_RUBBING_PROHIBITION",
+      "error_type": "technique_error",
+      "violation_condition": "Patient rubs the burn area during the drying process.",
+      "compliance_condition": "Patient pats the skin dry without lateral or rubbing motion.",
+      "relevant_step_ids": ["S2"],
+      "relevant_action_ids": ["A6"],
+      "evidence_specification": {
+        "evidence_types": ["rgb_video", "hand_trajectory"],
+        "relevant_entities": ["hand", "clean towel", "skin", "burn"],
+        "observable_cues": ["hand motion pattern", "towel skin contact"],
+        "temporal_scope": "during_action",
+        "verification_method": "VLM",
+        "observability": "partially_observable",
+        "current_support": "unsupported",
+        "limitations": ["Requires continuous video or high-frequency frame sampling to distinguish between patting and rubbing; current system baseline lacks video input."]
+      },
+      "detection_timing": "during_action",
+      "source_reference": "Do not rub the burn",
+      "limitations": ["No video input available to verify motion technique."],
+      "compliance_question": "Did the patient pat the skin dry instead of rubbing the burn area?",
+      "applicability_condition": "true",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_BLISTER_PROHIBITION",
+      "error_type": "technique_error",
+      "violation_condition": "Patient breaks blisters during cleaning or drying.",
+      "compliance_condition": "Visible integrity of existing blisters maintained throughout procedure.",
+      "relevant_step_ids": ["S2"],
+      "relevant_action_ids": ["A5", "A6"],
+      "evidence_specification": {
+        "evidence_types": ["rgb_frame"],
+        "relevant_entities": ["burn", "blisters"],
+        "observable_cues": ["blister appearance"],
+        "temporal_scope": "procedure_history",
+        "verification_method": "VLM",
+        "observability": "visually_observable",
+        "current_support": "partial",
+        "limitations": ["Visual comparison of before and after states cannot definitively rule out rupture during the procedure; depends on resolution and initial blister state clarity."]
+      },
+      "detection_timing": "after_action",
+      "source_reference": "do not break any blisters",
+      "limitations": ["Blisters may be small or obscured; evidence only compares final state to visual history."],
+      "compliance_question": "Are the blisters intact after cleaning and drying the burn?",
+      "applicability_condition": "blisters are present at the start",
+      "source": "explicit_instruction",
+      "requires_expert_review": true
+    }
+  ],
+  "review_notes": [
+    "Procedure error criteria added for rubbing and blister protection, as these are critical technique constraints specified in the instructions.",
+    "The system lacks continuous temporal monitoring (video), making technique-based error detection (like rubbing) difficult to guarantee; current evidence is marked unsupported for real-time motion analysis.",
+    "A11 (nurse call) is treated as an optional follow-up and no procedural failure criteria are created for it."
+  ]
+}

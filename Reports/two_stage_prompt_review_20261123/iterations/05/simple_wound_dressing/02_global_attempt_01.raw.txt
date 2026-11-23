@@ -1,0 +1,308 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A1_post_1",
+          "condition": "The handwashing operation occurred.",
+          "source": "explicit_instruction",
+          "source_reference": "Wash your hands",
+          "requires_expert_review": false,
+          "vqa_question": "Did the user perform the handwashing operation?",
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["hands"],
+            "observable_cues": ["handwashing motion"],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["current system lacks historical or video-based action recognition"]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A2",
+      "preconditions": [
+        {
+          "requirement_id": "A2_pre_1",
+          "condition": "Gloves are confirmed to be clean.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": true,
+          "vqa_question": "Are the gloves clean?",
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["gloves"],
+            "observable_cues": ["cleanliness appearance"],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["Visual observation cannot determine sterility or cleanliness."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A2_post_1",
+          "condition": "Gloves are worn on the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "vqa_question": "Are the gloves on the user's hands?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["gloves", "hands"],
+            "observable_cues": ["gloves on hands"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Requires clear visibility of hands and gloves."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A3",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A3_post_1",
+          "condition": "The user looked at the cut and checked that it is not red, swollen or leaking.",
+          "source": "explicit_instruction",
+          "source_reference": "Look at the cut on the skin pad. Check that it is not red, swollen or leaking.",
+          "requires_expert_review": false,
+          "vqa_question": "Did the user inspect the cut for being red, swollen or leaking?",
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["cut", "skin pad"],
+            "observable_cues": ["inspection maneuver"],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["Visual inspection of the wound does not confirm that the user performed the requested mental check."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A4",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_post_1",
+          "condition": "A non-stick pad is placed over the whole cut on the skin pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false,
+          "vqa_question": "Is the non-stick pad placed over the entire cut?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "spatial_position"],
+            "relevant_entities": ["non-stick pad", "cut", "skin pad"],
+            "observable_cues": ["pad coverage of cut area"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Occlusion may hide the interface between the pad and the cut."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A5",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A5_post_1",
+          "condition": "The pad wrapper is inside the zip bag.",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false,
+          "vqa_question": "Is the pad wrapper inside the zip bag?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["pad wrapper", "zip bag"],
+            "observable_cues": ["wrapper inside bag"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Dependent on zip bag opacity and openness."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A6",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A6_post_1",
+          "condition": "The zip bag is sealed.",
+          "source": "explicit_instruction",
+          "source_reference": "seal it",
+          "requires_expert_review": false,
+          "vqa_question": "Is the zip bag fully sealed?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame"],
+            "relevant_entities": ["zip bag"],
+            "observable_cues": ["seal engagement"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Seal engagement may not be observable in static images."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A7",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A7_post_1",
+          "condition": "The gloves are off the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "take off the gloves",
+          "requires_expert_review": false,
+          "vqa_question": "Are the gloves removed from the hands?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["gloves", "hands"],
+            "observable_cues": ["absence of gloves on hands"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Visibility required for both hands."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A8",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A8_post_1",
+          "condition": "The handwashing operation occurred.",
+          "source": "explicit_instruction",
+          "source_reference": "wash your hands",
+          "requires_expert_review": false,
+          "vqa_question": "Did the user perform the handwashing operation?",
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["hands"],
+            "observable_cues": ["handwashing motion"],
+            "temporal_scope": "after_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["Current system cannot verify the actual occurrence of handwashing."]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Unknown impact.",
+      "review_notes": []
+    }
+  ],
+  "procedure_error_criteria": [
+    {
+      "criterion_id": "P_order_1",
+      "error_type": "order_error",
+      "violation_condition": "Actions performed outside the specified sequence: A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8.",
+      "compliance_condition": "All actions performed in the specified graph sequence.",
+      "relevant_step_ids": ["S1", "S2", "S3", "S4"],
+      "relevant_action_ids": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+      "evidence_specification": {
+        "evidence_types": ["interaction_history"],
+        "relevant_entities": ["user"],
+        "observable_cues": ["action sequence log"],
+        "temporal_scope": "procedure_history",
+        "verification_method": "state_machine",
+        "observability": "not_observable",
+        "current_support": "unsupported",
+        "limitations": ["Requires full procedure state tracking."]
+      },
+      "detection_timing": "after_procedure",
+      "source_reference": "graph_dependency",
+      "limitations": ["Sequence verification requires end-to-end logging."],
+      "compliance_question": "Were all actions performed in the required sequential order?",
+      "applicability_condition": "Entire procedure.",
+      "source": "graph_dependency",
+      "requires_expert_review": false
+    },
+    {
+      "criterion_id": "P_missing_step_1",
+      "error_type": "missing_step",
+      "violation_condition": "Any action A1 through A8 not completed.",
+      "compliance_condition": "All actions A1 through A8 were completed.",
+      "relevant_step_ids": ["S1", "S2", "S3", "S4"],
+      "relevant_action_ids": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+      "evidence_specification": {
+        "evidence_types": ["interaction_history"],
+        "relevant_entities": ["user"],
+        "observable_cues": ["action completion indicators"],
+        "temporal_scope": "procedure_history",
+        "verification_method": "not_verifiable",
+        "observability": "not_observable",
+        "current_support": "unsupported",
+        "limitations": ["Manual next button makes tracking incomplete."]
+      },
+      "detection_timing": "after_procedure",
+      "source_reference": "explicit_instruction",
+      "limitations": ["Missing steps cannot be reliably confirmed without event history."],
+      "compliance_question": "Were all specified actions completed?",
+      "applicability_condition": "Entire procedure.",
+      "source": "explicit_instruction",
+      "requires_expert_review": false
+    }
+  ],
+  "review_notes": ["Dependencies A1-A2, A3-A4, A5-A6, A6-A7, A7-A8 are reflected in sequence logic.", "All requirements use exact quotes from the instruction.", "Missing Step criterion includes all 8 actions.", "System current_support is set to unsupported for temporal procedures as no history/video is provided."]
+}

@@ -1,0 +1,238 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A7_POST1",
+          "condition": "A thin layer of burn ointment is applied to the burn.",
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": true,
+          "vqa_question": "Is a thin layer of burn ointment visible on the burn surface?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "burn",
+              "burn ointment"
+            ],
+            "observable_cues": [
+              "ointment presence on burn area",
+              "lack of thick glob"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Thin layer is a qualitative term lacking operational thickness definition.",
+              "VLM cannot definitively distinguish layer thickness."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A7_ERR1",
+          "error_type": "technique_error",
+          "violation_condition": "Burn ointment applied using hands or other tools instead of cotton swab.",
+          "compliance_condition": "Cotton swab is used to apply ointment.",
+          "compliance_question": "Is a cotton swab being used to apply the ointment?",
+          "applicability_condition": "none",
+          "related_requirement_ids": [],
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "hand_object_contact"
+            ],
+            "relevant_entities": [
+              "cotton swab",
+              "burn ointment"
+            ],
+            "observable_cues": [
+              "cotton swab held by user",
+              "cotton swab in contact with ointment or burn"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Requires continuous observation or video evidence to confirm application tool usage.",
+              "Cannot confirm tool usage with a single frame."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "user holding cotton swab",
+        "cotton swab moving toward or on burn"
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "Applying ointment without a swab increases contamination risk, and skipping application leaves the burn untreated.",
+      "review_notes": [
+        "Definition of 'thin layer' is missing and requires expert input for verification."
+      ]
+    },
+    {
+      "action_id": "A8",
+      "preconditions": [
+        {
+          "requirement_id": "A8_PRE1",
+          "condition": "Burn ointment has been applied.",
+          "source": "graph_dependency",
+          "source_reference": "A8 depends on A7",
+          "requires_expert_review": false,
+          "vqa_question": "Is there visible evidence of ointment on the burn surface?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "burn",
+              "burn ointment"
+            ],
+            "observable_cues": [
+              "shiny or moist texture on burn"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Cannot confirm previous action success via current observation alone."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A8_POST1",
+          "condition": "Burn is covered by a non-stick pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": true,
+          "vqa_question": "Is the burn completely covered by a non-stick dressing pad?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "burn",
+              "non-stick pad"
+            ],
+            "observable_cues": [
+              "pad centered over burn",
+              "pad edges covering burn site"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "VLM cannot confirm the pad's 'non-stick' property based on appearance."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [
+        "user holding pad",
+        "pad being placed over burn"
+      ],
+      "skip_risk": "high",
+      "skip_impact": "Skipping this leaves the burn exposed, increasing risk of infection.",
+      "review_notes": [
+        "Non-stick property of the pad is not visually verifiable; this requirement relies on product identity."
+      ]
+    },
+    {
+      "action_id": "A9",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A9_POST1",
+          "condition": "Area is wrapped loosely with a gauze roll.",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": true,
+          "vqa_question": "Does the gauze wrapping appear loose around the limb/area?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "gauze roll",
+              "burn"
+            ],
+            "observable_cues": [
+              "visible gap or lack of indentation under gauze",
+              "layers of gauze not tightly pulled"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "'Loosely' is a subjective qualitative term lacking defined tension/pressure limits.",
+              "VLM cannot measure tension or determine clinical 'looseness'."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A9_ERR1",
+          "error_type": "technique_error",
+          "violation_condition": "Wrapping is applied tightly, restricting blood flow.",
+          "compliance_condition": "Gauze is applied loosely.",
+          "compliance_question": "Does the gauze wrap appear loose?",
+          "applicability_condition": "none",
+          "related_requirement_ids": [
+            "A9_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "gauze roll"
+            ],
+            "observable_cues": [
+              "no indentations in tissue",
+              "ability to slide finger under gauze"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "Cannot confirm absence of tight wrapping visually without touch/sensor verification."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "user unwinding gauze around the site"
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "Leaving the pad unsecured with gauze increases risk of the dressing moving or falling off.",
+      "review_notes": [
+        "Definition of 'loosely' is missing and requires expert interpretation."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

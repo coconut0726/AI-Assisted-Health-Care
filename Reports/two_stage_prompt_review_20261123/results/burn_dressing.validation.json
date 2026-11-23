@@ -1,0 +1,47 @@
+{
+  "graph": {
+    "schema_valid": true,
+    "exact_original_instruction": true,
+    "unique_ids": true,
+    "valid_references": true,
+    "acyclic": true,
+    "exact_action_source_quotes": true,
+    "exact_associated_constraint_quotes": true,
+    "step_count": 5,
+    "action_count": 11
+  },
+  "enrichment": {
+    "schema_valid": true,
+    "unique_requirement_and_criterion_ids": true,
+    "valid_references": true,
+    "all_actions_enriched": true,
+    "graph_immutable_merge": true,
+    "provenance_warnings": [],
+    "precondition_count": 9,
+    "postcondition_count": 15,
+    "action_error_criterion_count": 10,
+    "global_error_criterion_count": 4
+  },
+  "structural_and_provenance_errors": [
+    "P_ORDER_ERROR: explicit source reference is not an exact quotation",
+    "P_MISS_STEP: explicit source reference is not an exact quotation",
+    "global Missing Step does not cover all applicable-action candidates: {'A3', 'A11'}"
+  ],
+  "structure_and_provenance_passed": false,
+  "evidence_support_counts": {
+    "supported": 8,
+    "partial": 7,
+    "unsupported": 8,
+    "human_required": 15
+  },
+  "requires_expert_review_count": 22,
+  "stage_2_outputs": [
+    "iterations\\07\\burn_dressing\\02_actions_01_03.json",
+    "iterations\\07\\burn_dressing\\02_actions_04_06.json",
+    "iterations\\07\\burn_dressing\\02_actions_07_09.json",
+    "iterations\\07\\burn_dressing\\02_actions_10_11.json",
+    "iterations\\07\\burn_dressing\\02_procedure_criteria.json"
+  ],
+  "result_file": "burn_dressing.draft.json",
+  "semantic_acceptance": "see REVIEW.txt; not automatically approved"
+}

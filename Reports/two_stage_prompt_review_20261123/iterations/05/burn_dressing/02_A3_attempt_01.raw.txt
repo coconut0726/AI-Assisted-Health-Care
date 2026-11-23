@@ -1,0 +1,77 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "preconditions": [
+        {
+          "requirement_id": "A3_PRE1",
+          "condition": "The user has identified that the old dressing sticks to the burn site, requiring a soaking operation.",
+          "source": "explicit_instruction",
+          "source_reference": "If it sticks, soak it with clean water before lifting it",
+          "requires_expert_review": true,
+          "vqa_question": "Does the user confirm the old dressing is sticking to the burn site?",
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["old dressing"],
+            "observable_cues": ["user confirmation"],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["Visual observation cannot confirm physical adhesion force."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A3_POST1",
+          "condition": "The user has performed the soaking operation on the old dressing with clean water.",
+          "source": "explicit_instruction",
+          "source_reference": "soak it with clean water",
+          "requires_expert_review": true,
+          "vqa_question": "Did the user soak the old dressing with clean water?",
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["old dressing", "clean water"],
+            "observable_cues": ["documented soaking event"],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["Appearance of wetness does not verify liquid identity or that a soaking operation was performed."]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A3_ERR1",
+          "error_type": "technique_error",
+          "violation_condition": "The user attempts to remove the old dressing without first soaking it, despite it sticking.",
+          "compliance_condition": "The user performs the soaking operation before proceeding with dressing removal when sticking is observed.",
+          "compliance_question": "Did the user soak the dressing before removing it, when it was identified as sticking?",
+          "applicability_condition": "The dressing is stuck to the burn.",
+          "related_requirement_ids": ["A3_POST1"],
+          "source": "explicit_instruction",
+          "source_reference": "If it sticks, soak it with clean water before lifting it.",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": ["human_confirmation"],
+            "relevant_entities": ["old dressing"],
+            "observable_cues": ["documented order of operations"],
+            "temporal_scope": "during_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": ["Requires procedure-long history or human report."]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "If the dressing sticks and is not soaked, removing it may have an effect on the burn site.",
+      "review_notes": ["This action is conditional on the user assessment of adherence. A3_PRE1 requires human judgment. A3_POST1 and A3_ERR1 require confirmation of the manual operation occurrence, which cannot be verified by RGB images alone."]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": ["No global procedure criteria requested in the prompt. Action A3 dependencies are handled by individual requirement checks."]
+}

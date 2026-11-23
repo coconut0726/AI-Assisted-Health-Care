@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2288,
+    "total_input_tokens": 941,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 941
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 1347,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 941
+  },
+  "created": "2026-11-23T10:37:35Z",
+  "updated": "2026-11-23T10:37:35Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRMBOqbc8B8Aox0+iV4IudQD8BtbBBGVKr25/T+ArxuuMbbjOzcS1+r1ICaaktLTETW/yqTUErTtV31SnC/XkhMw4NY9j9w04uvNU2GCf1LCUnPkgy6ToQnyO4dFhrJksGaog/mCYLE98dZ2MSoJDugqTGkqEF5LurNIWrSVo1ntz5NwoeO/MS5TfxqnMcI2UPyePorFkSlqUvs=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"procedure_title\": \"Simple wound dressing\",\n  \"instruction\": \"Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.\",\n  \"steps\": [\n    {\n      \"step_id\": \"S1\",\n      \"step_name\": \"Preparation\",\n      \"step_description\": \"Hand hygiene and glove application.\",\n      \"dependencies\": [],\n      \"actions\": [\n        {\n          \"action_id\": \"A1\",\n          \"instruction\": \"Wash your hands.\",\n          \"original_text\": \"Wash your hands\",\n          \"dependencies\": [],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [],\n          \"materials\": [],\n          \"contact_media\": [],\n          \"targets\": [\"hands\"],\n          \"associated_constraints\": []\n        },\n        {\n          \"action_id\": \"A2\",\n          \"instruction\": \"Put on clean gloves.\",\n          \"original_text\": \"put on clean gloves\",\n          \"dependencies\": [\"A1\"],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [\"gloves\"],\n          \"materials\": [],\n          \"contact_media\": [],\n          \"targets\": [\"hands\"],\n          \"associated_constraints\": [\"clean\"]\n        }\n      ]\n    },\n    {\n      \"step_id\": \"S2\",\n      \"step_name\": \"Inspection\",\n      \"step_description\": \"Inspect the wound for specific signs.\",\n      \"dependencies\": [\"S1\"],\n      \"actions\": [\n        {\n          \"action_id\": \"A3\",\n          \"instruction\": \"Look at the cut on the skin pad and check that it is not red, swollen or leaking.\",\n          \"original_text\": \"Look at the cut on the skin pad. Check that it is not red, swollen or leaking.\",\n          \"dependencies\": [\"A2\"],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [],\n          \"materials\": [],\n          \"contact_media\": [],\n          \"targets\": [\"cut\", \"skin pad\"],\n          \"associated_constraints\": [\"not red\", \"not swollen\", \"not leaking\"]\n        }\n      ]\n    },\n    {\n      \"step_id\": \"S3\",\n      \"step_name\": \"Application\",\n      \"step_description\": \"Apply dressing to the wound.\",\n      \"dependencies\": [\"S2\"],\n      \"actions\": [\n        {\n          \"action_id\": \"A4\",\n          \"instruction\": \"Place a non-stick pad over the whole cut on the skin pad.\",\n          \"original_text\": \"Place a non-stick pad over the whole cut on the skin pad.\",\n          \"dependencies\": [\"A3\"],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [\"non-stick pad\"],\n          \"materials\": [],\n          \"contact_media\": [],\n          \"targets\": [\"cut\", \"skin pad\"],\n          \"associated_constraints\": []\n        }\n      ]\n    },\n    {\n      \"step_id\": \"S4\",\n      \"step_name\": \"Cleanup\",\n      \"step_description\": \"Dispose of materials and clean hands.\",\n      \"dependencies\": [\"S3\"],\n      \"actions\": [\n        {\n          \"action_id\": \"A5\",\n          \"instruction\": \"Put the pad wrapper into the zip bag.\",\n          \"original_text\": \"Put the pad wrapper into the zip bag\",\n          \"dependencies\": [\"A4\"],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [\"zip bag\"],\n          \"materials\": [\"pad wrapper\"],\n          \"contact_media\": [],\n          \"targets\": [\"zip bag\"],\n          \"associated_constraints\": []\n        },\n        {\n          \"action_id\": \"A6\",\n          \"instruction\": \"Seal the zip bag.\",\n          \"original_text\": \"seal it\",\n          \"dependencies\": [\"A5\"],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [],\n          \"materials\": [],\n          \"contact_media\": [],\n          \"targets\": [\"zip bag\"],\n          \"associated_constraints\": []\n        },\n        {\n          \"action_id\": \"A7\",\n          \"instruction\": \"Take off the gloves.\",\n          \"original_text\": \"take off the gloves\",\n          \"dependencies\": [\"A6\"],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [\"gloves\"],\n          \"materials\": [],\n          \"contact_media\": [],\n          \"targets\": [\"gloves\"],\n          \"associated_constraints\": []\n        },\n        {\n          \"action_id\": \"A8\",\n          \"instruction\": \"Wash your hands.\",\n          \"original_text\": \"wash your hands\",\n          \"dependencies\": [\"A7\"],\n          \"conditional_dependencies\": [],\n          \"applicability_condition\": \"\",\n          \"actor\": [\"user\"],\n          \"tools\": [],\n          \"materials\": [],\n          \"contact_media\": [],\n          \"targets\": [\"hands\"],\n          \"associated_constraints\": []\n        }\n      ]\n    }\n  ],\n  \"context_notes\": [\"The source uses 'it' to refer to both the zip bag and the cut; dependencies clarify scope.\"],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

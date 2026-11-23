@@ -1,0 +1,16 @@
+{
+  "schema_valid": true,
+  "unique_requirement_and_criterion_ids": true,
+  "valid_references": true,
+  "all_actions_enriched": true,
+  "graph_immutable_merge": true,
+  "provenance_warnings": [],
+  "precondition_count": 1,
+  "postcondition_count": 11,
+  "action_error_criterion_count": 4,
+  "global_error_criterion_count": 6,
+  "exact_explicit_source_quotes": true,
+  "no_unsupplied_expert_prior": true,
+  "inferred_requirements_flagged": true,
+  "evidence_review_warnings": []
+}

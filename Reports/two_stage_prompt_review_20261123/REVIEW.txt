@@ -1,0 +1,88 @@
+两阶段 Prompt 修订与案例审查记录
+日期：2026-11-23
+
+这是早期鉴权失败阶段的历史记录。当前已连通 Gemini；最新结果与审查请看
+REVIEW_CURRENT.txt 和 results/provenance.json。以下旧状态不代表当前连接状态。
+
+当前状态
+本目录中的 prompts/ 是最新草案（revision 2）。尚未接入 Unity 运行时代码。
+本轮已通过项目 bridge 实际请求两个案例；均收到 HTTP 502，响应中的
+provider_status 为 401。未取得 Gemini 成功输出，不能评价其生成质量。
+健康页 ok=true / key_configured=true 只表示 bridge 正在运行且存在密钥。
+没有使用 GPT 代写案例响应，也没有修改原始案例来使检查通过。
+
+最新重试：用户再次重建 bridge 后，检测到新实例，模型为 gemini-3.0-flash。
+已用 revision 2 的 Burn dressing Prompt 1 发出真实请求，仍收到上游 401。
+因此停止后续批次，未取得生成结果；详情保存在 iterations/02 的
+run_manifest.json 与 burn_dressing/01_task_graph.failure.json。
+
+目录
+prompts/01_task_graph.txt：instruction → Steps / atomic Actions / dependencies。
+prompts/02_verification_spec.txt：Actions → requirements / error criteria / evidence。
+schemas/：两个阶段对应的实验 JSON schema。
+iterations/01/：第一份草案和实际鉴权失败记录的快照。
+iterations/02/：本轮静态修订稿及后续 Gemini 实测产物的独立存放位置。
+根目录两个案例文件夹中的 failure.json 是失败诊断，不是案例生成结果。
+run_manifest.json 记录的是 revision 1 的请求状态，不能当作 revision 2 的结果。
+
+本轮静态修订（尚不是实测驱动的迭代）
+1. 不增加 execution_constraints。
+   precondition / postcondition 保留；操作方式、禁止事项由 error criteria 承载。
+   每条 error criterion 同时说明 violation 和有充分证据支持的 compliance。
+   “未检测到错误”不能推出“已满足 requirement”。
+2. 跨动作规则只定义一次。
+   order_error / missing_step 仅放在 procedure_error_criteria。
+   其他五种错误若对应跨动作的同一条规则，也可放全局，并明确作用动作和适用条件。
+   单个动作的具体规则仍放 action.error_criteria，避免把不同要求合成含糊大规则。
+3. 修正依赖表述的内部冲突。
+   完整图允许引用任何已定义节点，包括显示位置更后的节点；禁止悬空引用和环。
+   条件准备动作可排在它支持的操作之前，不必机械遵循原文提及顺序。
+   “before lifting”约束 lifting 事件，不自动禁止发现粘连所需的最初接触。
+4. 区分规则是否有来源、是否具有可执行判据、目前是否能观测。
+   gently / thin / loosely / cool 若没有操作性定义，保留原词并标记专家复核。
+   不补写秒数、温度、厚度、松紧容差。
+   一张末态照片不能证明洗手、使用特定工具或全程未违规。
+   human_required 只是说明需要人工证据，当前应用尚未提供该证据输入通道。
+5. 统一全局规则的 provenance、applicability、正向合规问题和专家复核字段。
+   条件不成立不算 Missing Step；条件未知也不能直接判错或放行。
+
+案例输入边界
+唯一程序内容来源为 AHC Care Case 绑定的以下 JSON 的 instruction 字段：
+- Assets/_Project/Content/Procedures/burn_care_procedure.json
+- Assets/_Project/Content/Procedures/wound_dressing_procedure.json
+不向模型提供现有 requirements、supplies、其他 demo 数据或通用护理知识。
+本轮 nurse_prior 为空。
+Simple wound 的 completion_note 不在 instruction 内，因此本轮不把它用于生成。
+若之后决定纳入该字段，必须显式扩展输入与来源记录，再检查相应升级通知动作。
+
+Gemini 输出到达后的审查清单
+通用：JSON/schema、ID 唯一、引用有效、DAG 无环、原文保持、原文引文准确；
+每个 Action 得到且仅得到一个更新；合并不改变原图；没有编造来源、阈值或动作；
+七类错误仅生成有依据的适用项；未得到观测证据时不输出运行时判定。
+
+Burn dressing：
+- 洗手与戴 clean gloves 都存在；不用“手看起来干净”代替洗手发生。
+- 粘连时 clean water 浸湿是条件动作，发生在提起之前；不把它变成每次必做。
+- cool running water、pat dry、clean towel、gently 均保留。
+- no rubbing / no breaking blisters 不遗漏，不在多个动作反复生成同一规则。
+- cotton swab、burn ointment、thin layer、non-stick pad、gauze roll、loosely、medical tape 均保留。
+- tape off burned skin 需要明确位置及相应时间范围，不能由最终照片反推全程。
+- call nurse 保留为条件动作；more red / swollen / smell / pus / fever 的 OR 条件不丢失。
+- 条件升级通知不依赖先完成整套换药，不变成无条件末步骤。
+- 不使用其他 demo 数据里的 20 秒等数字。
+
+Simple wound dressing：
+- 开始和最后的两次洗手分别存在；戴手套和摘手套分别存在。
+- Look / Check 可为一次检查动作，但 red / swollen / leaking 三项不能丢失。
+- “用户进行了检查”“图像呈现某种状态”“临床上确认正常”不混为一谈。
+- non-stick pad 覆盖 whole cut；不擅自要求 white pad 或 sterile gloves。
+- wrapper 入 zip bag、seal bag、脱手套、最后洗手不遗漏。
+- 不添加未在本轮 instruction 中提供的 soap、洗手时长或护士通知动作。
+
+接受标准与限制
+结构和来源检查通过后，还须逐条做上述语义审查，记录问题，再修改 prompt 并让
+Gemini 重新生成相关结果；不手工改写模型响应冒充重试成功。
+两个案例通过只代表这两个参考案例满足当前审查标准，不能证明所有输入都稳定。
+当前 5 秒单帧采样并不能提供所有规格所需的历史、动作过程或传感器证据。
+新增 task graph / action 结构目前也不能直接交给现有 Unity Procedure parser。
+本阶段只评估作者生成流程；运行时结构和代码修改留待用户审阅结果后决定。

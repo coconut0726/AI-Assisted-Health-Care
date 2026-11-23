@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4508,
+    "total_input_tokens": 3329,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3329
+      }
+    ],
+    "total_cached_tokens": 1886,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1886
+      }
+    ],
+    "total_output_tokens": 1179,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3329
+  },
+  "created": "2026-11-23T10:38:44Z",
+  "updated": "2026-11-23T10:38:44Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRNGrTDlHqHrdQuPWLBd9T8SsiHADN4Hg3GyU7CHlzSBGH1iox6TgXkrxbR75afu+hwNPRHz4Gbm2YDX4xxsbILS3LXajb58S2/oIW3VwXH7PvMXThQcr0cuMnZ8VNc8yAi30/nGtr+nns/r76UpiRyviSGRfyjsRlIkRDPQO9aN6iJIBvuyfx2ne5UsKVOmp+AEkFtzh1/Nq38=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [\n    {\n      \"criterion_id\": \"P_order_error\",\n      \"error_type\": \"order_error\",\n      \"violation_condition\": \"Actions performed outside established dependencies: S1(A1->A2), S2(A3->A4), S3(A5->A6->A7), S4(A8->A9->A10), S1->S2->S3->S4.\",\n      \"compliance_condition\": \"All actions performed in the order specified by the task graph dependencies.\",\n      \"relevant_step_ids\": [\"S1\", \"S2\", \"S3\", \"S4\"],\n      \"relevant_action_ids\": [\"A1\", \"A2\", \"A3\", \"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"interaction_history\"],\n        \"relevant_entities\": [\"action sequence\"],\n        \"observable_cues\": [\"execution sequence order\"],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"state_machine\",\n        \"observability\": \"not_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"Requires full procedure interaction history not available in current system.\"]\n      },\n      \"detection_timing\": \"continuous\",\n      \"source_reference\": \"graph_dependency\",\n      \"limitations\": [\"System lacks persistent state tracking for complete procedure history.\"],\n      \"compliance_question\": \"Was every action performed in the sequence dictated by the procedure dependencies?\",\n      \"applicability_condition\": \"always\",\n      \"source\": \"graph_dependency\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_missing_step\",\n      \"error_type\": \"missing_step\",\n      \"violation_condition\": \"Any action A1-A11 is omitted during the procedure.\",\n      \"compliance_condition\": \"All actions defined in the procedure are completed successfully.\",\n      \"relevant_step_ids\": [\"S1\", \"S2\", \"S3\", \"S4\", \"S5\"],\n      \"relevant_action_ids\": [\"A1\", \"A2\", \"A3\", \"A4\", \"A5\", \"A6\", \"A7\", \"A8\", \"A9\", \"A10\", \"A11\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"interaction_history\"],\n        \"relevant_entities\": [\"all actions\"],\n        \"observable_cues\": [\"action completion log\"],\n        \"temporal_scope\": \"procedure_history\",\n        \"verification_method\": \"state_machine\",\n        \"observability\": \"not_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"System cannot determine if a skipped action is an omission or just not yet performed.\"]\n      },\n      \"detection_timing\": \"procedure_end\",\n      \"source_reference\": \"explicit_instruction\",\n      \"limitations\": [\"Cannot distinguish between missing step and unobserved action.\"],\n      \"compliance_question\": \"Were all necessary procedural steps completed?\",\n      \"applicability_condition\": \"always\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": false\n    },\n    {\n      \"criterion_id\": \"P_prohibit_contact\",\n      \"error_type\": \"technique_error\",\n      \"violation_condition\": \"Any direct contact or rubbing between tool/hand and burn during cleaning or application.\",\n      \"compliance_condition\": \"Burn site is treated without rubbing, pressure, or blister disruption.\",\n      \"relevant_step_ids\": [\"S3\"],\n      \"relevant_action_ids\": [\"A5\", \"A6\", \"A7\"],\n      \"evidence_specification\": {\n        \"evidence_types\": [\"rgb_video\", \"hand_object_contact\"],\n        \"relevant_entities\": [\"burn\", \"hand\", \"towel\", \"cotton swab\"],\n        \"observable_cues\": [\"contact intensity\", \"skin deformation\"],\n        \"temporal_scope\": \"during_action\",\n        \"verification_method\": \"VLM\",\n        \"observability\": \"partially_observable\",\n        \"current_support\": \"unsupported\",\n        \"limitations\": [\"System cannot measure contact force or detect subtle blister rupture.\"]\n      },\n      \"detection_timing\": \"during_action\",\n      \"source_reference\": \"explicit_instruction\",\n      \"limitations\": [\"Cannot measure force; depends on visual estimation of movement.\"],\n      \"compliance_question\": \"Was the burn treated gently without rubbing or breaking blisters?\",\n      \"applicability_condition\": \"during S3\",\n      \"source\": \"explicit_instruction\",\n      \"requires_expert_review\": true\n    }\n  ],\n  \"review_notes\": [\"No nurse_prior provided; expert_prior usage is forbidden.\", \"Procedure error criteria added per include_procedure_error_criteria=true.\", \"All evidence for global criteria is currently unsupported due to lack of action history/sensor data.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

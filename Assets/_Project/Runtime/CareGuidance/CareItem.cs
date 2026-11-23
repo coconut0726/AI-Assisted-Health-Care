@@ -64,7 +64,7 @@ namespace HomeCare.Guidance
 
         public static List<CareItem> FindAllInScene()
         {
-            return new List<CareItem>(FindObjectsByType<CareItem>(FindObjectsSortMode.None));
+            return new List<CareItem>(FindObjectsByType<CareItem>());
         }
     }
 

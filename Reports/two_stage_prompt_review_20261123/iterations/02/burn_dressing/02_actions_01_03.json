@@ -1,0 +1,226 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A1_POST1",
+          "condition": "Hands appear clean with no visible soil.",
+          "source": "inferred",
+          "source_reference": "Wash your hands with soap and water",
+          "requires_expert_review": true,
+          "vqa_question": "Do the hands appear free of visible soil or contamination?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "hands"
+            ],
+            "observable_cues": [
+              "visible soil",
+              "soap residue"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Visual assessment of hygiene is not equivalent to clinical sterility or soap effectiveness.",
+              "Requires high-resolution image of the hands."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [
+        "presence of water and soap suds on hands"
+      ],
+      "skip_risk": "high",
+      "skip_impact": "Neglect of hand hygiene introduces risk of infection.",
+      "review_notes": [
+        "Verification of 'clean' is subjective and not clinically verifiable by RGB alone."
+      ]
+    },
+    {
+      "action_id": "A2",
+      "preconditions": [
+        {
+          "requirement_id": "A2_PRE1",
+          "condition": "Hands are clean after A1.",
+          "source": "graph_dependency",
+          "source_reference": "A1",
+          "requires_expert_review": false,
+          "vqa_question": "Are the hands visible and dry before putting on gloves?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "hands"
+            ],
+            "observable_cues": [
+              "hands appear dry"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Cannot confirm hygiene state, only readiness for glove application."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A2_POST1",
+          "condition": "Clean gloves are worn on the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "vqa_question": "Are clean gloves visibly worn on both hands?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "hands",
+              "gloves"
+            ],
+            "observable_cues": [
+              "gloves present on hands"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Cannot verify if gloves are 'clean' or sterile, only their presence."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A2_TECH1",
+          "error_type": "technique_error",
+          "violation_condition": "Gloves are not worn or are worn improperly (e.g., torn).",
+          "compliance_condition": "Gloves are intact and fully covering the hands.",
+          "compliance_question": "Are the gloves intact and correctly covering the hands?",
+          "applicability_condition": "A2 is initiated.",
+          "related_requirement_ids": [
+            "A2_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "gloves"
+            ],
+            "observable_cues": [
+              "visible tears",
+              "misalignment"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Small tears may be invisible in sparse frames."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "hands inserting into gloves"
+      ],
+      "skip_risk": "high",
+      "skip_impact": "Increases risk of infection to the patient and contamination of the user.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A3",
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A3_POST1",
+          "condition": "Old dressing is saturated with water.",
+          "source": "explicit_instruction",
+          "source_reference": "soak it with clean water",
+          "requires_expert_review": true,
+          "vqa_question": "Does the old dressing appear saturated with water?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "old dressing"
+            ],
+            "observable_cues": [
+              "darkened/wet appearance of dressing material"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Appearance of wetness is subjective and lacks clinical depth verification."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A3_TECH1",
+          "error_type": "technique_error",
+          "violation_condition": "Dressing not soaked (no visual change/moisture indicator).",
+          "compliance_condition": "Dressing appears thoroughly dampened.",
+          "compliance_question": "Does the dressing appear fully dampened?",
+          "applicability_condition": "The old dressing is visible.",
+          "related_requirement_ids": [
+            "A3_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "soak it with clean water",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "old dressing"
+            ],
+            "observable_cues": [
+              "visual change indicating absorption"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Requires comparative analysis before and after soaking which is not guaranteed by current system."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "water contacting the dressing"
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "If the dressing sticks, removing it without soaking may cause trauma to the wound.",
+      "review_notes": [
+        "Soaking definition (duration/amount) is missing; assumes visual saturation is sufficient."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

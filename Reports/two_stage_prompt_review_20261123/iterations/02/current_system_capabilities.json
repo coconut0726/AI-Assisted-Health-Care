@@ -1,0 +1,16 @@
+{
+  "runtime": "VRGuidanceDemo periodic verification baseline",
+  "input": "one RGB image labelled after_step for the selected step at each free 5-second polling slot",
+  "can_reason_about": "visible object appearances and relations in that image, subject to visibility/identity ambiguity",
+  "not_supplied": [
+    "before_action images with known alignment",
+    "action-aligned video",
+    "continuous observation coverage",
+    "tracked action history",
+    "hand joints or contact data in the verification request",
+    "physical force, temperature or other sensor measurements"
+  ],
+  "progression": "manual Next after the current step passes; no automatic action-level recognition",
+  "missing_observations": "unknown, not proof of omission",
+  "human_confirmation": "not currently implemented as a verification evidence channel"
+}

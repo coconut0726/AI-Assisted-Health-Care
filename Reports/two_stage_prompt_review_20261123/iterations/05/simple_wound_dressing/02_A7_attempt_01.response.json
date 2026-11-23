@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4096,
+    "total_input_tokens": 3243,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3243
+      }
+    ],
+    "total_cached_tokens": 1859,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1859
+      }
+    ],
+    "total_output_tokens": 853,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3243
+  },
+  "created": "2026-11-23T10:49:30Z",
+  "updated": "2026-11-23T10:49:30Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfRPcolujEm4m7/yWYNGxBnUaAEwPMlZkLKwz06uBKjmJ6VotV5IeAURS2NvWs2s1Z64VFYPi0yWO4ZgJikJrtToDqflXtAeeGJldXOPxcMHN4AYBPthQp9s58pV26gYxP7ie+YZ9QIut8KXqe2W2P4Ig/7VqhkK4PekLGm9vDarMoTa4SSw5X13BrtqJvXOAgdfrlfJqFkgzNUQ=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A7_PRE_1\",\n          \"condition\": \"The zip bag is sealed.\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"A7, dependencies: [A6]\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the zip bag sealed?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"zip bag\"],\n            \"observable_cues\": [\"seal closed\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Requires clear view of the zip bag closure.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_POST_1\",\n          \"condition\": \"The gloves are removed from the hands.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"take off the gloves\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Are the user's hands free of gloves?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"hands\", \"gloves\"],\n            \"observable_cues\": [\"hands bare\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Requires clear view of hands.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"A7_ERR_1\",\n          \"error_type\": \"technique_error\",\n          \"violation_condition\": \"Gloves remain on the hands after the action is completed.\",\n          \"compliance_condition\": \"The gloves are no longer on the hands.\",\n          \"compliance_question\": \"Are the hands completely free of the gloves?\",\n          \"applicability_condition\": \"Action A7 has been performed.\",\n          \"related_requirement_ids\": [\"A7_POST_1\"],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"take off the gloves\",\n          \"requires_expert_review\": false,\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"hands\", \"gloves\"],\n            \"observable_cues\": [\"absence of gloves on hands\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"supported\",\n            \"limitations\": [\"Visibility of hands is required.\"]\n          }\n        }\n      ],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"none\",\n      \"skip_impact\": \"unknown\",\n      \"review_notes\": [\"No expert_prior used per instructions.\", \"Evidence relies on visible post-state.\", \"No clinical impact or infection claims added.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"Procedure error criteria excluded as requested by include_procedure_error_criteria=false.\", \"Action A7 requirements defined based on explicit instruction and graph dependency.\", \"Source fidelity maintained by avoiding clinical definitions for glove removal.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

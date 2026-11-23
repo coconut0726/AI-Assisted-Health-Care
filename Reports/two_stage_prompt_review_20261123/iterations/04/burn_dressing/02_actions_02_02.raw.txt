@@ -1,0 +1,77 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A2",
+      "preconditions": [
+        {
+          "requirement_id": "A2_P1",
+          "condition": "The hands were washed with soap and water.",
+          "source": "graph_dependency",
+          "source_reference": "A1",
+          "requires_expert_review": false,
+          "vqa_question": "Did the user perform the handwashing action prior to this step?",
+          "evidence_specification": {
+            "evidence_types": ["interaction_history"],
+            "relevant_entities": ["hands", "soap", "water"],
+            "observable_cues": ["documented handwashing"],
+            "temporal_scope": "procedure_history",
+            "verification_method": "state_machine",
+            "observability": "not_observable",
+            "current_support": "unsupported",
+            "limitations": ["Requires procedure history log which is unavailable."]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A2_POST1",
+          "condition": "The user is wearing gloves on their hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "vqa_question": "Are the hands covered by gloves?",
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["hands", "gloves"],
+            "observable_cues": ["hands covered by gloves"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Visual confirmation of presence only; cannot verify cleanliness."]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A2_ERR1",
+          "error_type": "technique_error",
+          "violation_condition": "Gloves are not worn or the wrong object is used.",
+          "compliance_condition": "Gloves are worn on hands.",
+          "compliance_question": "Are gloves clearly visible on the hands?",
+          "applicability_condition": "true",
+          "related_requirement_ids": ["A2_POST1"],
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": ["rgb_frame", "object_identity"],
+            "relevant_entities": ["hands", "gloves"],
+            "observable_cues": ["hands covered by gloves"],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": ["Cannot verify glove cleanliness or correct material."]
+          }
+        }
+      ],
+      "in_progress_criteria": [],
+      "skip_risk": "medium",
+      "skip_impact": "Skipping glove application increases the risk of contamination during the dressing change.",
+      "review_notes": ["Cleanliness of gloves cannot be verified by the system and requires user adherence to protocol."]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": ["Requirement for 'clean' gloves is identified as needing expert/human adherence verification as the current system cannot observe object properties."]
+}

@@ -10,7 +10,7 @@ namespace HomeCare.Authoring
     {
         public int callbackOrder => 0;
 
-        [MenuItem("Tools/Home Care/Open AR Prototype Scene")]
+        // [MenuItem("Tools/Home Care/Open AR Prototype Scene")]
         public static void Open()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

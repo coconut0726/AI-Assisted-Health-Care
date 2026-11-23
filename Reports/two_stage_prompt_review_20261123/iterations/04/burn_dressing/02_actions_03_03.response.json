@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3934,
+    "total_input_tokens": 3332,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3332
+      }
+    ],
+    "total_cached_tokens": 1887,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1887
+      }
+    ],
+    "total_output_tokens": 602,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3332
+  },
+  "created": "2026-11-23T10:38:07Z",
+  "updated": "2026-11-23T10:38:07Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqEBCp4BAWkUfROCLIExOCzjPXV95tzSb12OWJ157iiqYqETYeWVBnf/HDcTFIUkkRDSK7/hcBk2oVudXmY2yTYAUHLDADYiKpE5pvi143WqGO+ypJJe+XR0HKZXaBFVdZ3HkcLhglM+Y1S7epSPOOI6xAZP7ok4IilRd+2VG6kCyki2dm4C/v1+WB23nrMHltK7yei+hre3P2Ef54NME2BV2a8=",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A3_PRE1\",\n          \"condition\": \"The old dressing is observed to adhere to the skin, necessitating soaking.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"If it sticks, soak it with clean water\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Does the old dressing appear to be sticking to the burn site?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"spatial_position\"],\n            \"relevant_entities\": [\"old dressing\", \"burn\"],\n            \"observable_cues\": [\"dressing resistance during attempted lift\"],\n            \"temporal_scope\": \"before_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"partially_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Visual observation cannot confirm physical adhesion force.\"]\n          }\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A3_POST1\",\n          \"condition\": \"The old dressing is saturated with clean water.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"soak it with clean water\",\n          \"requires_expert_review\": false,\n          \"vqa_question\": \"Is the old dressing visibly wet from clean water?\",\n          \"evidence_specification\": {\n            \"evidence_types\": [\"rgb_frame\", \"object_identity\"],\n            \"relevant_entities\": [\"old dressing\", \"water\"],\n            \"observable_cues\": [\"saturated material appearance\"],\n            \"temporal_scope\": \"after_action\",\n            \"verification_method\": \"VLM\",\n            \"observability\": \"visually_observable\",\n            \"current_support\": \"unsupported\",\n            \"limitations\": [\"Appearance of wetness does not verify liquid identity as clean water.\"]\n          }\n        }\n      ],\n      \"error_criteria\": [],\n      \"in_progress_criteria\": [],\n      \"skip_risk\": \"none\",\n      \"skip_impact\": \"If omitted when the dressing is stuck, removing the dressing may cause trauma to the burn site.\",\n      \"review_notes\": [\"Requires user judgment to determine if the dressing 'sticks' before applying this action.\"]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\"A3 is conditionally applicable based on the state of the dressing; therefore, missing step criteria cannot be enforced without human input.\"]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

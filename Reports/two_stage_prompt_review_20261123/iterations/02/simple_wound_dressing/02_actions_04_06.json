@@ -1,0 +1,322 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "preconditions": [
+        {
+          "requirement_id": "A4_PRE1",
+          "condition": "The cut on the skin pad must be clearly visible to the examiner.",
+          "source": "explicit_instruction",
+          "source_reference": "Look at the cut on the skin pad.",
+          "requires_expert_review": false,
+          "vqa_question": "Is the cut on the skin pad clearly visible?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "cut",
+              "skin pad"
+            ],
+            "observable_cues": [
+              "visual features of the cut clearly presented to the camera"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Requires optimal lighting and camera angle."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A4_POST1",
+          "condition": "The examiner has evaluated the cut for redness, swelling, and leakage.",
+          "source": "explicit_instruction",
+          "source_reference": "Check that it is not red, swollen or leaking.",
+          "requires_expert_review": true,
+          "vqa_question": "Has the user looked at the cut and is it free of redness, swelling, or leakage?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "cut"
+            ],
+            "observable_cues": [
+              "color of the cut area",
+              "swelling profile",
+              "presence of leakage fluid"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "partial",
+            "limitations": [
+              "Visual inspection cannot confirm the absence of leakage if it is not currently active, nor can it objectively differentiate pathological redness/swelling from normal appearance without expert baseline."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A4_ERR1",
+          "error_type": "technique_error",
+          "violation_condition": "The user fails to inspect the cut thoroughly for all three indicators (redness, swelling, or leaking).",
+          "compliance_condition": "Visual evidence shows the user focused on the wound area with sufficient duration and angle to inspect.",
+          "compliance_question": "Does the user inspect the wound for all three specified conditions?",
+          "applicability_condition": "A4 is performed.",
+          "related_requirement_ids": [
+            "A4_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Check that it is not red, swollen or leaking.",
+          "requires_expert_review": true,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_video"
+            ],
+            "relevant_entities": [
+              "cut"
+            ],
+            "observable_cues": [
+              "user gaze directed at the cut",
+              "user pausing to inspect"
+            ],
+            "temporal_scope": "during_action",
+            "verification_method": "VLM",
+            "observability": "partially_observable",
+            "current_support": "unsupported",
+            "limitations": [
+              "System cannot verify inspection behavior without continuous video or gaze data."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "The examiner's face or gaze is directed toward the skin pad.",
+        "The examiner is stationary near the pad."
+      ],
+      "skip_risk": "high",
+      "skip_impact": "Infection or complications may go unnoticed if the wound assessment is skipped.",
+      "review_notes": [
+        "The instruction 'Look at' and 'Check that' are subjective clinical evaluations; the VLM can only describe current visual state (color, shape), not the clinical finding or the thoroughness of the examiner's cognitive check."
+      ]
+    },
+    {
+      "action_id": "A5",
+      "preconditions": [
+        {
+          "requirement_id": "A5_PRE1",
+          "condition": "A non-stick pad is available to the user.",
+          "source": "inferred",
+          "source_reference": "Place a non-stick pad over the whole cut",
+          "requires_expert_review": false,
+          "vqa_question": "Is a non-stick pad available in the workspace?",
+          "evidence_specification": {
+            "evidence_types": [
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "non-stick pad"
+            ],
+            "observable_cues": [
+              "visual appearance of the dressing material"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Requires the object to be in the field of view."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A5_POST1",
+          "condition": "The non-stick pad covers the entire cut on the skin pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false,
+          "vqa_question": "Does the non-stick pad completely cover the cut on the skin pad?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "spatial_position"
+            ],
+            "relevant_entities": [
+              "non-stick pad",
+              "cut",
+              "skin pad"
+            ],
+            "observable_cues": [
+              "non-stick pad bounding box contains the cut bounding box"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Occlusion may prevent verifying if the pad is centered or fully covering the cut underneath."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A5_ERR1",
+          "error_type": "spatial_error",
+          "violation_condition": "The non-stick pad is applied such that part of the cut is exposed.",
+          "compliance_condition": "The cut is entirely covered by the non-stick pad.",
+          "compliance_question": "Is the entire cut covered by the non-stick pad?",
+          "applicability_condition": "A5 is performed.",
+          "related_requirement_ids": [
+            "A5_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "spatial_position"
+            ],
+            "relevant_entities": [
+              "non-stick pad",
+              "cut"
+            ],
+            "observable_cues": [
+              "cut edges visible outside the perimeter of the pad"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "None."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "The user is holding the non-stick pad near the skin pad.",
+        "The non-stick pad is approaching the target area."
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "The cut remains exposed to environmental contaminants.",
+      "review_notes": []
+    },
+    {
+      "action_id": "A6",
+      "preconditions": [
+        {
+          "requirement_id": "A6_PRE1",
+          "condition": "The zip bag must be open to receive the pad wrapper.",
+          "source": "inferred",
+          "source_reference": "Put the pad wrapper into the zip bag and seal it.",
+          "requires_expert_review": false,
+          "vqa_question": "Is the zip bag open?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "zip bag"
+            ],
+            "observable_cues": [
+              "bag opening visible"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Difficult to verify if the zip bag is open if viewed from certain angles."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A6_POST1",
+          "condition": "The pad wrapper is inside the zip bag and the bag is sealed.",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag and seal it.",
+          "requires_expert_review": false,
+          "vqa_question": "Is the pad wrapper inside the zip bag and is the bag sealed?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "pad wrapper",
+              "zip bag"
+            ],
+            "observable_cues": [
+              "wrapper inside bag boundaries",
+              "seal closure line visible"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Verification of 'sealed' status is limited by image resolution."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "A6_ERR1",
+          "error_type": "spatial_error",
+          "violation_condition": "The pad wrapper is not inside the zip bag or the bag remains unsealed.",
+          "compliance_condition": "The pad wrapper is inside the bag and the seal line is engaged.",
+          "compliance_question": "Is the pad wrapper fully inside the closed bag?",
+          "applicability_condition": "A6 is performed.",
+          "related_requirement_ids": [
+            "A6_POST1"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag and seal it.",
+          "requires_expert_review": false,
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame"
+            ],
+            "relevant_entities": [
+              "pad wrapper",
+              "zip bag"
+            ],
+            "observable_cues": [
+              "wrapper location relative to bag interior",
+              "bag zip line alignment"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Image resolution may not be sufficient to confirm a 'sealed' status versus just closed."
+            ]
+          }
+        }
+      ],
+      "in_progress_criteria": [
+        "The user is moving the pad wrapper toward the zip bag.",
+        "The zip bag is manipulated to be opened or closed."
+      ],
+      "skip_risk": "medium",
+      "skip_impact": "Waste disposal is incomplete, potentially leaving contaminated wrappers in the workspace.",
+      "review_notes": []
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

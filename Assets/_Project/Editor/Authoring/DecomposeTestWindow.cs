@@ -1,5 +1,5 @@
 // Assets/_Project/Editor/Authoring/DecomposeTestWindow.cs
-// Menu: Tools > Home Care > Decompose Instruction
+// Legacy decomposition window; its menu entry is hidden.
 // Paste a nurse instruction, pick a provider, click Decompose, then save the JSON.
 
 using System;
@@ -85,7 +85,7 @@ namespace HomeCare.Authoring
   ""required"": [""procedure_title"", ""steps"", ""safety_notes"", ""red_flags""]
 }";
 
-        [MenuItem("Tools/Home Care/Decompose Instruction")]
+        // [MenuItem("Tools/Home Care/Decompose Instruction")]
         static void Open() => GetWindow<DecomposeTestWindow>("Decompose");
 
         void OnGUI()

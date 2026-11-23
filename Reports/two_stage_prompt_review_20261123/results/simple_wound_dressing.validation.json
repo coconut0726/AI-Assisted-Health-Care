@@ -1,0 +1,42 @@
+{
+  "graph": {
+    "schema_valid": true,
+    "exact_original_instruction": true,
+    "unique_ids": true,
+    "valid_references": true,
+    "acyclic": true,
+    "exact_action_source_quotes": true,
+    "exact_associated_constraint_quotes": true,
+    "step_count": 4,
+    "action_count": 8
+  },
+  "enrichment": {
+    "schema_valid": true,
+    "unique_requirement_and_criterion_ids": true,
+    "valid_references": true,
+    "all_actions_enriched": true,
+    "graph_immutable_merge": true,
+    "provenance_warnings": [],
+    "precondition_count": 1,
+    "postcondition_count": 11,
+    "action_error_criterion_count": 4,
+    "global_error_criterion_count": 6
+  },
+  "structural_and_provenance_errors": [],
+  "structure_and_provenance_passed": true,
+  "evidence_support_counts": {
+    "supported": 2,
+    "partial": 6,
+    "unsupported": 0,
+    "human_required": 14
+  },
+  "requires_expert_review_count": 9,
+  "stage_2_outputs": [
+    "iterations\\07\\simple_wound_dressing\\02_actions_01_03.json",
+    "iterations\\07\\simple_wound_dressing\\02_actions_04_06.json",
+    "iterations\\07\\simple_wound_dressing\\02_actions_07_08.json",
+    "iterations\\07\\simple_wound_dressing\\02_procedure_criteria.json"
+  ],
+  "result_file": "simple_wound_dressing.draft.json",
+  "semantic_acceptance": "see REVIEW.txt; not automatically approved"
+}

@@ -1,0 +1,78 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A2",
+      "preconditions": [
+        {
+          "requirement_id": "A2_P1",
+          "condition": "The gloves selected for use are clean.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": true,
+          "vqa_question": "Are the gloves intended for use clean and in good condition?",
+          "evidence_specification": {
+            "evidence_types": [
+              "human_confirmation"
+            ],
+            "relevant_entities": [
+              "gloves"
+            ],
+            "observable_cues": [
+              "cleanliness of gloves"
+            ],
+            "temporal_scope": "before_action",
+            "verification_method": "human_confirmation",
+            "observability": "not_observable",
+            "current_support": "human_required",
+            "limitations": [
+              "System cannot verify material cleanliness or state from visual data."
+            ]
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A2_POST1",
+          "condition": "The user is wearing gloves on their hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false,
+          "vqa_question": "Are the hands covered by gloves?",
+          "evidence_specification": {
+            "evidence_types": [
+              "rgb_frame",
+              "object_identity"
+            ],
+            "relevant_entities": [
+              "hands",
+              "gloves"
+            ],
+            "observable_cues": [
+              "hands covered by gloves"
+            ],
+            "temporal_scope": "after_action",
+            "verification_method": "VLM",
+            "observability": "visually_observable",
+            "current_support": "supported",
+            "limitations": [
+              "Visual confirmation of presence only; cannot verify cleanliness."
+            ]
+          }
+        }
+      ],
+      "error_criteria": [],
+      "in_progress_criteria": [],
+      "skip_risk": "unknown",
+      "skip_impact": "Missing step prevents completion of the procedure as specified.",
+      "review_notes": [
+        "Removed redundant handwashing dependency; A1->A2 dependency preserved in graph.",
+        "Removed error criteria conflating missing step and technique.",
+        "Added clean-material precondition requiring human confirmation."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "All criteria updated per feedback. No expert_prior used."
+  ]
+}

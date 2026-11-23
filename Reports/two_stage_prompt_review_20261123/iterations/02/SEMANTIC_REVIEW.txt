@@ -1,0 +1,34 @@
+Gemini gemini-3.1-flash-lite-preview 实际生成审查：不接受此轮作为最终样例。
+
+密钥同步到 bridge 内存后，Interactions 与 bridge 均成功。先前的 401 不能
+用于断定用户成功终端内的密钥无效；没有更改上游接口或生产代码。
+
+Burn：4 Steps / 11 Actions，JSON、ID、引用、无环检查通过。
+但结构通过不代表语义正确，发现以下问题：
+- A11 tools 添加未给定的 phone；备注又将源文条件通知缩成 post-procedure。
+- 不揉搓与不弄破水疱被收窄到清洁/擦干，未解释其他接触动作的规则范围。
+- A1 用 hands appear clean 替代洗手发生。
+- A2_PRE1 的 condition 为 clean，问题却问 visible and dry；dry 未在原文要求。
+- A2_POST1 包含 clean，却把只确认穿戴的证据标为 supported。
+- A4 把动作过程中的 gently 放入 preconditions，类别错误。
+- A5 添加源文未要求的水流强度限制；A9 添加 slide finger under gauze 提示。
+- A11 没有 completion requirement，并在全局备注中被误称 optional follow-up。
+- 全局未生成 order_error / missing_step，且 prohibition 与局部判据重复。
+- skip_impact 多处使用未给定的临床感染、血流等解释。
+
+Simple wound：4 Steps / 8 Actions，但动作粒度不一致：
+- 同一次 Look / Check 被拆为两个，wrapper 放入袋与 seal 却被合并。
+- 两次洗手添加源文未给定的 soap / water，Step 描述添加工作区准备。
+- A5_PRE1 / A6_PRE1 标为 inferred 却未要求复核，严格来源校验拒绝合并。
+- A7_TECH1 从不存在的 expert_prior“Standard infection control practice”生成。
+- A1 仍用外观干净替代洗手；A2 clean gloves 的整条检查被标为 supported。
+- 检查动作发生与切口外观被混在一个问题中。
+- 全局只生成 missing_step，并把全部数组顺序当成 mandatory sequential order。
+- 空间 coverage 用 bounding box containment 充当完整遮盖证据，缺乏遮挡/接触限制。
+
+revision 3 的改动目标：
+严格抽取实体；明确语义原子性示例；条件通知也必须有 completion specification；
+每条 requirement 的 condition / question / evidence 保持同一命题；将 clean 等
+不可见属性与可见穿戴分开；禁止把末态外观当成动作发生；不增加临床技巧或 skip 后果；
+全局明确覆盖实际依赖与所有适用动作的遗漏边界，执行规则与全局禁忌不重复。
+这些修改尚需由新的 Gemini 响应验证，不能只凭增加 prompt 条款认定问题解决。

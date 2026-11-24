@@ -1,0 +1,433 @@
+{
+  "schema_version": "action_requirements_v1",
+  "procedure_title": "Minor burn dressing change",
+  "task_goal": "Minor burn dressing change",
+  "instruction": "Wash your hands with soap and water, then put on clean gloves. Gently remove the old dressing. If it sticks, soak it with clean water before lifting it. Rinse the burn with cool running water, then pat the skin dry with a clean towel. Do not rub the burn and do not break any blisters. Use a cotton swab to apply a thin layer of burn ointment to the burn. Cover the burn with a non-stick pad, then wrap it loosely with a gauze roll. Secure the gauze with medical tape, keeping the tape off the burned skin. Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+  "steps": [
+    {
+      "step_id": "S1",
+      "step_name": "Preparation",
+      "step_description": "Prepare hands for the procedure.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A1",
+          "instruction": "Wash your hands with soap and water.",
+          "original_text": "Wash your hands with soap and water",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "soap",
+            "water"
+          ],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A2",
+          "instruction": "Put on clean gloves.",
+          "original_text": "put on clean gloves",
+          "dependencies": [
+            "A1"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "clean gloves"
+          ],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A2_R1",
+              "condition": "Gloves are worn on the hands.",
+              "source": "explicit_instruction",
+              "source_reference": "put on clean gloves",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S2",
+      "step_name": "Dressing Removal",
+      "step_description": "Remove the old dressing from the burn site.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A3",
+          "instruction": "If the old dressing sticks, soak it with clean water.",
+          "original_text": "If it sticks, soak it with clean water before lifting it",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "it sticks",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "clean water"
+          ],
+          "contact_media": [],
+          "targets": [
+            "old dressing"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A4",
+          "instruction": "Gently remove the old dressing.",
+          "original_text": "Gently remove the old dressing",
+          "dependencies": [],
+          "conditional_dependencies": [
+            {
+              "action_id": "A3",
+              "condition": "it sticks"
+            }
+          ],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "old dressing"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A4_P1",
+              "condition": "The old dressing is no longer covering the target area.",
+              "source": "explicit_instruction",
+              "source_reference": "Gently remove the old dressing.",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S3",
+      "step_name": "Wound Care",
+      "step_description": "Clean, dry, and treat the burn.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A5",
+          "instruction": "Rinse the burn with cool running water.",
+          "original_text": "Rinse the burn with cool running water",
+          "dependencies": [
+            "A4"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "cool running water"
+          ],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn",
+            "do not break any blisters"
+          ],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A6",
+          "instruction": "Pat the skin dry with a clean towel.",
+          "original_text": "pat the skin dry with a clean towel",
+          "dependencies": [
+            "A5"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "clean towel"
+          ],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "skin"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn",
+            "do not break any blisters"
+          ],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A7",
+          "instruction": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "original_text": "Use a cotton swab to apply a thin layer of burn ointment to the burn",
+          "dependencies": [
+            "A4"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "cotton swab"
+          ],
+          "materials": [
+            "burn ointment"
+          ],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [
+            "Do not rub the burn",
+            "do not break any blisters"
+          ],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A7_P1",
+              "condition": "A visible layer is present on the burn.",
+              "source": "explicit_instruction",
+              "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S4",
+      "step_name": "Dressing",
+      "step_description": "Cover and secure the burn.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A8",
+          "instruction": "Cover the burn with a non-stick pad.",
+          "original_text": "Cover the burn with a non-stick pad",
+          "dependencies": [
+            "A7"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "non-stick pad"
+          ],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A8_REQ_A8_1",
+              "condition": "A pad covers the burn on the skin.",
+              "source": "explicit_instruction",
+              "source_reference": "Cover the burn with a non-stick pad",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A9",
+          "instruction": "Wrap the burn loosely with a gauze roll.",
+          "original_text": "wrap it loosely with a gauze roll",
+          "dependencies": [
+            "A8"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "gauze roll"
+          ],
+          "contact_media": [],
+          "targets": [
+            "burn"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A9_R1",
+              "condition": "A gauze roll is wrapped around the burn.",
+              "source": "explicit_instruction",
+              "source_reference": "wrap it loosely with a gauze roll",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A10",
+          "instruction": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+          "original_text": "Secure the gauze with medical tape, keeping the tape off the burned skin",
+          "dependencies": [
+            "A9"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [
+            "medical tape"
+          ],
+          "materials": [
+            "gauze"
+          ],
+          "contact_media": [],
+          "targets": [
+            "gauze"
+          ],
+          "associated_constraints": [
+            "keeping the tape off the burned skin"
+          ],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A10_R10_1",
+              "condition": "Medical tape is positioned on the gauze.",
+              "source": "explicit_instruction",
+              "source_reference": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+              "requires_expert_review": false
+            },
+            {
+              "requirement_id": "A10_R10_2",
+              "condition": "Medical tape is not directly attached to the burned skin.",
+              "source": "explicit_instruction",
+              "source_reference": "keeping the tape off the burned skin",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S5",
+      "step_name": "Conditional notification",
+      "step_description": "Notify nurse if complications arise.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A11",
+          "instruction": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever.",
+          "original_text": "Call your nurse if the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "the burn becomes more red or swollen, starts to smell or leak pus, or if you develop a fever",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "nurse"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        }
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "context_notes": [],
+  "review_notes": [
+    "A3 is now conditional as requested. A4 is dependent on A3 for the lifting operation if it sticks.",
+    "A7 dependencies updated to [A4] as requested.",
+    "A1->A2 sequence is maintained within S1.",
+    "No nurse-call prerequisite added.",
+    "All constraints are exact quotes.",
+    "Step.dependencies remain empty.",
+    "A1: Hand washing does not have an independent, reliable image end state. Manual completion required.",
+    "Action A1 marked for manual completion as it lacks a visually verifiable end state.",
+    "A2: Omitted 'clean' as requested.",
+    "A3: Soaking an object is a process-oriented activity with no independent, static visual end-state confirmable by a single RGB image.",
+    "A3 is manually completed due to lack of verifiable postconditions.",
+    "A4: Omitted gently; verifying visible end state only.",
+    "A5: Rinsing action lacks a reliable image end state for verification.",
+    "A5: Rubbing, blister-breaking, water temperature, and history of rinsing/duration are excluded.",
+    "A5 is set to manual completion as rinsing cannot be verified in a single static image.",
+    "A6: Action requires manual completion because patting skin dry with a towel is a process-oriented activity without a discrete, verifiable image-based end state beyond the act itself.",
+    "Patting skin dry is an action defined by the process rather than a static visual result; therefore, it is marked for manual completion.",
+    "A7: Removed substance identification 'burn ointment' from the postcondition string.",
+    "A7: Omitted swab use, layer thickness, and rub/blister constraints as per instructions.",
+    "Corrected the postcondition to use neutral substance-agnostic phrasing.",
+    "A8: Omitted non-stick property as per instructions.",
+    "A9: Omitted loosely as it is a non-visual descriptor.",
+    "A9 requires visible wrapping state of gauze roll around the target.",
+    "A10: Constraint of keeping tape off burned skin is treated as a postcondition, not an error criterion, consistent with pattern instructions.",
+    "A10: Omitted non-stick or loose properties from gauze wrapping.",
+    "A10: Manual completion is false as postconditions are provided.",
+    "A10 verification focuses on tape placement on gauze and avoidance of contact with burned skin.",
+    "A11: Call nurse requires expert review or human judgment; manual completion requested.",
+    "A11 is a non-visual notification task requiring manual confirmation.",
+    "All Action checks are now correctly localized to individual Actions. Procedure-level checks were removed as they were either redundant or covered whole-interval processes that cannot be verified by a single-image capture. A1, A3, A5, A6, and A11 require manual completion due to lack of image-visible end states.",
+    "Prototype image-only rubric: actual Gemini outputs reviewed for source grounding and single-image scope, not a validated clinical protocol. Excluded instruction aspects are not automatically verified."
+  ]
+}

@@ -137,3 +137,38 @@ Still open, ask the user:
 - Never add Claude as a Git co-author in commit messages.
 - Never commit `ProjectSettings/wit.config` (Wit.ai server token) or any API key. The Gemini key comes from the `GEMINI_API_KEY` environment variable.
 - Commit or push only when the user asks.
+
+## Status after the Mac session (2026-11-24)
+
+Branch `mobile/shared-schema`.
+
+Decided (details in `docs/SCHEMA_mobile.md`):
+- App: **Expo** (React Native), in `MobileApp/`. It replaces `Mobile/`.
+- Data: `action_requirements_v1`, stored as is. The phone reads and writes the same JSON.
+- Optional fields added: top-level `supplies`, and `notify_nurse: true` on the action shown as "Call the nurse if". There is no `completion_note`.
+- Watch-out items the nurse adds: the server's AI fills in `error_type` and `violation_condition`.
+- The phone only reviews and edits. Creating a plan stays on VR or the PC.
+- Nurse edits get `source: "author_edit"`, which the headset already accepts. No Unity change is needed.
+
+Figma:
+- **N4b** shows "Caregiver confirms" switched on. N4's hint explains that turning it on removes the Done-when checks, because the headset rejects an action that has both.
+
+Built in `MobileApp/` (see its README):
+- Screens S0, N1, N2/N3/N5, N4/N4b, N10, P1/P2.
+- Feedback and report screens (N6–N9, P3–P4) are not built.
+- The care plan is kept on the phone until a server exists. Setting `EXPO_PUBLIC_SERVER_URL` switches to the server.
+- Runs in Expo Go, and as an installable web app (`npm run build:web`, then Safari → Add to Home Screen).
+
+## Next on the PC: care-plan server
+
+The phone already calls this API (`MobileApp/src/api/client.ts`):
+
+- `GET /api/patients/:id/plan` returns the latest `PlanVersion`: `{ patient_id, version, updated_at, updated_by, plan, changed_step_ids }`.
+- `PUT /api/patients/:id/plan` with `{ base_version, plan }`:
+  - Validates the plan with the same rules as `ActionProcedureJson.Validate`.
+  - Fills AI fields: Watch-out `error_type` and `violation_condition`, and supply `itemId` and `keywords`.
+  - Stores the plan as version + 1 and returns the new `PlanVersion`.
+  - Answers `409` when `base_version` is out of date.
+- The headset loads the latest `plan` at the start of a session. That loader is not built yet.
+- CORS must allow the phone's web app.
+- Demo patient id: `james`. Seed it from `MobileApp/src/data/demo.ts`: the burn JSON plus the demo additions.

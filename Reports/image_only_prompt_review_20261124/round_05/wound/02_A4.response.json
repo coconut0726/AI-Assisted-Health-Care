@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3193,
+    "total_input_tokens": 2953,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2953
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 240,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2953
+  },
+  "created": "2026-11-24T05:12:34Z",
+  "updated": "2026-11-24T05:12:34Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPx6/L+kCg8uhlHbrYKykfH4kxvBMjfMtDnyDiwweExxFRRF9m4hc6bPlVVgOacLGA62b4o2Nmc8AGp8O731PaGWL+wUqk8VFG2XmrgJdqg/e90rFgNJB6PvIyT+ocPGMDiQ/JsM33pXNrqYaiFT79juA01bidHjrma6A1mvR//75P84VEXAWpvXihl6QuMvs65FKAltIlMNftTg0SKTTeyZg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_P1\",\n          \"condition\": \"a pad covers the cut on the skin pad\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Place a non-stick pad over the whole cut on the skin pad.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Excluded non-stick property as per scope instructions.\",\n        \"Excluded whole-cut coverage assessment as per scope instructions on qualitative standards.\",\n        \"Postcondition restricted to verifiable pad coverage of the target.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A4 requires no manual completion check because a visible postcondition is provided.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

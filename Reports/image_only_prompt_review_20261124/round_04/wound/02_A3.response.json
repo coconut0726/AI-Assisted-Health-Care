@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2998,
+    "total_input_tokens": 2819,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2819
+      }
+    ],
+    "total_cached_tokens": 1324,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1324
+      }
+    ],
+    "total_output_tokens": 179,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2819
+  },
+  "created": "2026-11-24T05:07:41Z",
+  "updated": "2026-11-24T05:07:41Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROFH8hjtbEKLMfHqy1zGB0BZl2QWt6q3ESr93rDTMu3h8/AHfgOt7Z1puqJJGdDE2TmoKPWwCGNqx+EPnJSZiSyXIElG4OrmHmmyZz/nvANNzmZ0vp7ASnZ0uLEjiYW3rQ1JPzSrgeU9jE2D/JV6bZftS6F1W6eN1pG1UWgwSWDkds6jgoSAw3Q5PxmzVnPL2k02jl0pIjILlBCGyuDsMZ4Pw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Instruction to look at, inspect, or check for redness, swelling, or leakage are operation-based clinical assessments. They lack verifiable static image states and are therefore omitted from automated checking.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A3 is marked manual_completion_required because the instruction describes a subjective visual assessment (inspecting for infection signs) which cannot be objectively validated by an image-only system per the provided constraints.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

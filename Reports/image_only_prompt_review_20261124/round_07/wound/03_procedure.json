@@ -1,0 +1,317 @@
+{
+  "schema_version": "action_requirements_v1",
+  "procedure_title": "Simple wound dressing",
+  "task_goal": "Simple wound dressing",
+  "instruction": "Wash your hands, then put on clean gloves. Look at the cut on the skin pad. Check that it is not red, swollen or leaking. Place a non-stick pad over the whole cut on the skin pad. Put the pad wrapper into the zip bag and seal it. Then take off the gloves and wash your hands.",
+  "steps": [
+    {
+      "step_id": "S1",
+      "step_name": "Preparation",
+      "step_description": "Perform initial hygiene and preparation.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A1",
+          "instruction": "Wash your hands.",
+          "original_text": "Wash your hands",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A2",
+          "instruction": "Put on clean gloves.",
+          "original_text": "put on clean gloves",
+          "dependencies": [
+            "A1"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "clean gloves"
+          ],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A2_R1",
+              "condition": "Gloves are worn on the hands.",
+              "source": "explicit_instruction",
+              "source_reference": "put on clean gloves",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S2",
+      "step_name": "Inspection",
+      "step_description": "Assess the cut.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A3",
+          "instruction": "Look at the cut on the skin pad and check that it is not red, swollen or leaking.",
+          "original_text": "Look at the cut on the skin pad. Check that it is not red, swollen or leaking.",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "cut on the skin pad"
+          ],
+          "associated_constraints": [
+            "not red, swollen or leaking"
+          ],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S3",
+      "step_name": "Dressing Application",
+      "step_description": "Apply the non-stick pad.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A4",
+          "instruction": "Place a non-stick pad over the whole cut on the skin pad.",
+          "original_text": "Place a non-stick pad over the whole cut on the skin pad.",
+          "dependencies": [
+            "A3"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "non-stick pad"
+          ],
+          "contact_media": [],
+          "targets": [
+            "cut on the skin pad"
+          ],
+          "associated_constraints": [
+            "over the whole cut"
+          ],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A4_R1",
+              "condition": "A pad covers the whole cut on the skin pad.",
+              "source": "explicit_instruction",
+              "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S4",
+      "step_name": "Disposal",
+      "step_description": "Dispose of the packaging.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A5",
+          "instruction": "Put the pad wrapper into the zip bag.",
+          "original_text": "Put the pad wrapper into the zip bag",
+          "dependencies": [],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "pad wrapper",
+            "zip bag"
+          ],
+          "contact_media": [],
+          "targets": [
+            "zip bag"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A5_R1",
+              "condition": "The pad wrapper is contained inside the zip bag.",
+              "source": "explicit_instruction",
+              "source_reference": "Put the pad wrapper into the zip bag",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A6",
+          "instruction": "Seal the zip bag.",
+          "original_text": "and seal it.",
+          "dependencies": [
+            "A5"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [
+            "zip bag"
+          ],
+          "contact_media": [],
+          "targets": [
+            "zip bag"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A6_R_A6_01",
+              "condition": "The zip bag is visibly closed.",
+              "source": "explicit_instruction",
+              "source_reference": "and seal it.",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        }
+      ]
+    },
+    {
+      "step_id": "S5",
+      "step_name": "Cleanup",
+      "step_description": "Final removal and hygiene.",
+      "dependencies": [],
+      "actions": [
+        {
+          "action_id": "A7",
+          "instruction": "Take off the gloves.",
+          "original_text": "take off the gloves",
+          "dependencies": [
+            "A6"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "gloves"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": false,
+          "preconditions": [],
+          "postconditions": [
+            {
+              "requirement_id": "A7_R_A7_1",
+              "condition": "The gloves are no longer worn on the hands.",
+              "source": "explicit_instruction",
+              "source_reference": "take off the gloves",
+              "requires_expert_review": false
+            }
+          ],
+          "error_criteria": []
+        },
+        {
+          "action_id": "A8",
+          "instruction": "Wash your hands.",
+          "original_text": "and wash your hands.",
+          "dependencies": [
+            "A7"
+          ],
+          "conditional_dependencies": [],
+          "applicability_condition": "",
+          "actor": [
+            "user"
+          ],
+          "tools": [],
+          "materials": [],
+          "contact_media": [],
+          "targets": [
+            "hands"
+          ],
+          "associated_constraints": [],
+          "manual_completion_required": true,
+          "preconditions": [],
+          "postconditions": [],
+          "error_criteria": []
+        }
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "context_notes": [],
+  "review_notes": [
+    "Ensured all step dependencies are empty arrays.",
+    "Maintained exact source constraints.",
+    "Updated A3 to include the full target and check description as requested.",
+    "A1: The action of washing hands does not have a reliable, direct visual end state verifiable by a single image.",
+    "Action A1 requires manual completion due to the nature of the task.",
+    "A2: Omitted the adjective clean as per instructions.",
+    "A3: Clinical inspection of wound characteristics such as redness, swelling, or leakage is not amenable to objective computer vision verification and requires manual inspection.",
+    "A3 inspection criteria (red, swollen, leaking) are clinical/subjective assessments and are excluded from automated visual checks.",
+    "A4: Retained explicit constraint: WHOLE coverage.",
+    "A4: Omitted non-stick property as per instructions.",
+    "No global or procedure-level error criteria required for this request.",
+    "A5: Visual containment of the wrapper inside the zip bag is checked. The act of placing is omitted.",
+    "A5 is an atomic containment check.",
+    "A6: A6 verifies visual closure of the bag only; no airtight or adhesion claim.",
+    "A7: Removed the requirement to 'take off' which is an operation; checked instead for the visible state of absence from the hands.",
+    "A7 represents the visible end state of glove removal.",
+    "A8: Washing hands is a process-based activity without a reliable, persistent image-visible postcondition; manual completion required.",
+    "A1 and A8 require manual completion as there is no independent image end state for hand washing.",
+    "A3 requires manual completion as red, swollen, and leaking clinical inspections are not automatically verifiable via RGB image.",
+    "A2 postcondition is 'Gloves are worn on the hands.' Omitted 'clean'.",
+    "A4 postcondition is 'A pad covers the whole cut on the skin pad.' Omitted 'non-stick'.",
+    "A5 postcondition is 'The pad wrapper is contained inside the zip bag.'",
+    "A6 postcondition is 'The zip bag is visibly closed.' Omitted 'seal'.",
+    "A7 postcondition is 'The gloves are no longer worn on the hands.' Omitted 'take off'.",
+    "Global error criteria are not applicable; procedural checks rely on per-step verified states.",
+    "Prototype image-only rubric: actual Gemini outputs reviewed for source grounding and single-image scope, not a validated clinical protocol. Excluded instruction aspects are not automatically verified."
+  ]
+}

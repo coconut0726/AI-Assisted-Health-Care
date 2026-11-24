@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3141,
+    "total_input_tokens": 2953,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2953
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 188,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2953
+  },
+  "created": "2026-11-24T05:12:47Z",
+  "updated": "2026-11-24T05:12:47Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROHRp1BFnHPUkiNXDPmvW3RUZTvm/9ylNjcUq5cwGdNnFcQZqxC7DYedeL7pqrXCt0UQzmt9NJyc7pzzP3zCbVi7uweWpfV/GeAkRSbroJ+ss7YmipE2GgKrWPKZIpD3l/UxInGEd/D7pR6USYX75uN547SopBOo9csISX7kh0WyZp0MA2n4PIbZWQKbyxrwT+Hclt8fj/Cz7DG8yFJDdkZQQ==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A5_P1\",\n          \"condition\": \"the pad wrapper is located inside the zip bag\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Put the pad wrapper into the zip bag\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Verified visibility of the pad wrapper inside the zip bag as the visual completion proxy.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,26 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "R1",
+          "condition": "The pad wrapper is contained inside the zip bag.",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Visual containment of the wrapper inside the zip bag is checked. The act of placing is omitted."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A5 is an atomic containment check."
+  ]
+}

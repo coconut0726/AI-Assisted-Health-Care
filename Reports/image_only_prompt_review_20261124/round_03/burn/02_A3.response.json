@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3225,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 211,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:29Z",
+  "updated": "2026-11-24T04:59:29Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNERh8kDmA6AGke8jV0SHTSh3AuH9p7OMsxiOIWvxOTVsZkbpeXzXHhhlT249XHUtNpIHbpf6LptGid1EhdXLKjYDqrUa6iyXXezPERYjDESvwGjUPUrWPS+yjHWYkj9xDNrplmbpEtUZ3QS/mZL4vOEokTYHjH5uAz1qG6ohdckkqjQgT4+0Ai74Z5CLWJmea6Ba81qMwJ8TjuY8bB0UZRWg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A3_R1\",\n          \"condition\": \"old dressing appears saturated with water\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"soak it with clean water\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Soaking state is defined by visible saturation of the material.\",\n        \"Manual completion is false as the state is observable.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Rubric generated for A3 only based on requested action IDs.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

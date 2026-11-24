@@ -70,8 +70,81 @@ namespace HomeCare.Authoring
             }
             Check(!session.CanAdvance && session.Results[0].status == "unknown",
                 "Repeated after images cannot establish a whole-step execution constraint", ref count);
+
+            procedure = RequirementsJson.Parse(File.ReadAllText(path));
+            var original = procedure.steps[0].requirements[0];
+            procedure.steps[0].requirements = new[]
+            {
+                original, Copy(original, "_second", "postcondition", "after_step"),
+                Copy(original, "_pre", "precondition", "before_step"),
+                Copy(original, "_constraint", "execution_constraint", "whole_step")
+            };
+            session = new ProcedureSession(procedure, postconditionsOnly: true);
+            Check(session.CurrentStep.requirements.Length == 2 && procedure.steps[0].requirements.Length == 4,
+                "Postcondition-only sessions filter their snapshot without changing the author's procedure", ref count);
+            Check(new ProcedureSession(procedure).CurrentStep.requirements.Length == 4,
+                "Other demos retain all requirements by default", ref count);
+            foreach (string incomplete in new[] { "not_satisfied", "unknown" })
+            {
+                session.BeginVerification();
+                var partial = Answer(session, "satisfied");
+                partial.results[1].status = incomplete;
+                session.AcceptVerification(partial, image);
+                Check(!session.CanAdvance && session.StepIndex == 0,
+                    "One passed postcondition cannot advance while another is " + incomplete, ref count);
+            }
+            session.BeginVerification();
+            var omitted = Answer(session, "satisfied");
+            omitted.results = new[] { omitted.results[0] };
+            session.AcceptVerification(omitted, image);
+            Check(!session.CanAdvance, "An omitted postcondition cannot cause automatic advancement", ref count);
+
+            // Drive the same accept/advance sequence as RealCareSession, with one fresh polling period per step.
+            clock.Start(0, 1);
+            double completedAt = 0;
+            int advanced = 0;
+            while (session.State != ProcedureSessionState.Completed)
+            {
+                int index = session.StepIndex;
+                Check(!clock.TryConsumeTick(completedAt + 0.999, 1, true) &&
+                      clock.TryConsumeTick(completedAt + 1, 1, true),
+                    "Each new step waits its own one-second polling interval", ref count);
+                session.BeginVerification();
+                Check(!clock.TryConsumeTick(completedAt + 2, 1, false),
+                    "Slow inference skips one-second slots instead of overlapping requests", ref count);
+                session.AcceptVerification(Answer(session, "satisfied"), image);
+                Check(session.CanAdvance, "All current postconditions must pass together", ref count);
+                session.Advance();
+                advanced++;
+                completedAt += 2;
+                if (session.State == ProcedureSessionState.Completed) clock.Stop();
+                else
+                {
+                    Check(session.StepIndex == index + 1 && session.Results == null && !session.CanAdvance,
+                        "Advancement clears the old pass rather than carrying it into the next step", ref count);
+                    clock.Start(completedAt, 1);
+                }
+            }
+            Check(advanced == procedure.steps.Length && !clock.TryConsumeTick(completedAt + 100, 1, true),
+                "The final pass completes the procedure once and stops polling", ref count);
+            bool blocked = false;
+            try { session.Advance(); } catch (InvalidOperationException) { blocked = true; }
+            Check(blocked, "A completed procedure cannot advance a second time", ref count);
+
+            procedure.steps[0].requirements = new[] { Copy(original, "_only_pre", "precondition", "before_step") };
+            blocked = false;
+            try { _ = new ProcedureSession(procedure, postconditionsOnly: true); }
+            catch (ArgumentException) { blocked = true; }
+            Check(blocked, "A step without postconditions is rejected instead of passing an empty list", ref count);
             return count;
         }
+
+        static Requirement Copy(Requirement source, string suffix, string category, string scope) => new()
+        {
+            id = source.id + suffix, category = category, evidence_scope = scope,
+            description = source.description, source_span = source.source_span,
+            vqa_question = source.vqa_question, observation_hint = source.observation_hint
+        };
 
         static VerificationResponse Answer(ProcedureSession session, string status) => new()
         {

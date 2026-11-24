@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2572,
+    "total_input_tokens": 2436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 136,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2436
+  },
+  "created": "2026-11-24T05:01:54Z",
+  "updated": "2026-11-24T05:01:54Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNqHdX0ueKys2wan5xjNNsD/pBWpT3UJMx+jM4ABwy1n4N4+2VUuOPfulcJWiNEk/1w+LQ33xasSDyx3R51PC5RmiQZWojx98DczaRg0WF11SPCe3AUJTAh6T9VePGxuRi6QwGOmM2V2XAxMdyGdvD7NY05GCzU62sDTddWWNrpOHhsk2uJVa6TN/wrNe+PGcfs0LpCei2CN1E6VxbDBhrihg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Hand washing is a procedural action that cannot be verified via single-image visual inspection; manual confirmation required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Washing hands is excluded from automatic verification per the scope rules.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

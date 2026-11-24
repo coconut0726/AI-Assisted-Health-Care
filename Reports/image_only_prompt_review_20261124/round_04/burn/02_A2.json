@@ -1,0 +1,29 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A2",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A2_P1",
+          "condition": "gloves are worn on the hands",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Removed 'clean' property as it is not objectively verifiable in a single image.",
+        "The postcondition verifies the presence of gloves."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 (Wash hands), A3 (Soak dressing), A4 (Remove dressing), A5 (Rinse), A6 (Pat dry), A7 (Apply ointment), A11 (Call nurse) are omitted as they involve actions or subjective qualities without verifiable single-image states.",
+    "Excluded rub/blister checks from A5-A7 as they are forbidden whole-interval constraints.",
+    "A8 (Pad coverage), A9 (Gauze wrap), and A10 (Tape placement) were not requested, so action_updates only contains A2."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3758,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 322,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:37Z",
+  "updated": "2026-11-24T05:06:37Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNpLwanrDh83sxebVXEMRG0NwdteNk4rr3IlWs/YOpzbG0H7nOaRaTI1BaO++SK1mMWOGccv2p+9krLWA42qlIXwYCpWG/ow9u6e1VN3DgzQJfeAfnNzlGpWr1IhVeQRhyLkV+EwwtlQeTqOIQYYcIuJOi18Tu/4oobAU4csdePTwcai0J6u2XNbOxavoIYUUUhqu0KYfmlBn0xmSheAjV6zg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A2\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_P1\",\n          \"condition\": \"gloves are worn on the hands\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Removed 'clean' property as it is not objectively verifiable in a single image.\",\n        \"The postcondition verifies the presence of gloves.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 (Wash hands), A3 (Soak dressing), A4 (Remove dressing), A5 (Rinse), A6 (Pat dry), A7 (Apply ointment), A11 (Call nurse) are omitted as they involve actions or subjective qualities without verifiable single-image states.\",\n    \"Excluded rub/blister checks from A5-A7 as they are forbidden whole-interval constraints.\",\n    \"A8 (Pad coverage), A9 (Gauze wrap), and A10 (Tape placement) were not requested, so action_updates only contains A2.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

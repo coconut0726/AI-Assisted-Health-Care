@@ -1,0 +1,26 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_R1",
+          "condition": "The non-stick pad is visibly covering the entire surface of the cut.",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Visual verification limited to pad placement coverage over the cut. Excluded non-stick material property check."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A3 inspection criteria (redness, swelling, leakage) are clinical assessments and excluded from single-image verification."
+  ]
+}

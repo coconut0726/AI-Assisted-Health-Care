@@ -4221,7 +4221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HomeCare.AR.AfterStepCamera
   editorTestImage: {fileID: 0}
-  captureViewCameraInEditor: 1
+  captureViewCameraInEditor: 0
   maxImageWidth: 640
   jpegQuality: 70
 --- !u!114 &1835049246

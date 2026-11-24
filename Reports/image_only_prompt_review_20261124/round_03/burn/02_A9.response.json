@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3380,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 366,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:44Z",
+  "updated": "2026-11-24T04:59:44Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMEsY1Bc39nqZFbADgYynodq+H+UdGsgkYIkS2OHZmdn2Jsij8DQ8aPHVqMg0hNyYF+39TXZgw92qnF5ig6VGoz1SS9QeRu5TyCJcYDLy3LVWypp2YURsKPm44rG6hu8OvaUwM7XliymzIqUHv0Xi+fgQt41dMaQAheATC9d9EBd1ub3nlPBHhXEcDEFEONZmB3NAJSFe3bDmbwmvGkub9vZA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A9\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A9_P1\",\n          \"condition\": \"A non-stick pad covers the burn area\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Cover the burn with a non-stick pad\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A9_P2\",\n          \"condition\": \"A gauze roll wraps the non-stick pad over the burn\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"wrap it loosely with a gauze roll\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Visual confirmation of the gauze roll wrap is possible, though loose application is subjective and excluded.\",\n        \"Requirement A9_P1 ensures the previous step's object is correctly positioned.\",\n        \"Manual completion is false as the physical state of the wrap is verifiable.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Rubbing constraints and blister status are excluded as they concern past/internal status.\",\n    \"Loose wrapping is excluded as a subjective qualitative standard.\",\n    \"Manual completion for A9 is set to false because the presence of the wrapping gauze is a visually verifiable state.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

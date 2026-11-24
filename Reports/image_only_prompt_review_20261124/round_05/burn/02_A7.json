@@ -1,0 +1,28 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A7_P1",
+          "condition": "a visible layer is applied on the burn",
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Omitted swab use history, ointment identity, and thinness as per instructions.",
+        "Omitted constraints regarding rubbing or blistering as they refer to prohibited techniques rather than verifiable current states.",
+        "Manual completion is false because a postcondition is defined."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A7 is verified only by the presence of an applied layer on the target region."
+  ]
+}

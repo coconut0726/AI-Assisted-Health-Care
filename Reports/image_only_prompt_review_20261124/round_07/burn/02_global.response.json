@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3944,
+    "total_input_tokens": 3841,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3841
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 103,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3841
+  },
+  "created": "2026-11-24T05:27:14Z",
+  "updated": "2026-11-24T05:27:14Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPJxC/rDeOSuZpqRxSSEBs2MwreeVIo++1vBvLEmDCVs3bqXMEXExfbn5k86LNbYfQ4HfW1HZv5vTcmM7tT6fSoZ9PC4n/N3Z7BVIwn449PjNeftSrF4QwC+GhL6hEkXWhkdSGTbI6558upRozEdBb9Q14qpmbVLZTrLxDDBGkSxJP0zZp5FMnDbqlKbCWQp1q1XitLZHLvan5QSy2Z65JVzw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"All Action checks are now correctly localized to individual Actions. Procedure-level checks were removed as they were either redundant or covered whole-interval processes that cannot be verified by a single-image capture. A1, A3, A5, A6, and A11 require manual completion due to lack of image-visible end states.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

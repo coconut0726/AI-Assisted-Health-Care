@@ -1,0 +1,8 @@
+{
+  "accepted": false,
+  "findings": [
+    "Burn soaking lost its conditional applicability; a review note claimed an edge was removed while the actual dependency retained it.",
+    "Requirements included saturated/wet/dry proxies for operations, availability gates, and non-stick properties.",
+    "At least one empty postcondition array incorrectly used manual_completion_required=false."
+  ]
+}

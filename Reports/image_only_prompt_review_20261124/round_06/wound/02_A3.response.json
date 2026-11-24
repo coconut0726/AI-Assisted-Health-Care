@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2659,
+    "total_input_tokens": 2506,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2506
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 153,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2506
+  },
+  "created": "2026-11-24T05:17:09Z",
+  "updated": "2026-11-24T05:17:09Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRO9Uye8KI9CB9sB3/5tg9vjKraLx1gVbSxkGuu65wHJXHpnmt3JBUaqFB/VQX5A6DOnEk2Evak4qDRtlgsAVfO1D+yMKiy56RHRnzJMMUgdxEds2+IaFo3IdUhpRZliXMFkQ1N3FfN35nzmOHun51j2tG55yhDJhiYs+0vfBAC5pBGIr9vmo0E4Jyxsa1udSZxv5NFN1+KXHTErX2spXw7uTw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Clinical inspection of wound characteristics such as redness, swelling, or leakage is not amenable to objective computer vision verification and requires manual inspection.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A3 inspection criteria (red, swollen, leaking) are clinical/subjective assessments and are excluded from automated visual checks.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

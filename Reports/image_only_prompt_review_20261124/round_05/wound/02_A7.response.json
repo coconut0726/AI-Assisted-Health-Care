@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3122,
+    "total_input_tokens": 2953,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2953
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 169,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2953
+  },
+  "created": "2026-11-24T05:13:12Z",
+  "updated": "2026-11-24T05:13:12Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPIsk41xNmTKtZlVIz7tVWinAFv6zHZ2N9cI2RvkqD4QLf1v3/KgzsQirSo/jQI/nKnolf7Qr8+pCONmnJoKyy7NUwEfj/dX4yuallPzc/GbHEYqBsYcRFjq26ZvSvBZFjymsKWti+y6MnmdjMxciZAhQ4sCPjeuh+hGg0x2RXNwGZJkmqP+C3THk/gPOsWfUSvceKis9npXtE6zqXpeJw++w==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Take off the gloves is an operation that cannot be verified by a single static image state.\",\n        \"Gloves being off is a negative state (absence of object) that cannot reliably be confirmed from a single view without prior history.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A7 manual_completion_required set to true due to lack of verifiable postconditions in scope.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,129 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is an operation with no reliable single-image completion state."
+      ]
+    },
+    {
+      "action_id": "A2",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A2_1",
+          "condition": "gloves are worn on the hands",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Removed 'clean' property as it is a non-verifiable material property. Retained 'worn' as a visible state."
+      ]
+    },
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Inspection (Look at, check for red/swollen/leaking) is an operation without a reliable single-image verification state."
+      ]
+    },
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_1",
+          "condition": "a pad covers the cut on the skin pad",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Removed 'non-stick' property. Retained coverage of the target as the visible state."
+      ]
+    },
+    {
+      "action_id": "A5",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A5_1",
+          "condition": "the pad wrapper is located inside the zip bag",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Check limited to the visible containment of the wrapper."
+      ]
+    },
+    {
+      "action_id": "A6",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A6_1",
+          "condition": "the zip bag closure track is visibly closed",
+          "source": "explicit_instruction",
+          "source_reference": "seal it",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Verification limited to the visible state of the closure track."
+      ]
+    },
+    {
+      "action_id": "A7",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A7_1",
+          "condition": "hands are bare",
+          "source": "explicit_instruction",
+          "source_reference": "take off the gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Replaced 'off the gloves' with 'hands are bare' to describe the visible end state."
+      ]
+    },
+    {
+      "action_id": "A8",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is an operation with no reliable single-image completion state."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Excluded subjective qualities (red/swollen/leaking/clean/non-stick) and historical operations (wash/inspect) per scope.",
+    "Manual completion required where state verification is impossible or excluded."
+  ]
+}

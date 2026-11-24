@@ -1,0 +1,26 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A9",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "R9_1",
+          "condition": "gauze is wrapped around the target",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Omitted loosely, as it is a qualitative standard. Omitted prior pad-application requirement as it is not a direct visual state check for the gauze itself."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A9: Checked only for visible gauze wrapping."
+  ]
+}

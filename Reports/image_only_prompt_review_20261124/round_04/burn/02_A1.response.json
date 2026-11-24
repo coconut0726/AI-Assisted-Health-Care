@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3611,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 175,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:17Z",
+  "updated": "2026-11-24T05:06:17Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPINL9MPt1Z1Mrod+aX7nHmk3rX+6Xc+6EdJiSTljkoVMy8kG0JOj6fnNWVmBzslmdZxcraxuCSYTMNu7avPOJXotbV8du9tKnfhIYgniMgoPZMsluVgGRLVG+nbY58h1CAA1B6z+jYKa3IeQGPx+LCgG2qKHX0vYRlwPSjUi7dcQ+qJaRuqmEiwzk749CgAhyNtwYJTmmW2j2fd3LSk7TW0A==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is an operation with no reliable single-image completion state in this version. Omitted requirements for 'clean' as it is a qualitative/historical property.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 (Wash hands) is flagged as manual_completion_required=true because it describes a process with no observable, state-based postcondition that can be verified via a single image.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

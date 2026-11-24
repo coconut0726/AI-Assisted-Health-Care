@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "A4 is a dressing removal operation with no reliable single-image completion state (e.g., confirming total dressing absence or that no particles remain). It is flagged for manual completion."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A4 requires manual completion as it is a removal operation without a verifiable final visual state suitable for single-image analysis."
+  ]
+}

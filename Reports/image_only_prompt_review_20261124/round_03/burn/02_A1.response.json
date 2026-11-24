@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3164,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 150,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:25Z",
+  "updated": "2026-11-24T04:59:25Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMMyxuwiXWCgBu7Uwkycd0bQ4gxWojpm8+VwP3Ts7+9jE6eaFLkg3tBeQyFG4z3HYVc9caWzjjBS0bte/P5Pw9c2OlvT7wsnpGvnNfKNWrm9qUAkx6KXqD3pEuCbwhfCRIN5CWHXYuq6xBMYhSKNpJZNBQl/DkcxjmNwDcv8hKLyvX+xZ//tUS2EwoCe3UKGVpi+DVapRfA7JTn5bkazVmNrw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Hand washing as a procedure is not a verifiable persistent visual state for a single static image and requires manual completion.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 (Wash hands) requires manual completion as there is no single-image visual proxy for an 'already washed' state.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

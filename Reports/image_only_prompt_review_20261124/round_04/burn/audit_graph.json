@@ -1,0 +1,10 @@
+{
+  "case": "burn",
+  "phase": "graph",
+  "steps": 5,
+  "actions": 11,
+  "image_predicates": 0,
+  "manual_actions": [],
+  "structural_and_scope_findings": [],
+  "note": "Automated screening supplements, and does not replace, semantic review of the source and output."
+}

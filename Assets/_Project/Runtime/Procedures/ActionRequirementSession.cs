@@ -14,6 +14,7 @@ namespace HomeCare.Procedures.Actions
         public int ActionIndex { get; private set; }
         public bool Busy => _pending != null;
         public bool Completed => Phase == ActionCheckPhase.Completed;
+        public bool ActionCompletionConfirmed { get; private set; }
         public ProcedureAction CurrentAction => _actions[ActionIndex];
         public ActionStep CurrentStep => _owners[CurrentAction.action_id];
         public int StepIndex => Array.IndexOf(Procedure.steps, CurrentStep);
@@ -24,6 +25,7 @@ namespace HomeCare.Procedures.Actions
         public string OverallStatus => Completed || CanAdvance ? Yes : CurrentChecks.Any(q => Result(q.requirement_id)?.status == No) ? No : Unknown;
         public bool CanAdvance => !Completed && Phase == ActionCheckPhase.Completion &&
             _globalViolations.Count == 0 && (Applicability == NotApplicable || (DependenciesMet() && _localViolations.Count == 0 &&
+             (!CurrentAction.manual_completion_required || ActionCompletionConfirmed) &&
              CurrentChecks.All(q => Accepted(Result(q.requirement_id)?.status))));
 
         readonly ProcedureAction[] _actions;
@@ -84,7 +86,8 @@ namespace HomeCare.Procedures.Actions
 
         public ActionVerificationTicket BeginVerification()
         {
-            if (Completed || Busy || Applicability == NotApplicable) throw new InvalidOperationException("No current checks available.");
+            if (Completed || Busy || Applicability == NotApplicable || (Phase != ActionCheckPhase.Applicability && CurrentChecks.Length == 0))
+                throw new InvalidOperationException("No current image checks available.");
             _pending = new ActionVerificationTicket { RequestId = Guid.NewGuid().ToString("N"), StepId = CurrentStep.step_id,
                 ActionId = CurrentAction.action_id, Phase = Phase.ToString(), Revision = Revision, Checks = CurrentChecks };
             return _pending;
@@ -171,6 +174,14 @@ namespace HomeCare.Procedures.Actions
             if (Phase != ActionCheckPhase.Applicability) throw new InvalidOperationException("This action is not awaiting applicability.");
             Invalidate(); SetApplicability(applies ? "applies" : NotApplicable, "human_confirmation", "Explicit operator assessment of the source condition.");
         }
+        public void ConfirmActionCompletion()
+        {
+            if (Completed || Phase != ActionCheckPhase.Completion || Applicability != "applies" ||
+                !CurrentAction.manual_completion_required || !DependenciesMet())
+                throw new InvalidOperationException("This Action is not ready for manual completion.");
+            Invalidate(); ActionCompletionConfirmed = true;
+            Add("action_completion_confirmed", "", Yes, "human_confirmation", "Operator confirmed the Action; no image completion claim was generated.");
+        }
         void SetApplicability(string value, string source, string reason)
         {
             if (value == Unknown) return;
@@ -223,13 +234,13 @@ namespace HomeCare.Procedures.Actions
         public void Invalidate() { Revision++; _pending = null; }
         public void RefreshAfterPause()
         {
-            Invalidate(); _results.Clear(); _manual.Clear();
+            Invalidate(); _results.Clear(); _manual.Clear(); ActionCompletionConfirmed = false;
             // Preserve phase and latched violations: returning to an earlier precondition after
             // performing an action (e.g. an empty tray) would require undoing the user's work.
         }
         void StartAction()
         {
-            _results.Clear(); _manual.Clear(); _localViolations.Clear();
+            _results.Clear(); _manual.Clear(); _localViolations.Clear(); ActionCompletionConfirmed = false;
             Applicability = string.IsNullOrWhiteSpace(CurrentAction.applicability_condition) ? "applies" : Unknown;
             Phase = Applicability == Unknown ? ActionCheckPhase.Applicability :
                 CurrentAction.preconditions.Length > 0 ? ActionCheckPhase.Preconditions : ActionCheckPhase.Completion;

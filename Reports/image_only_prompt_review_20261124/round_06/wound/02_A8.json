@@ -1,0 +1,16 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A8",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is a process-based activity without a reliable, persistent image-visible postcondition; manual completion required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

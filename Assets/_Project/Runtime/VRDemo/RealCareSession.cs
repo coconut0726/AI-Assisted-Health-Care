@@ -29,15 +29,17 @@ namespace AHC.VR
         [Tooltip("Reviewed procedure with checks (Assets/_Project/Content/Procedures/burn_care_procedure.json).")]
         public TextAsset procedureJson;
 
-        [Header("PC bridge (USB: adb reverse tcp:8765 tcp:8765)")]
+        [Header("VLM Backend (AHC > VLM Backend)")]
+        [Tooltip("Shared bridge for the Gemini or local VLM selected in AHC > VLM Backend. USB: adb reverse tcp:8765 tcp:8765.")]
         public string bridgeEndpoint = "http://127.0.0.1:8765/verify";
-        public string geminiModel = "gemini-3.8-flash";
+        // Retain old scene serialization as a payload fallback. The shared bridge selects the actual model.
+        [HideInInspector] public string geminiModel = "gemini-3.8-flash";
 
-        [Header("Requirement verification")]
-        [Tooltip("While a step is active, periodically capture a fresh image and check its requirements. Stops when passed; Next remains manual.")]
-        public bool autoVerify;
-        [Min(1f), Tooltip("Seconds between polling slots. Busy slots are skipped; requests never overlap.")]
-        public float verificationInterval = 5f;
+        [Header("Postcondition verification")]
+        [Tooltip("Periodically check the current step's postconditions. All satisfied advances the step, UI and voice automatically.")]
+        public bool autoVerify = true;
+        [Min(0.1f), Tooltip("Seconds between polling slots; editable before or during Play. Busy slots are skipped, so model latency determines result frequency.")]
+        public float verificationInterval = 1f;
 
         [Header("Object detection")]
         [Tooltip("Automatically check supplies when the start screen opens. Look again remains available when off.")]
@@ -70,6 +72,8 @@ namespace AHC.VR
 
         /// <summary>Raised whenever anything shown on the HUD changes.</summary>
         public event Action Changed;
+        /// <summary>A step advanced or the final step finished; update the page and speak the new instruction once.</summary>
+        public event Action Advanced;
         /// <summary>A short line for the guide to say (detection guidance, verification result).</summary>
         public event Action<string> Spoke;
 
@@ -80,9 +84,9 @@ namespace AHC.VR
         CancellationTokenSource _lifetime, _supplyCheck, _stepCancellation;
         readonly VerificationPollingSchedule _polling = new();
         RequirementResult[] _displayResults;
-        string _lastSpokenResult;
         bool _paused;
         int _stepRequest;
+        float _scheduledInterval;
 
         public string LoadError { get; private set; }
         /// <summary>The procedure file's "completion_note", or null to use the demo's red flags.</summary>
@@ -98,7 +102,7 @@ namespace AHC.VR
         public bool CanVerify => _session != null && (State == ProcedureSessionState.Ready || State == ProcedureSessionState.NeedsRetry);
         public RequirementResult[] Results => _session?.Results ?? _displayResults;
         public float PollingInterval => float.IsNaN(verificationInterval) || float.IsInfinity(verificationInterval)
-            ? 5f : Mathf.Max(1f, verificationInterval);
+            ? 1f : Mathf.Max(0.1f, verificationInterval);
         public bool Detecting => _detector != null && _detector.Busy;
         public bool CheckingSupplies { get; private set; }
         public readonly List<SupplyCheck> SupplyChecks = new();
@@ -126,7 +130,7 @@ namespace AHC.VR
             try
             {
                 if (procedureJson == null) throw new InvalidOperationException("Assign the reviewed procedure JSON on RealCareSession.");
-                _session = new ProcedureSession(RequirementsJson.Parse(procedureJson.text));
+                _session = new ProcedureSession(RequirementsJson.Parse(procedureJson.text), postconditionsOnly: true);
                 ReadCaseExtras(procedureJson.text);
             }
             catch (Exception e)
@@ -198,12 +202,18 @@ namespace AHC.VR
         {
             if (!Started || Completed || _paused || !isActiveAndEnabled || _lifetime == null) return;
             _stepCancellation ??= CancellationTokenSource.CreateLinkedTokenSource(_lifetime.Token);
-            if (autoVerify && !CanAdvance) _polling.Start(Time.realtimeSinceStartupAsDouble, PollingInterval);
+            if (autoVerify && !CanAdvance) StartPolling();
             Status = CanAdvance ? "Passed. You can continue." : WaitingStatus();
             Notify();
         }
 
         bool IsCurrentStep(int request) => this != null && Started && !_paused && isActiveAndEnabled && request == _stepRequest;
+
+        void StartPolling()
+        {
+            _scheduledInterval = PollingInterval;
+            _polling.Start(Time.realtimeSinceStartupAsDouble, _scheduledInterval);
+        }
 
         string WaitingStatus() => autoVerify
             ? $"Do this step. Checking automatically every {PollingInterval:0.#} s; keep the work area in view."
@@ -222,7 +232,7 @@ namespace AHC.VR
             string dir = Path.Combine(Application.persistentDataPath, "HomeCareSessions",
                 DateTime.UtcNow.ToString("yyyyMMdd_HHmmss") + "_" + Guid.NewGuid().ToString("N").Substring(0, 8));
             Directory.CreateDirectory(dir);
-            _report = new SessionReportWriter(dir, _session.Procedure, geminiModel);
+            _report = new SessionReportWriter(dir, _session.Procedure, "Selected in AHC > VLM Backend");
             _report.Save();
             StartedAt = Time.time;
             Started = true;
@@ -247,7 +257,6 @@ namespace AHC.VR
         {
             SuspendStepWork();
             _displayResults = null;
-            _lastSpokenResult = null;
             _lastRequest = null;
             _touchStarted = _releasedAt = -1;
             Guidance = Caution = "";
@@ -277,6 +286,7 @@ namespace AHC.VR
             _session.Advance();
             FinishIfDone();
             EnterStep();
+            Advanced?.Invoke();
         }
 
         /// <summary>Presenter override: move on although the check did not pass (recorded as skipped).</summary>
@@ -288,6 +298,7 @@ namespace AHC.VR
             _session.Skip();
             FinishIfDone();
             EnterStep();
+            Advanced?.Invoke();
         }
 
         void FinishIfDone()
@@ -481,7 +492,7 @@ namespace AHC.VR
             var session = _session;
             var report = _report;
             var cancellation = _stepCancellation.Token;
-            if (!automatic && autoVerify) _polling.Start(Time.realtimeSinceStartupAsDouble, PollingInterval);
+            if (!automatic && autoVerify) StartPolling();
             _displayResults = session.Results ?? _displayResults;
             _session.BeginVerification();
             Status = automatic ? "Automatic check in progress. Keep the work area in view." : "Checking your result. Keep the area in view.";
@@ -502,6 +513,7 @@ namespace AHC.VR
                 var attachments = new[] { new EvidenceAttachment { scope = "after_step", path = imagePath } };
                 string request = GeminiVerificationProtocol.CreateAfterImageRequest(session.Procedure, step, jpeg,
                     Path.GetFileName(imagePath), geminiModel);
+                // No provider restriction: the shared bridge uses the choice in AHC > VLM Backend.
                 var response = await VerificationBridgeClient.VerifyAsync(bridgeEndpoint, request, cancellation);
                 cancellation.ThrowIfCancellationRequested();
                 if (!IsCurrentStep(stepRequest)) return;
@@ -555,14 +567,17 @@ namespace AHC.VR
                 _ => "not_verified",
             };
             report.Save();
-            if (CanAdvance) _polling.Stop();
+            if (CanAdvance)
+            {
+                // Save the completed attempt before EnterStep cancels this step and clears its results.
+                // Advanced lets the controller speak the new instruction without a competing success line.
+                Next();
+                return;
+            }
             Notify();
-            // Repeated polls can produce different wording for the same outcome. Speak only when
-            // requirement statuses change, or when the user explicitly asked for another check.
-            string resultKey = attempt.error != null ? "error" : string.Join("|", attempt.results.Select(r => r.requirement_id + ":" + r.status));
-            if (!automatic || resultKey != _lastSpokenResult)
-                Spoke?.Invoke(CanAdvance ? "Well done. That step is complete." : attempt.error != null ? Status : FirstProblem() ?? Status);
-            _lastSpokenResult = resultKey;
+            // A one-second poll must not cut off the new step's spoken instruction with retry feedback.
+            // Automatic retries update the UI; explicit manual checks also speak their feedback.
+            if (!automatic) Spoke?.Invoke(attempt.error != null ? Status : FirstProblem() ?? Status);
             // Items were handled during the step: update where their boxes are (once, quietly).
             if (!autoVerify && IsCurrentStep(stepRequest) && _detector.Markers.Count > 0) FindItems(_lastRequest, refresh: true);
         }
@@ -590,7 +605,7 @@ namespace AHC.VR
             else
             {
                 double now = Time.realtimeSinceStartupAsDouble;
-                if (!_polling.Running) _polling.Start(now, PollingInterval);
+                if (!_polling.Running || _scheduledInterval != PollingInterval) StartPolling();
                 if (_polling.TryConsumeTick(now, PollingInterval,
                     CanVerify && !Detecting && !CheckingSupplies && _stepCancellation != null))
                     VerifyCurrentStep(automatic: true);

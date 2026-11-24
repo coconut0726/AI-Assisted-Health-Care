@@ -1,0 +1,14 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 and A8 require manual completion as there is no independent image end state for hand washing.",
+    "A3 requires manual completion as red, swollen, and leaking clinical inspections are not automatically verifiable via RGB image.",
+    "A2 postcondition is 'Gloves are worn on the hands.' Omitted 'clean'.",
+    "A4 postcondition is 'A pad covers the whole cut on the skin pad.' Omitted 'non-stick'.",
+    "A5 postcondition is 'The pad wrapper is contained inside the zip bag.'",
+    "A6 postcondition is 'The zip bag is visibly closed.' Omitted 'seal'.",
+    "A7 postcondition is 'The gloves are no longer worn on the hands.' Omitted 'take off'.",
+    "Global error criteria are not applicable; procedural checks rely on per-step verified states."
+  ]
+}

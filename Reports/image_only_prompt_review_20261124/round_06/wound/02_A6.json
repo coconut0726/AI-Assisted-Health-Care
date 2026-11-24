@@ -1,0 +1,24 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A6",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "R_A6_01",
+          "condition": "The zip bag is visibly closed.",
+          "source": "explicit_instruction",
+          "source_reference": "and seal it.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "A6 verifies visual closure of the bag only; no airtight or adhesion claim."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

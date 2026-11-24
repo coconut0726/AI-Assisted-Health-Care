@@ -1,0 +1,19 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A11",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "A11 involves subjective assessment of redness, swelling, smell, or fever, which cannot be verified by a single RGB image.",
+        "The instruction to call a nurse is a clinical judgment action requiring manual confirmation."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "All automatic preconditions, postconditions, and error criteria related to cleanliness, smell, redness, swelling, and fever have been excluded as they are either subjective clinical assessments or historical properties that cannot be verified by a single-image capture."
+  ]
+}

@@ -34,6 +34,8 @@ namespace HomeCare.Procedures.Actions
         public string[] contact_media = Array.Empty<string>();
         public string[] targets = Array.Empty<string>();
         public string[] associated_constraints = Array.Empty<string>();
+        // No usable image postcondition: an explicit operator completion is required instead.
+        public bool manual_completion_required;
         public ActionRequirement[] preconditions = Array.Empty<ActionRequirement>();
         public ActionRequirement[] postconditions = Array.Empty<ActionRequirement>();
         public ActionErrorCriterion[] error_criteria = Array.Empty<ActionErrorCriterion>();

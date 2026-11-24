@@ -122,7 +122,7 @@ namespace HomeCare.Authoring
         void OnGUI()
         {
             EditorGUILayout.LabelField("Project VLM backend", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Scene verifiers and Editor tools in ProjectBackend mode follow this selection. For Gemini in the Action demo, also turn off ActionGuidanceSession > Local Only in the scene Inspector. Exit Play mode before applying changes.", MessageType.Info);
+            EditorGUILayout.HelpBox("Scene verifiers and Editor tools in ProjectBackend mode follow this selection. For Gemini in V3, also turn off ActionGuidanceSession > Local Only in the scene Inspector. Exit Play mode before applying changes.", MessageType.Info);
             using (new EditorGUI.DisabledScope(_busy))
             {
                 _selected = (Backend)EditorGUILayout.EnumPopup("Backend", _selected);

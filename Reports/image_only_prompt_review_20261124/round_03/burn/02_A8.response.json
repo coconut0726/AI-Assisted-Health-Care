@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3225,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 211,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:42Z",
+  "updated": "2026-11-24T04:59:42Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROzDDBvQIb+kz9N6NJ3GNtPrzqa0u6pAHNIJR1M52G1OEZXX5YY6AOjDJ6PuRBfz/XOb88KncKII4scfere/XKU1ULjSfjKUX/zmm7f8AWBxj2vsF0vo0An8A9dIlWJ51355jMLD7g5+lUPio8a4rXI5q+Z3oOfimItSIr7cL9aJ0ucjHA84ZJwCOWMXaxkt7FIa0JbYVGSsmtExpRJyxDeyw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A8\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A8_P1\",\n          \"condition\": \"a non-stick pad covers the burn area\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Cover the burn with a non-stick pad\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Visual coverage of the burn by the pad is the verifiable state for this instruction. Non-stick properties are excluded per instructions.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Only A8 updated as requested.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

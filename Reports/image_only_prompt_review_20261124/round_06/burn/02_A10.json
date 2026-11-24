@@ -1,0 +1,35 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A10",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "R10_1",
+          "condition": "Medical tape is positioned on the gauze.",
+          "source": "explicit_instruction",
+          "source_reference": "Secure the gauze with medical tape, keeping the tape off the burned skin.",
+          "requires_expert_review": false
+        },
+        {
+          "requirement_id": "R10_2",
+          "condition": "Medical tape is not directly attached to the burned skin.",
+          "source": "explicit_instruction",
+          "source_reference": "keeping the tape off the burned skin",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Constraint of keeping tape off burned skin is treated as a postcondition, not an error criterion, consistent with pattern instructions.",
+        "Omitted non-stick or loose properties from gauze wrapping.",
+        "Manual completion is false as postconditions are provided."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A10 verification focuses on tape placement on gauze and avoidance of contact with burned skin."
+  ]
+}

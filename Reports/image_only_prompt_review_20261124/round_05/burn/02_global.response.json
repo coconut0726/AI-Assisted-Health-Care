@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3840,
+    "total_input_tokens": 3567,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3567
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 273,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3567
+  },
+  "created": "2026-11-24T05:12:17Z",
+  "updated": "2026-11-24T05:12:17Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRM6vxgFp3Wsdtk41wihjlesXC4FrptwI3y590kTHCbc8y9UK87Met+fG6ntZGvMIcKuTf97F5nCw+QmN+Q87PmOwS8+KIMZpGElLqUYr7q4vGksVOnsUhuhdIjOGKK5D/UVScUzvSOERZtg+cQiRcW5ZVb6rNYszlE7YGKfsiUeIxeVXSV0YBbLUqquyLqCmromIMrFw17sJvOpl7wWWpUc9g==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 (Wash hands): Removed as an operation with no verifiable single-image state.\",\n    \"A2 (Gloves): Postcondition is gloves worn; clean property excluded.\",\n    \"A3 (Soak): Removed as an operation with no verifiable single-image state.\",\n    \"A4 (Remove dressing): Removed as an operation with no verifiable single-image state.\",\n    \"A5 (Rinse): Removed as an operation with no verifiable single-image state.\",\n    \"A6 (Dry): Removed as an operation with no verifiable single-image state.\",\n    \"A7 (Apply ointment): Postcondition is visible ointment layer; identity and swab use excluded.\",\n    \"A8 (Cover with pad): Postcondition is pad covers target; non-stick property excluded.\",\n    \"A9 (Wrap gauze): Postcondition is gauze wrapped around target; loose property excluded.\",\n    \"A10 (Secure tape): Postcondition is tape is placed on gauze; spatial rule is that tape is not on burned skin.\",\n    \"A11 (Call nurse): Removed as an operation with no verifiable single-image state.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

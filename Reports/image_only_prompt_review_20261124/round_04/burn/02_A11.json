@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A11",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "A11 involves calling a nurse based on internal physical changes to a wound, which cannot be visually resolved from a single image. No completion or error state is possible in this scope."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Instruction contains qualitative clinical assessments (redness, swelling, smell, fever) that cannot be verified by a single-image capture. Action A11 remains manually flagged with no local image check."
+  ]
+}

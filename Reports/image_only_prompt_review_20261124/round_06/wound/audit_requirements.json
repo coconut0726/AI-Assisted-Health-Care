@@ -1,0 +1,16 @@
+{
+  "case": "wound",
+  "phase": "requirements",
+  "steps": 5,
+  "actions": 8,
+  "image_predicates": 5,
+  "manual_actions": [
+    "A1",
+    "A3",
+    "A8"
+  ],
+  "structural_and_scope_findings": [
+    "Duplicate predicate IDs."
+  ],
+  "note": "Automated screening supplements, and does not replace, semantic review of the source and output."
+}

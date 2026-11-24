@@ -1,0 +1,17 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 (Wash hands): Removed as an operation with no verifiable single-image state.",
+    "A2 (Gloves): Postcondition is gloves worn; clean property excluded.",
+    "A3 (Soak): Removed as an operation with no verifiable single-image state.",
+    "A4 (Remove dressing): Removed as an operation with no verifiable single-image state.",
+    "A5 (Rinse): Removed as an operation with no verifiable single-image state.",
+    "A6 (Dry): Removed as an operation with no verifiable single-image state.",
+    "A7 (Apply ointment): Postcondition is visible ointment layer; identity and swab use excluded.",
+    "A8 (Cover with pad): Postcondition is pad covers target; non-stick property excluded.",
+    "A9 (Wrap gauze): Postcondition is gauze wrapped around target; loose property excluded.",
+    "A10 (Secure tape): Postcondition is tape is placed on gauze; spatial rule is that tape is not on burned skin.",
+    "A11 (Call nurse): Removed as an operation with no verifiable single-image state."
+  ]
+}

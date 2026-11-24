@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2742,
+    "total_input_tokens": 2436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 306,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2436
+  },
+  "created": "2026-11-24T05:02:31Z",
+  "updated": "2026-11-24T05:02:31Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROqQ98NUmD3Uh4Ocg0jJJYaedm+dE3DVRG0LYfVDXpPejDv/vxhlHCw/ZJPoHjlyTa9Y/8ccmNPF17GvDp474IUv1nlqSEQDukSFgMf5vyUHAHG7NMapcTpLLECZqgLQUa3Zv0c3g+08SBIsaQRPyOfqTyWozKqvG0OSmmu6TAzkAJYzQ3K+louWWY0NGTaPdITD/SFhn/7YVuL53N27YyByg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A6_PRE_1\",\n          \"condition\": \"Pad wrapper is located inside the zip bag.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Put the pad wrapper into the zip bag\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A6_POST_1\",\n          \"condition\": \"Zip bag is visibly closed.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"and seal it.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Visual confirmation of closure status is required to verify the seal.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Washing hands (A1, A8), glove properties (clean/sterile), wound inspection (red/swollen/leaking), and pad properties (non-stick) are excluded from the single-image rubric per scope constraints.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

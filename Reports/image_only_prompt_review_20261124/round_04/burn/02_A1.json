@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is an operation with no reliable single-image completion state in this version. Omitted requirements for 'clean' as it is a qualitative/historical property."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 (Wash hands) is flagged as manual_completion_required=true because it describes a process with no observable, state-based postcondition that can be verified via a single image."
+  ]
+}

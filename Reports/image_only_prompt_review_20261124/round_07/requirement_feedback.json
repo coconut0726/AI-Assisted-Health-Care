@@ -1,0 +1,33 @@
+{
+  "burn": {
+    "A7": {
+      "previous_response": {
+        "action_updates": [
+          {
+            "action_id": "A7",
+            "manual_completion_required": false,
+            "preconditions": [],
+            "postconditions": [
+              {
+                "requirement_id": "A7_P1",
+                "condition": "A visible applied layer of burn ointment is present on the burn.",
+                "source": "explicit_instruction",
+                "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+                "requires_expert_review": false
+              }
+            ],
+            "error_criteria": [],
+            "review_notes": [
+              "Omitted swab use, thickness, and rubbing/blister constraints as per instructions."
+            ]
+          }
+        ],
+        "procedure_error_criteria": [],
+        "review_notes": []
+      },
+      "review_feedback": [
+        "The candidate condition still identifies the visible layer as burn ointment. A single RGB frame cannot establish that substance identity. Keep only a neutral visible layer on the burn area. Omit of burn ointment and any medicine name from the actual condition; source_reference still quotes the original unchanged. Preserve all other valid fields."
+      ]
+    }
+  }
+}

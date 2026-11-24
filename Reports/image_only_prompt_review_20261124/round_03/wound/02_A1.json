@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Hand washing is a procedural action that cannot be verified via single-image visual inspection; manual confirmation required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Washing hands is excluded from automatic verification per the scope rules."
+  ]
+}

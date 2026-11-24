@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2726,
+    "total_input_tokens": 2506,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2506
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 220,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2506
+  },
+  "created": "2026-11-24T05:17:31Z",
+  "updated": "2026-11-24T05:17:31Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROPUn7n9dUwuysaxVeSChdDeiluC5lsA9EBBhaLo/tmiPHxptJjGIP6q1QqB9g8cD5UHlGZCWFMx5SgnMEwb7X0m7NfQDdpcrYdIX/zut2f2zMD2SmkLNnkoQLWLb0ododLWSUgZc/NZ+W1eUCHNwTl0yk4puqqKyPP5HwWW0hgoE+ls5JbZDS3Fb8ceWB+cnuG7gT+foxsai2gHvsWxeW13A==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_R1\",\n          \"condition\": \"A pad covers the whole cut on the skin pad.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Place a non-stick pad over the whole cut on the skin pad.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Retained explicit constraint: WHOLE coverage.\",\n        \"Omitted non-stick property as per instructions.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"No global or procedure-level error criteria required for this request.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

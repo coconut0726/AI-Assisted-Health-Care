@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3076,
+    "total_input_tokens": 2819,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2819
+      }
+    ],
+    "total_cached_tokens": 1324,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1324
+      }
+    ],
+    "total_output_tokens": 257,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2819
+  },
+  "created": "2026-11-24T05:08:38Z",
+  "updated": "2026-11-24T05:08:38Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROFgNHnpO/0gCIvwt75K1HQ4mySZLyWnTCKeaLMBBraquTCrP661yC9Ls7/WS1G5dqChUJuUpQqCjkqFYxsM1EcVdPedLZlj67F7WPUQHt/pfkcq4BORjTXqWrcKPSPas5OwAD+9nbIWPzgbBS2ofUr3hlQpb3iZojOqDvahykofqqDbM+k7s8SfvxYBrBRlx48x2u5WhZS7X1SCIsXb99PZA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_P1\",\n          \"condition\": \"hands are bare of gloves\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"take off the gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"The instruction to take off gloves is a physical action; the postcondition checks for the resulting state where hands are bare.\",\n        \"Manual completion is set to false because visual postconditions are defined.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A7 specifically processed per user request.\",\n    \"Exclusions: Removed 'take off' operation as an event; verified the static state of bare hands instead.\",\n    \"Excluded: History-dependent cleanup claims or washing operations.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

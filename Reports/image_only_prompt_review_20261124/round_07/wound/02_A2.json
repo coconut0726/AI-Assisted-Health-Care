@@ -1,0 +1,24 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A2",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "R1",
+          "condition": "Gloves are worn on the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Omitted the adjective clean as per instructions."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

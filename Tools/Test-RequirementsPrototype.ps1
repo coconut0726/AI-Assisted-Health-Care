@@ -15,6 +15,7 @@ $sourcePaths = @(
     'Assets/_Project/Runtime/Procedures/ActionVerificationProtocol.cs',
     'Assets/_Project/Editor/Authoring/ActionFlowChecks.cs',
     'Assets/_Project/Editor/Authoring/ActionRequirementAuthoring.cs',
+    'Assets/_Project/Editor/Authoring/ActionRequirementEditing.cs',
     'Assets/_Project/Editor/Authoring/RequirementsPrototypeChecks.cs',
     'Assets/_Project/Editor/Authoring/ARPrototypeChecks.cs',
     'Assets/_Project/Editor/Authoring/VerificationPollingChecks.cs'

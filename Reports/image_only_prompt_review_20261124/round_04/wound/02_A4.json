@@ -1,0 +1,29 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_P1",
+          "condition": "a pad covers the cut on the skin pad",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Removed 'non-stick' material property from the condition to comply with scope.",
+        "Included the visual coverage relation as the postcondition."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1, A3, A7, A8 are operations without verifiable single-image states and are set to manual_completion_required: true.",
+    "A2, A5, A6 are kept in the graph per requirements but were not requested for update, so they are not included in action_updates.",
+    "The condition for A4 is based on the visible coverage of the target by the pad."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3783,
+    "total_input_tokens": 3570,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3570
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 213,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3570
+  },
+  "created": "2026-11-24T05:11:10Z",
+  "updated": "2026-11-24T05:11:10Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPExFaAFJBHbKOBMoygA5vl1YsyCQG7MgSWvioMhWbn80r0uemICNNIct5rAU7DJxewffQACZTaT3dNY4/TCLmqHJSTh4k8qRVi/OqZ9nGFHxFIbgWt3b4qubrc46HC6CHw0g9oRd/3Rp6n10764Vy3vO10g2L0quK5k91sFxizZrr65znW0mAKvpa8PAggdNM0ry1enK7KvrNWkPRwY+mP1A==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A9\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A9_P1\",\n          \"condition\": \"gauze is wrapped around the burn\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"wrap it loosely with a gauze roll\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Excluded 'loosely' as it is a subjective qualitative standard.\",\n        \"Postcondition verifies gauze coverage, not the specific wrapping technique or tension.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Instruction source used exactly as provided.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

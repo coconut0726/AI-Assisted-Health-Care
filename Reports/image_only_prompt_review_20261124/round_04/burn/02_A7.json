@@ -1,0 +1,26 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A7_P1",
+          "condition": "a layer of ointment is visible on the burn",
+          "source": "explicit_instruction",
+          "source_reference": "apply a thin layer of burn ointment to the burn",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Instruction to 'apply a thin layer' and 'use a cotton swab' omitted from conditions due to qualitative/history scope constraints. Condition checks only the visible presence of applied ointment on the target."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Rubric generated only for requested A7. Other steps in the graph remain unchanged in the system but were not processed for this update."
+  ]
+}

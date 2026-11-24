@@ -30,11 +30,11 @@ namespace HomeCare.Authoring
         int _stepIndex;
         Vector2 _scroll;
 
-        [MenuItem("AHC/Requirements Prototype")]
+        [MenuItem("AHC/Requirement Generation")]
         public static void OpenActionFlow() => ActionRequirementsWindow.Open();
 
         // Retained explicitly for the original step-level/postcondition demo.
-        public static void Open() => GetWindow<RequirementsPrototypeWindow>("Requirements Prototype");
+        public static void Open() => GetWindow<RequirementsPrototypeWindow>("Legacy Requirements");
 
         void OnGUI()
         {

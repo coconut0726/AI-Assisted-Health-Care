@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3045,
+    "total_input_tokens": 2819,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2819
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 226,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2819
+  },
+  "created": "2026-11-24T05:07:21Z",
+  "updated": "2026-11-24T05:07:21Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRP7ats6LlVabXzyo1l8yf5lFT1MyOk7wRut2fTz84XC1LT/CGXjnNGlQ2SdZR3vhu8vnf60yJvqaO/E8WvDAAw14mlSB2d7rhnhzxD3/HmVT7aX12AkyCD26qLh58WBH+4t3W+nsp63UDvO/hGY+klNLP5UjPc8CtQM2jbEISpypd4LMgwK1XCR+lBgxtki5jzCchQvZWdpWoaNVRyd+cQXpg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Hand washing is an operational step with no reliable single-image completion state; manual confirmation is required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 (Wash hands) is an operational action; no visual proxy for cleanliness exists in a single frame. A2 (Gloves) would verify worn status. A3 (Inspection) is an operational action; clinical assessments like red/swollen/leaking are excluded from visual criteria. A4 (Pad application) is verifiable by covering state. A6 (Seal) is verifiable by closure status. A7 (Remove gloves) is verifiable by absence. A8 (Wash hands) is an operational action.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

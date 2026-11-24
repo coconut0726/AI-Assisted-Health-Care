@@ -1,0 +1,34 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A6",
+      "manual_completion_required": false,
+      "preconditions": [
+        {
+          "requirement_id": "A6_PRE_1",
+          "condition": "Pad wrapper is located inside the zip bag.",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A6_POST_1",
+          "condition": "Zip bag is visibly closed.",
+          "source": "explicit_instruction",
+          "source_reference": "and seal it.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Visual confirmation of closure status is required to verify the seal."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Washing hands (A1, A8), glove properties (clean/sterile), wound inspection (red/swollen/leaking), and pad properties (non-stick) are excluded from the single-image rubric per scope constraints."
+  ]
+}

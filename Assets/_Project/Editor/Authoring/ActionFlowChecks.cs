@@ -21,10 +21,74 @@ namespace HomeCare.Authoring
             foreach (var name in new[] { "tabletop", "burn", "wound" })
             {
                 var p = ActionProcedureJson.Parse(File.ReadAllText(Path.Combine(directory, name + "_action_requirements.json")));
-                check(p.steps.SelectMany(s => s.actions).All(a => a.postconditions.Length > 0), name + " completions");
+                check(p.steps.SelectMany(s => s.actions).All(a => a.postconditions.Length > 0 || a.manual_completion_required), name + " explicit image or manual completions");
                 check(!JObject.FromObject(p).Descendants().OfType<JProperty>().Any(v => v.Name.StartsWith("evidence")), name + " no observation specification");
             }
+            foreach (var name in new[] { "burn", "wound" })
+                foreach (bool applies in new[] { false, true })
+                {
+                    var walkthrough = new ActionRequirementSession(ActionProcedureJson.Parse(File.ReadAllText(Path.Combine(directory, name + "_action_requirements.json"))));
+                    for (int guard = 0; guard < 300 && !walkthrough.Completed; guard++)
+                    {
+                        if (walkthrough.Phase == ActionCheckPhase.Applicability) walkthrough.ConfirmApplicability(applies);
+                        foreach (var q in walkthrough.CurrentChecks.ToArray()) walkthrough.Confirm(q.requirement_id);
+                        if (walkthrough.Phase == ActionCheckPhase.Completion && walkthrough.Applicability != ActionRequirementSession.NotApplicable &&
+                            walkthrough.CurrentAction.manual_completion_required && !walkthrough.ActionCompletionConfirmed)
+                            walkthrough.ConfirmActionCompletion();
+                        if (walkthrough.CanAdvance) walkthrough.Advance();
+                    }
+                    check(walkthrough.Completed && walkthrough.History.Count(h => h.event_type == "action_finished") == walkthrough.ActionCount,
+                        name + " operator-confirmation walkthrough completes, conditional applicability=" + applies);
+                }
             var duplicate = example(); duplicate.steps[1].actions[0].action_id = "A1";
+
+            var editable = example();
+            var editAction = editable.steps.SelectMany(s => s.actions).First(a => a.action_id == "A2");
+            var added = ActionRequirementEditing.AddCondition(editable, editAction, true);
+            added.condition = "The author-specified work surface is visible.";
+            check(added.source == ActionRequirementEditing.AuthorSource && !string.IsNullOrEmpty(added.source_reference), "form additions have honest author provenance without fabricated source quotes");
+            var editedExisting = editAction.postconditions[0]; string originalQuote = editedExisting.source_reference;
+            editedExisting.condition = "The red block rests in the author-specified central region.";
+            ActionRequirementEditing.MarkEdited(editedExisting, editAction.action_id);
+            check(editedExisting.source == ActionRequirementEditing.AuthorSource && editedExisting.source_reference.Contains(originalQuote), "editing a generated condition retains its earlier source as history");
+            string once = editedExisting.source_reference; ActionRequirementEditing.MarkEdited(editedExisting, editAction.action_id);
+            check(once == editedExisting.source_reference, "repeated typing does not grow provenance endlessly");
+            var editableSaved = ActionRequirementEditing.ReadyToSave(editable);
+            check(ActionProcedureJson.Parse(ActionProcedureJson.Serialize(editableSaved)).steps.Length == editable.steps.Length, "form edits outside exact source wording remain loadable as author edits");
+            var authorSession = new ActionRequirementSession(editableSaved);
+            check(!authorSession.CanAdvance && !authorSession.History.Any(h => h.source == "human_confirmation"), "authoring a condition is never mistaken for confirming execution");
+            check(!ActionProcedureJson.EnrichmentSchema.Contains(ActionRequirementEditing.AuthorSource), "model schema cannot claim author-edit provenance");
+
+            var references = example();
+            var referencedAction = references.steps.SelectMany(s => s.actions).First(a => a.action_id == "A2");
+            var ruleOwner = references.steps.SelectMany(s => s.actions).First(a => a.action_id == "A3");
+            var removed = referencedAction.postconditions[0];
+            ruleOwner.error_criteria[0].related_requirement_ids = new[] { removed.requirement_id };
+            var sharedEdit = ActionRequirementEditing.AddError(references, ruleOwner, "spatial_error", true);
+            sharedEdit.violation_condition = "The author-specified spare object is inside the tray.";
+            sharedEdit.compliance_condition = "The author-specified spare object is outside the tray.";
+            sharedEdit.related_requirement_ids = new[] { removed.requirement_id };
+            ActionRequirementEditing.RemoveCondition(references, referencedAction, removed, false);
+            check(referencedAction.manual_completion_required, "removing the last image postcondition automatically enables manual completion");
+            check(ruleOwner.error_criteria[0].related_requirement_ids.Length == 0 && sharedEdit.related_requirement_ids.Length == 0, "condition deletion repairs local and shared references");
+            var newPost = ActionRequirementEditing.AddCondition(references, referencedAction, false); newPost.condition = "The author-specified result is visible.";
+            check(!referencedAction.manual_completion_required, "adding an image postcondition automatically disables manual-only mode");
+            ActionRequirementEditing.ReadyToSave(references);
+            check(ActionRequirementEditing.Issues(references).Length == 0, "reference cleanup and completion mode produce a valid runtime file");
+            var typesEdit = example(); var typesOwner = typesEdit.steps[0].actions[0];
+            foreach (var type in ActionProcedureJson.SupportedErrorTypes)
+            {
+                var error = ActionRequirementEditing.AddError(typesEdit, typesOwner, type);
+                error.violation_condition = "Author-defined wrong state for " + type;
+                error.compliance_condition = "Author-defined correct visible state for " + type;
+            }
+            var typeSnapshot = ActionRequirementEditing.ReadyToSave(typesEdit);
+            check(typeSnapshot.steps[0].actions[0].error_criteria.Select(e => e.error_type).Distinct().Count() == 5, "form supports all five error types and valid serialization");
+            var emptyRow = ActionRequirementEditing.AddCondition(typesEdit, typesOwner, false);
+            check(ActionRequirementEditing.Issues(typesEdit).Any(message => message.Contains("empty condition")), "unfinished rows get a plain-language prompt before save");
+            ActionRequirementEditing.RemoveCondition(typesEdit, typesOwner, emptyRow, false);
+            sharedEdit.relevant_action_ids = Array.Empty<string>();
+            check(ActionRequirementEditing.Issues(references).Any(message => message.Contains("select at least one Action")), "missing shared scope gets an actionable field hint");
             rejects(() => ActionProcedureJson.Validate(duplicate), "duplicate Action IDs");
             var cycle = example(); cycle.steps[0].actions[0].dependencies = new[] { "A3" };
             rejects(() => ActionProcedureJson.Validate(cycle), "combined dependency cycle");
@@ -36,6 +100,29 @@ namespace HomeCare.Authoring
             rejects(() => ActionProcedureJson.Parse(observed.ToString()), "removed field rejected");
             rejects(() => ActionProcedureJson.Parse(File.ReadAllText(Path.Combine(directory, "wound_dressing_procedure.json"))), "legacy JSON not silently reinterpreted");
             rejects(() => RequirementsJson.Parse(ActionProcedureJson.Serialize(example())), "legacy parser remains independent");
+
+            var emptyRubric = example(); emptyRubric.steps[0].actions[0].postconditions = Array.Empty<ActionRequirement>();
+            rejects(() => ActionProcedureJson.Validate(emptyRubric), "empty rubric never silently becomes complete");
+            emptyRubric.steps[0].actions[0].manual_completion_required = true;
+            ActionProcedureJson.Validate(emptyRubric);
+            var manual = new ActionRequirementSession(emptyRubric);
+            bool prematureManual = false; try { manual.ConfirmActionCompletion(); } catch (InvalidOperationException) { prematureManual = true; }
+            check(prematureManual, "manual completion cannot bypass preconditions");
+            Pass(manual);
+            check(manual.Phase == ActionCheckPhase.Completion && manual.CurrentChecks.Length == 0 && !manual.CanAdvance, "manual action waits after preconditions");
+            bool noEmptyRequest = false; try { manual.BeginVerification(); } catch (InvalidOperationException) { noEmptyRequest = true; }
+            check(noEmptyRequest, "no empty VLM request for manual-only completion");
+            manual.ConfirmActionCompletion();
+            check(manual.CanAdvance && manual.ActionCompletionConfirmed, "explicit manual completion unlocks Next");
+            check(manual.History.Any(h => h.event_type == "action_completion_confirmed" && h.source == "human_confirmation"), "manual completion never labeled VLM");
+            manual.RefreshAfterPause(); check(!manual.CanAdvance, "pause refreshes pending operator completion");
+            manual.ConfirmActionCompletion(); manual.RetryCurrentAction();
+            check(!manual.CanAdvance && !manual.ActionCompletionConfirmed, "retry invalidates operator completion");
+            Pass(manual); manual.ConfirmActionCompletion(); manual.Advance();
+            check(manual.CurrentAction.action_id == "A2" && manual.DependenciesMet(), "manual completion resolves actual dependency history");
+            manual.Restart(); check(!manual.ActionCompletionConfirmed && !manual.CanAdvance, "manual completion does not leak to new run");
+            var contradictory = example(); contradictory.steps[0].actions[0].manual_completion_required = true;
+            rejects(() => ActionProcedureJson.Validate(contradictory), "manual-only flag cannot hide existing image postconditions");
 
             var source = example(); var session = new ActionRequirementSession(source);
             source.steps[0].actions[0].preconditions[0].condition = "mutated outside session";
@@ -122,6 +209,11 @@ namespace HomeCare.Authoring
             g.Restart(); check(!g.HasLatchedViolation, "new run explicitly resets global latch");
 
             var authored = example(); int calls = 0;
+            var oneActionSchema = JObject.Parse(ActionProcedureJson.EnrichmentSchemaFor(new[] { "A1" }, false));
+            check((int)oneActionSchema["properties"]["action_updates"]["maxItems"] == 1 &&
+                (string)oneActionSchema["properties"]["action_updates"]["items"]["properties"]["action_id"]["enum"][0] == "A1", "generation schema pins the selected Action");
+            var sharedSchema = JObject.Parse(ActionProcedureJson.EnrichmentSchemaFor(Array.Empty<string>(), true));
+            check((int)sharedSchema["properties"]["action_updates"]["maxItems"] == 0, "shared-rule schema cannot rewrite Actions");
             Func<string, string, string, Task<string>> client = (prompt, inputJson, schema) =>
             {
                 calls++; var input = JObject.Parse(inputJson);
@@ -134,8 +226,8 @@ namespace HomeCare.Authoring
                 if (ids.Count != 0)
                 {
                     var a = authored.steps.SelectMany(s => s.actions).First(x => x.action_id == (string)ids[0]);
-                    updates.Add(JObject.FromObject(new { action_id = a.action_id, preconditions = a.preconditions,
-                        postconditions = a.postconditions, error_criteria = a.error_criteria, review_notes = Array.Empty<string>() }));
+                    updates.Add(JObject.FromObject(new { action_id = a.action_id, manual_completion_required = a.manual_completion_required, preconditions = a.preconditions,
+                        postconditions = a.postconditions, error_criteria = a.error_criteria, review_notes = new[] { "Image scope reviewed." } }));
                 }
                 return Task.FromResult(new JObject { ["action_updates"] = updates, ["procedure_error_criteria"] = new JArray(), ["review_notes"] = new JArray() }.ToString());
             };
@@ -144,6 +236,41 @@ namespace HomeCare.Authoring
             var generated = ActionRequirementAuthoring.Enrich(client, graph, "", null, CancellationToken.None).GetAwaiter().GetResult();
             check(calls == 5 && generated.steps.Sum(s => s.actions.Length) == 3, "two logical stages with bounded Action batches");
             check(graph.steps[0].actions[0].postconditions.Length == 0, "merging does not edit the reviewed graph");
+            var repeatedLocalIds = authored.steps.SelectMany(s => s.actions).Select(a =>
+            {
+                var update = JObject.FromObject(new { action_id = a.action_id, manual_completion_required = a.manual_completion_required,
+                    preconditions = a.preconditions, postconditions = a.postconditions, error_criteria = a.error_criteria, review_notes = Array.Empty<string>() });
+                if (a.action_id == "A2" || a.action_id == "A3") update["postconditions"][0]["requirement_id"] = "R1";
+                if (a.action_id == "A3") update["error_criteria"][0]["related_requirement_ids"] = new JArray("R1");
+                return new JObject { ["action_updates"] = new JArray(update), ["procedure_error_criteria"] = new JArray(), ["review_notes"] = new JArray() }.ToString();
+            }).ToArray();
+            var namespaced = ActionProcedureJson.Merge(authored, repeatedLocalIds);
+            var secondAction = namespaced.steps.SelectMany(s => s.actions).First(a => a.action_id == "A2");
+            var thirdAction = namespaced.steps.SelectMany(s => s.actions).First(a => a.action_id == "A3");
+            check(secondAction.postconditions[0].requirement_id == "A2_R1" &&
+                thirdAction.postconditions[0].requirement_id == "A3_R1", "per-Action generation cannot collide on model-local R1");
+            check(thirdAction.error_criteria[0].related_requirement_ids.Single() == "A3_R1", "local rule references follow ID normalization");
+            var ambiguousRule = JObject.FromObject(authored.steps.SelectMany(s => s.actions).First(a => a.action_id == "A3").error_criteria[0]);
+            ambiguousRule["criterion_id"] = "P_AMBIGUOUS"; ambiguousRule["relevant_action_ids"] = new JArray("A2", "A3");
+            ambiguousRule["related_requirement_ids"] = new JArray("R1");
+            var ambiguousBatch = new JObject { ["action_updates"] = new JArray(), ["procedure_error_criteria"] = new JArray(ambiguousRule), ["review_notes"] = new JArray() };
+            rejects(() => ActionProcedureJson.Merge(authored, repeatedLocalIds.Concat(new[] { ambiguousBatch.ToString() })), "ambiguous cross-Action reference is rejected rather than guessed");
+            check(generated.review_notes.Contains("A1: Image scope reviewed."), "Action exclusion/review notes survive merging");
+            int repairs = 0;
+            Func<string, string, string, Task<string>> repairable = (prompt, inputJson, schema) =>
+            {
+                repairs++;
+                var candidate = ActionProcedureJson.TaskGraph(authored);
+                if (repairs == 1) candidate["steps"][0]["actions"][0]["original_text"] = "invented source quotation";
+                else
+                {
+                    var repairInput = JObject.Parse(inputJson);
+                    check(repairInput["previous_response"] != null && repairInput["review_feedback"].ToString().Contains("source quotation"), "invalid graph is retried with concrete validation feedback");
+                }
+                return Task.FromResult(candidate.ToString());
+            };
+            var repaired = ActionRequirementAuthoring.Decompose(repairable, authored.instruction, authored.task_goal, CancellationToken.None).GetAwaiter().GetResult();
+            check(repairs == 2 && repaired.instruction == authored.instruction, "bounded graph repair preserves original source");
             rejects(() => ActionRequirementAuthoring.Decompose(client, "changed input", "goal", CancellationToken.None).GetAwaiter().GetResult(), "changed source rejected at authoring boundary");
             var cancelled = new CancellationTokenSource(); cancelled.Cancel();
             bool stopped = false; int beforeCancel = calls;
@@ -153,6 +280,12 @@ namespace HomeCare.Authoring
             Func<string, string, string, Task<string>> inventedExpert = (prompt, input, schema) => Task.FromResult(
                 "{\"action_updates\":[{\"action_id\":\"A1\",\"preconditions\":[{\"source\":\"expert_prior\",\"source_reference\":\"general medical practice\"}],\"postconditions\":[],\"error_criteria\":[]}],\"procedure_error_criteria\":[],\"review_notes\":[]}");
             rejects(() => ActionRequirementAuthoring.Enrich(inventedExpert, graph, "", null, CancellationToken.None).GetAwaiter().GetResult(), "empty nurse prior cannot become medical authority");
+            Func<string, string, string, Task<string>> falseAuthor = (prompt, input, schema) => Task.FromResult(
+                "{\"action_updates\":[{\"action_id\":\"A1\",\"manual_completion_required\":false,\"preconditions\":[],\"postconditions\":[{\"source\":\"author_edit\",\"source_reference\":\"model pretended an author edited this\"}],\"error_criteria\":[]}],\"procedure_error_criteria\":[],\"review_notes\":[]}");
+            bool authorRejected = false;
+            try { ActionRequirementAuthoring.Enrich(falseAuthor, graph, "", null, CancellationToken.None).GetAwaiter().GetResult(); }
+            catch (ArgumentException error) { authorRejected = error.Message.Contains("reserved for actual edits"); }
+            check(authorRejected, "model cannot use the manual-edit provenance exception");
             return count;
         }
 

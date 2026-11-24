@@ -1,0 +1,174 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Hand washing is a procedural history and cannot be verified via static single-image observation."
+      ]
+    },
+    {
+      "action_id": "A2",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A2_1",
+          "condition": "Gloves are worn on the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": []
+    },
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Soaking is a process history; static image cannot verify that the dressing was soaked."
+      ]
+    },
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_1",
+          "condition": "Old dressing is not covering the target burn site.",
+          "source": "explicit_instruction",
+          "source_reference": "remove the old dressing",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": []
+    },
+    {
+      "action_id": "A5",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Rinsing is a temporal process; cannot be verified by a static single image.",
+        "Constraints (not rubbing/breaking blisters) are clinical assessments, not visible static states."
+      ]
+    },
+    {
+      "action_id": "A6",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Patting dry is a temporal action; cannot verify the drying process or historical use of a specific towel."
+      ]
+    },
+    {
+      "action_id": "A7",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Cannot verify the application of a thin layer of ointment or use of a specific tool via static image."
+      ]
+    },
+    {
+      "action_id": "A8",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A8_1",
+          "condition": "Burn is covered by a pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Non-stick property is a material characteristic; only coverage is visually verifiable."
+      ]
+    },
+    {
+      "action_id": "A9",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A9_1",
+          "condition": "Burn is wrapped with gauze.",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Loosely is a qualitative assessment; cannot be verified by static image."
+      ]
+    },
+    {
+      "action_id": "A10",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A10_1",
+          "condition": "Gauze is secured with medical tape.",
+          "source": "explicit_instruction",
+          "source_reference": "Secure the gauze with medical tape",
+          "requires_expert_review": false
+        },
+        {
+          "requirement_id": "A10_2",
+          "condition": "Tape is not touching the burned skin.",
+          "source": "explicit_instruction",
+          "source_reference": "keeping the tape off the burned skin",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [
+        {
+          "criterion_id": "E10_1",
+          "error_type": "spatial_error",
+          "violation_condition": "Medical tape is observed directly on the burned skin.",
+          "compliance_condition": "Medical tape is observed only on the surrounding skin or on the gauze itself.",
+          "applicability_condition": "Tape is visible in the image.",
+          "related_requirement_ids": [
+            "A10_2"
+          ],
+          "source": "explicit_instruction",
+          "source_reference": "keeping the tape off the burned skin",
+          "requires_expert_review": false
+        }
+      ],
+      "review_notes": []
+    },
+    {
+      "action_id": "A11",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Clinical assessment of redness, swelling, smell, or fever is outside the scope of static image verification."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Exclusions: Hand washing (A1), soaking (A3), rinsing (A5), drying (A6), and ointment application (A7) are temporal processes. Constraints (not rubbing/breaking blisters, thin layer, loose wrapping) involve clinical or qualitative judgments. Call nurse (A11) involves clinical assessment of symptoms."
+  ]
+}

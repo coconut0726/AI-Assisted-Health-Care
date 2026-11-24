@@ -1,0 +1,11 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Washing hands (A1, A8) and inspection (A3) excluded from image verification due to lack of visual end-state indicators.",
+    "A2: Clean condition omitted.",
+    "A4: Non-stick property omitted.",
+    "A6: Airtight/sealed effectiveness omitted; check is for closed closure mechanism.",
+    "A3: Clinical markers (red, swollen, leaking) excluded as subjective/clinical judgements."
+  ]
+}

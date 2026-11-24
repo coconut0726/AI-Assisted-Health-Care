@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3241,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 227,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:37Z",
+  "updated": "2026-11-24T04:59:37Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNNDxttVH4pyh5VsS54fS+rNq6BmVHOOcWGgmEdWaTycTNTq3u9YDFlbV35Nyg/hBk0mXHt5dyHiRXA0vdsiyoQH4IeQlCZ7t1oHfmvcfvwoMehEgIApl4xUB6kmYruvwLE+Huf1rIWPU4tBcr35O4zuEhUaMG0AJPrJ7z1nVlEIGosB692TDBaOzlX8dSR3eX74U8pnqtr42NeyCzbz6gVPg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A6_R1\",\n          \"condition\": \"The skin around the burn is visibly dry.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"pat the skin dry with a clean towel\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Excluded cleanliness check for towel.\",\n        \"Excluded rub/blister constraint as these refer to technique and history throughout the procedure.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Rubbing and blister-breaking constraints are excluded as they refer to technique and historical operation rather than a persistent visible state.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

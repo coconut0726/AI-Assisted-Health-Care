@@ -1,0 +1,30 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "manual_completion_required": false,
+      "preconditions": [
+        {
+          "requirement_id": "A5_P1",
+          "condition": "old dressing is not present on the burn site",
+          "source": "graph_dependency",
+          "source_reference": "Gently remove the old dressing",
+          "requires_expert_review": false
+        }
+      ],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Excluded 'rinse', 'cool running water' properties as they represent the performance of the action, not a observable static state in a single post-action frame.",
+        "Excluded 'no rubbing' and 'no broken blisters' constraints as they represent negative process rules rather than observable, static post-state criteria.",
+        "Action is manually confirmable as rinsed state is subjective and event-based."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Excluded subjective instructions such as 'gently', 'clean', 'cool', 'loosely', and 'thin'.",
+    "Excluded process/history-based instructions including washing hands, duration of rinsing, patting/drying motions, and medical notification.",
+    "Required manual confirmation for actions where no reliable single-image post-state can be identified."
+  ]
+}

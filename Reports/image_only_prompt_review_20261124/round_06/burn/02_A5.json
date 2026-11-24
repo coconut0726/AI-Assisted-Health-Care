@@ -1,0 +1,19 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Rinsing action lacks a reliable image end state for verification.",
+        "Rubbing, blister-breaking, water temperature, and history of rinsing/duration are excluded."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A5 is set to manual completion as rinsing cannot be verified in a single static image."
+  ]
+}

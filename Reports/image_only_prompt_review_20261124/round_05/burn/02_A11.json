@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A11",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Operation: Call nurse is not visually verifiable through a single-image interface."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A11 call operation excluded due to scope limitations on verifiable image states."
+  ]
+}

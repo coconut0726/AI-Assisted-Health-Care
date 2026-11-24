@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3285,
+    "total_input_tokens": 3123,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3123
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 162,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3123
+  },
+  "created": "2026-11-24T05:15:12Z",
+  "updated": "2026-11-24T05:15:12Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNzhivo8UwbYVdoATyv5rFggsfCSdS8sxYIT0pqvDIq54uSSVBFVxAXwh/UZ6T2Kp2HaZg4XoaQ6hA1l830Ob1pp5O9pifFKnCy676oB/IG2S+xSmEPcM8gQuz0crJlrocsZEyVCj3H4SaaKZELqypEGZLPeguoyf2KcgR4xUPH3FYnoKCgowXJFrkB+73Magbmq5MLlw78953kCzG40eAojg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Action requires manual completion because patting skin dry with a towel is a process-oriented activity without a discrete, verifiable image-based end state beyond the act itself.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Patting skin dry is an action defined by the process rather than a static visual result; therefore, it is marked for manual completion.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

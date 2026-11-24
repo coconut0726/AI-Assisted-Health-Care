@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3125,
+    "total_input_tokens": 2953,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2953
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 172,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2953
+  },
+  "created": "2026-11-24T05:12:30Z",
+  "updated": "2026-11-24T05:12:30Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRM0fAZAzZi611nd1qkaNtWnyMg3LimM1ZQ3Mu37zuvD17MUqKnwkCss0o2hz9dyuD4LhHtleCjkoWb4mSUoZuvIPdnRWU72hCqxTnlnTPeD7xaXzv2L2S87TFlPZmQ+kGtBUhtHJhkyq2PD07jFsm1co/2aggH/giyN2aCP/SYYsHWl7nzx/CgOEqW17d3BEDV0zItbZGqn5jmBL5Xuthf9Gg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"The action involves inspection of clinical signs like redness, swelling, or leakage which lack reliable objective visual criteria in a single static image. Per instructions, this action is marked for manual confirmation.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Inspection action A3 is set to manual_completion_required: true due to lack of objective visual proxies for clinical appearance signs like redness, swelling, or leakage.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2603,
+    "total_input_tokens": 2506,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2506
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 97,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2506
+  },
+  "created": "2026-11-24T05:16:56Z",
+  "updated": "2026-11-24T05:16:56Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPDdVmAeP1nTLNPiM/eyJzA0My4KtsLicU/pG/25BL2b/IQxOZds5j/eI6al8vcgFOc4fP+5iFwuCbZsUcTxQ75svPWsjjT9HjAH+WbCnnYoBuDmP3q5o08VHQlShEIMlaIbGXaBHCuiQeAZ+vFOthjwivW/fmdt4bfu/ChozUVMlzY8PK/6wZfTK8AtO4RCTDMxmCp0WL3NAfqeDDhB1BRHA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\"action_updates\": [{\"action_id\": \"A1\", \"manual_completion_required\": true, \"preconditions\": [], \"postconditions\": [], \"error_criteria\": [], \"review_notes\": [\"The action of washing hands does not have a reliable, direct visual end state verifiable by a single image.\"] }], \"procedure_error_criteria\": [], \"review_notes\": [\"Action A1 requires manual completion due to the nature of the task.\"]}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

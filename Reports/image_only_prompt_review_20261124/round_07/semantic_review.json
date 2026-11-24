@@ -1,0 +1,51 @@
+{
+  "accepted": true,
+  "review_type": "Source-grounding, task-graph semantics and single-image scope review, not clinical validation",
+  "graphs": {
+    "source_round": "04",
+    "burn": {
+      "steps": 5,
+      "actions": 11,
+      "conditional_soaking_preserved": true,
+      "conditional_notification_has_no_prerequisites": true
+    },
+    "wound": {
+      "steps": 5,
+      "actions": 8,
+      "inspection_kept_as_one_action": true,
+      "bag_insertion_and_sealing_separated": true
+    }
+  },
+  "requirements": {
+    "source_round": "06, with actual Gemini corrections for burn/A7 and both global batches in round_07",
+    "burn": {
+      "image_postconditions": 7,
+      "manual_actions": [
+        "A1",
+        "A3",
+        "A5",
+        "A6",
+        "A11"
+      ]
+    },
+    "wound": {
+      "image_postconditions": 5,
+      "manual_actions": [
+        "A1",
+        "A3",
+        "A8"
+      ]
+    },
+    "scope_checks": [
+      "No thin/loose/gentle tests, hidden cleanliness/material identity checks, operation-history claims, or whole-interval rules remain in automatic conditions.",
+      "Whole-cut coverage is retained. Tape on gauze and tape off burned skin are separate visible conditions.",
+      "No generic availability preconditions or graph-dependency copies. Empty preconditions and error arrays are intentional.",
+      "Local conditions are not duplicated as global rules.",
+      "Repeated model-local requirement IDs are namespaced by the production merge; check content is unchanged."
+    ]
+  },
+  "not_verified": [
+    "No headset or Unity Play-mode end-to-end test in this review.",
+    "No claim that excluded procedure aspects are automatically verified."
+  ]
+}

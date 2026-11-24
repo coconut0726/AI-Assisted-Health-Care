@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is an operational claim that lacks a reliable single-image completion state; visual inspection cannot verify if hands were washed or when the action occurred."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Requested action A1 provided; manual completion required for procedural operations that cannot be verified by a single static image."
+  ]
+}

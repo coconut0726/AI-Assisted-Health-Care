@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3072,
+    "total_input_tokens": 2819,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2819
+      }
+    ],
+    "total_cached_tokens": 1324,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1324
+      }
+    ],
+    "total_output_tokens": 253,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2819
+  },
+  "created": "2026-11-24T05:08:26Z",
+  "updated": "2026-11-24T05:08:26Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPYMh5E+cbEB8bthayUdgJZDyrm5eCH2/12Ul1joZMlNbvqgh1+tU4EEefj24AunjwkZyJxKlhSIsFKtYb3Q0Y4SosUPMEYJVLLxwhB2LgS5PXUpLekA5sPdfSPUqx45n0zY8dH69xdJugGIIG7+wXgsgE67GqnQ20cZdaWc+3hRvlY40icvLWqsMiypHFOl//sp31v8NS7B08n7qCdc35WkA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A5_R1\",\n          \"condition\": \"the pad wrapper is located inside the zip bag\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Put the pad wrapper into the zip bag\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Verified presence of the wrapper inside the zip bag based on visible containment.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1, A3, A7, A8 are operations without verifiable single-image end states.\",\n    \"A2, A4, A6 require visual state checks; these are omitted per requested_action_ids constraint.\",\n    \"A5 is the only action requested for updates.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

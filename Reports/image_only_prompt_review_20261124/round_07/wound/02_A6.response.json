@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2688,
+    "total_input_tokens": 2506,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2506
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 182,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2506
+  },
+  "created": "2026-11-24T05:18:49Z",
+  "updated": "2026-11-24T05:18:49Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROndZwESv+3nM8dmHOb0O9t1WNVe3kp2gu34ov9u+m+8gEkzbHgD/Zt9nBhczE0UeIWvyTK2gTxjYUpETFJKi3oZYqB0YSooqu+Kr9OUMBi16jfB9usp3n7UCxFni+oU/NW6XDP8wp9g/JLP6TBzWWq+NYrEWbNkJccOZVBczLgCELz458ZhVUXZexhV6QIR3oScZihKA0XPxmDL2sd+1qYww==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"R_A6_01\",\n          \"condition\": \"The zip bag is visibly closed.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"and seal it.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"A6 verifies visual closure of the bag only; no airtight or adhesion claim.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

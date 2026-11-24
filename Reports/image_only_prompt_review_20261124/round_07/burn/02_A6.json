@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A6",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Action requires manual completion because patting skin dry with a towel is a process-oriented activity without a discrete, verifiable image-based end state beyond the act itself."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Patting skin dry is an action defined by the process rather than a static visual result; therefore, it is marked for manual completion."
+  ]
+}

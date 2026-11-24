@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Hand washing does not have an independent, reliable image end state. Manual completion required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Action A1 marked for manual completion as it lacks a visually verifiable end state."
+  ]
+}

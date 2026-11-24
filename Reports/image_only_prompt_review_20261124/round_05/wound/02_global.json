@@ -1,0 +1,12 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1, A8 (hand washing), A3 (inspection of cut), A7 (removing gloves) are excluded from single-image verification as they lack reliable visual indicators of completion state in this scope. Inspection criteria (red/swollen/leaking) are clinical assessments excluded per instructions.",
+    "A2 (put on gloves) is verified by the state of gloves worn on hands.",
+    "A4 (pad placement) is verified by the state of the pad covering the target cut.",
+    "A5 (wrapper disposal) is verified by the visible containment of the wrapper inside the bag.",
+    "A6 (sealing) is verified by a visibly closed bag interface.",
+    "All constraints involving cleanliness, sterility, or clinical redness/swelling/leaking are omitted per scope."
+  ]
+}

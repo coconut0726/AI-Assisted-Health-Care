@@ -1,0 +1,24 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A5_P1",
+          "condition": "the pad wrapper is located inside the zip bag",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Verified visibility of the pad wrapper inside the zip bag as the visual completion proxy."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": []
+}

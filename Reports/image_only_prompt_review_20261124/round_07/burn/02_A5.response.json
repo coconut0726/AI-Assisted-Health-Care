@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3278,
+    "total_input_tokens": 3123,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3123
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 155,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3123
+  },
+  "created": "2026-11-24T05:15:09Z",
+  "updated": "2026-11-24T05:15:09Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROQQe98tfSyi+5Q4x6E1FU1MEHQrxtRH0uFBJozsyNG/q1gOEKc9I+bVgb6Qy7OHTou1IHeIceyi4OEPt24jtmY5hOix3OHpHFiOVqE/FNHVr0Euct99lhgMAucaKFrW/nh72wru/jn0+BzLnsNwIuayHFDKg5NOEjhQY4BX6a+VvwIpzj7trcUobn7o/aaCA413yxzr9qzH+sK7yTV33hMmA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Rinsing action lacks a reliable image end state for verification.\",\n        \"Rubbing, blister-breaking, water temperature, and history of rinsing/duration are excluded.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A5 is set to manual completion as rinsing cannot be verified in a single static image.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3725,
+    "total_input_tokens": 3570,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3570
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 155,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3570
+  },
+  "created": "2026-11-24T05:10:08Z",
+  "updated": "2026-11-24T05:10:08Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPmk4lZ7w/q2+LFVROj1l5FV7njQxeeTBxGHmN2xBphIRRdovHczubGRH/T4ZulmscN1m/HKqJYR+C4tSLxRMf1C3BvHDi/rF1SupN9zquT1H2vjntNqNNO7r2OYp6PZr1wvZd02g8Lhwh611GIDvJSJGOhF07rUFU2xo8/tq+27GTUDA5yV60v1Vaeaom1R31AsAYnhQHTCbbFWrFD7dyzzw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is an operational claim that lacks a reliable single-image completion state; visual inspection cannot verify if hands were washed or when the action occurred.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Requested action A1 provided; manual completion required for procedural operations that cannot be verified by a single static image.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

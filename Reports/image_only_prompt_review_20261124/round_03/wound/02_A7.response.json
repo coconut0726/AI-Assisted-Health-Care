@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2650,
+    "total_input_tokens": 2436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 214,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2436
+  },
+  "created": "2026-11-24T05:02:40Z",
+  "updated": "2026-11-24T05:02:40Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPCEHzQuoJVgHhSkSHvt29dApqA1iu33gfFFlutce3+w5QxFeJmxMV+QC3mUxmg3axB1ZBAZA407AYUhg/DYEZ+ZrkxPXLmiDOTjF0jCuqDJ0fovDvtWfhLo4Sty7gHBqYgsv6vQ20Ev2dwEEZLIpUq+jtn+rbUN8VO+qDEwebC1jzuaXibbd5rxvkH5BXRZy8Ky8TUWPO2/p+P4g00XAo4ug==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_R1\",\n          \"condition\": \"hands are bare of gloves\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"take off the gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Visual verification confirms the current state of gloves being removed; it cannot verify the historical action of removing them.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A7 manual_completion_required set to false to support visual verification of the state 'hands bare of gloves'.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

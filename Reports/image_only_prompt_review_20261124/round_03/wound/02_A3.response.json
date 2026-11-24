@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2597,
+    "total_input_tokens": 2436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 161,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2436
+  },
+  "created": "2026-11-24T05:02:04Z",
+  "updated": "2026-11-24T05:02:04Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROk2CGKH8luhFHmRpihSrfyX51Pb9eHAABvow0GomOjwbJMvaPOkbffQ6qwfubDIEQqIO+H8GPEDtmIPPSxqpYyIcxn186hOoHROULYnnut2QrgU9+Hh2RYLEC5iciVtkpMf1OT0nBpv5Wmw8BtFpck2DvOSW4/lCuDU2ogRlaBzeCfMOjNJsM/XXw6uKGZCCvb3TdQtNYN6q7lqoK1byzlLw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Clinical assessment of wound appearance (redness, swelling, leakage) is excluded from automated verification as these are subjective and require clinical expertise. Action marked manual_completion_required=true.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A3 inspection criteria (redness, swelling, leakage) excluded per scope; task requires operator manual confirmation.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

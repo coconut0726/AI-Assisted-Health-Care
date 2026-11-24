@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3208,
+    "total_input_tokens": 3015,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3015
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 193,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3015
+  },
+  "created": "2026-11-24T05:01:45Z",
+  "updated": "2026-11-24T05:01:45Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNGqnIRbz9FQQBHcS3qQUcBPu0jSWZUUtxrR2o6krsfGW/QjXHcjJq4Ohi/+CPqd5goGJxwvMwilKp3OESQPXCb0zTl2oVR6KYi4NLmFEBLZ0AVbIZEs3j7XWOJ1WQpEZALb9aSyw6BZ6cMLOXbBgsrP1TMvdAMkNBEMDjIaa6Ohw9Th6wiOoVLyuvox0EVNGEUIAhHdKOU7rLq9HfICmTIng==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A11\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"A11 involves subjective assessment of redness, swelling, smell, or fever, which cannot be verified by a single RGB image.\",\n        \"The instruction to call a nurse is a clinical judgment action requiring manual confirmation.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"All automatic preconditions, postconditions, and error criteria related to cleanliness, smell, redness, swelling, and fever have been excluded as they are either subjective clinical assessments or historical properties that cannot be verified by a single-image capture.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

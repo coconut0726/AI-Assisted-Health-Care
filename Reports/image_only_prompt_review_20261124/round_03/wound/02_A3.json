@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Clinical assessment of wound appearance (redness, swelling, leakage) is excluded from automated verification as these are subjective and require clinical expertise. Action marked manual_completion_required=true."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A3 inspection criteria (redness, swelling, leakage) excluded per scope; task requires operator manual confirmation."
+  ]
+}

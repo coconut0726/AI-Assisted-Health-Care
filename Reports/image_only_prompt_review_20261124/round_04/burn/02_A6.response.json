@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3591,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 1413,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1413
+      }
+    ],
+    "total_output_tokens": 155,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:48Z",
+  "updated": "2026-11-24T05:06:48Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRM2QE15/luEWD6EIGH5vUwC1JxRssevtMsiMl5feKsxP8UEPIlmjegi1SxRozHzcaHuGZCwaA49fHWpGdARtWacHIGxRabPucfwMwEIfqqUWxjGx+8FJhEhbhjWCw1T6QDxN5UysZYdVA4eUT8TJYUYC6SdW8kObeT4o3Ce3OiUibuFtLgV7JFhmQK4qBKUlKP143Ew3hn7QFnSF9hE5zVw7A==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Operation claim: patting dry is excluded as it is a movement/action history, not a static image state.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A6 instruction 'pat the skin dry' is an action; no visual postcondition proxy exists that can verify this without subjective judgment or historical evidence.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

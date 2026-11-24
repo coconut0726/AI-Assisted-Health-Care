@@ -1,0 +1,38 @@
+[
+  {
+    "actions": 11,
+    "postconditions": 7,
+    "global_error_criteria": 0,
+    "graph_preserved": true,
+    "preconditions": 0,
+    "production_schema_matches": true,
+    "steps": 5,
+    "production_merge_parse_passed": true,
+    "manual_actions": [
+      "A1",
+      "A3",
+      "A5",
+      "A6",
+      "A11"
+    ],
+    "local_error_criteria": 0,
+    "case": "burn"
+  },
+  {
+    "actions": 8,
+    "postconditions": 5,
+    "global_error_criteria": 0,
+    "graph_preserved": true,
+    "preconditions": 0,
+    "production_schema_matches": true,
+    "steps": 5,
+    "production_merge_parse_passed": true,
+    "manual_actions": [
+      "A1",
+      "A3",
+      "A8"
+    ],
+    "local_error_criteria": 0,
+    "case": "wound"
+  }
+]

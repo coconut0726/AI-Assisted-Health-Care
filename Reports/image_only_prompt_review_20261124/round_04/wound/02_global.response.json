@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3910,
+    "total_input_tokens": 2816,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2816
+      }
+    ],
+    "total_cached_tokens": 1323,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1323
+      }
+    ],
+    "total_output_tokens": 1094,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2816
+  },
+  "created": "2026-11-24T05:08:52Z",
+  "updated": "2026-11-24T05:08:52Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRN8qIo7pUGTDcKi+vjwDfKF/dIu1htMkJVHL1/0rOee0yOe8aIIIIKq6SD+lU6FHQQJuJmDGwOmghmoqKzCc9hQptl7tYmLrxG43vZtjorZZ9+s3ojvo7xyVDKKyq3fSRIq7jPz7FHJ3ZBEOnu0V0mtrWdLvtVMCQRJg7YT8YSeqvFgvHLYvYo7NARCZUKukVxUg4Y7xOHptz/N7LsmdUA/0w==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is an operation with no reliable single-image completion state.\"\n      ]\n    },\n    {\n      \"action_id\": \"A2\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_1\",\n          \"condition\": \"gloves are worn on the hands\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Removed 'clean' property as it is a non-verifiable material property. Retained 'worn' as a visible state.\"\n      ]\n    },\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Inspection (Look at, check for red/swollen/leaking) is an operation without a reliable single-image verification state.\"\n      ]\n    },\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_1\",\n          \"condition\": \"a pad covers the cut on the skin pad\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Place a non-stick pad over the whole cut on the skin pad.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Removed 'non-stick' property. Retained coverage of the target as the visible state.\"\n      ]\n    },\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A5_1\",\n          \"condition\": \"the pad wrapper is located inside the zip bag\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Put the pad wrapper into the zip bag\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Check limited to the visible containment of the wrapper.\"\n      ]\n    },\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A6_1\",\n          \"condition\": \"the zip bag closure track is visibly closed\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"seal it\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Verification limited to the visible state of the closure track.\"\n      ]\n    },\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_1\",\n          \"condition\": \"hands are bare\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"take off the gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Replaced 'off the gloves' with 'hands are bare' to describe the visible end state.\"\n      ]\n    },\n    {\n      \"action_id\": \"A8\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is an operation with no reliable single-image completion state.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Excluded subjective qualities (red/swollen/leaking/clean/non-stick) and historical operations (wash/inspect) per scope.\",\n    \"Manual completion required where state verification is impossible or excluded.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

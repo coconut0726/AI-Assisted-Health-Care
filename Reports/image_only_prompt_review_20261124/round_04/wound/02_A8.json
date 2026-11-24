@@ -1,0 +1,20 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A8",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is an operation claim without a reliable single-image completion state.",
+        "Constraint on cleanliness history excluded per instructions."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Retained A8 per graph instructions.",
+    "Excluded cleanliness history and operation history per scope requirements."
+  ]
+}

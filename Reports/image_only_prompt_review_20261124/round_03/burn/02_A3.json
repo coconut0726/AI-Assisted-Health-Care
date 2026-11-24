@@ -1,0 +1,27 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A3_R1",
+          "condition": "old dressing appears saturated with water",
+          "source": "explicit_instruction",
+          "source_reference": "soak it with clean water",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Soaking state is defined by visible saturation of the material.",
+        "Manual completion is false as the state is observable."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Rubric generated for A3 only based on requested action IDs."
+  ]
+}

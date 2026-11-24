@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3345,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 331,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:39Z",
+  "updated": "2026-11-24T04:59:39Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROk0h70FTfEdZzpdE0ZkNdm6GdtfmdesPF/za2ykLTO8vO/BmQ44hs+Nt/vo55vC4f2vKruQbmVRwS/WR8I8PfIAbbqQLfhvtBARybwvSPoTNTzNCA5dLLQgSDMgyB0g60U+rYOk/bOShkAiXj1lmqpP8UJNR7IbTWht+ShF14ixJldUSd3kHhKkn6V9jPZKusGCJIL7+E2Ez2uozm4FvViig==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A7_P1\",\n          \"condition\": \"cotton swab is available\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Use a cotton swab to apply a thin layer of burn ointment to the burn.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_P2\",\n          \"condition\": \"burn ointment is on the burn\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Use a cotton swab to apply a thin layer of burn ointment to the burn.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Excluded 'thin layer' as a subjective qualitative standard.\",\n        \"Excluded 'Do not rub' and 'do not break' as prohibited action/interval claims.\",\n        \"Manual completion is false; visual verification of ointment application is possible.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A7 specifically updated for current visible state validation.\",\n    \"Instruction references mapped to exact text as requested.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

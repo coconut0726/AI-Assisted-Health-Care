@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A8",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is a process that cannot be verified by a single static image; manual confirmation is required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Washing hands is an activity that does not leave a persistent visual state identifiable by a single image; manual completion required for A1 and A8."
+  ]
+}

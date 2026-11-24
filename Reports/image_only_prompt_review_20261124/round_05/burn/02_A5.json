@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Rinsing is an operation with no reliable single-image completion state or visual proxy, thus manual completion is required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A5 requires expert review because rinsing cannot be visually verified after the fact."
+  ]
+}

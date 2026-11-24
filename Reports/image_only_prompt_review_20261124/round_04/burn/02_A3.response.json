@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3633,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 197,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:41Z",
+  "updated": "2026-11-24T05:06:41Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROXSADDyj1D3uYpgYD2+Gbx0X7TBCJRbQgFqJdQBQ7APvFhR0Tqp1+iP1JNwlIq12GIsvwuz4mLPKgsHpWZeE8ZrV/g2auGWCqwdyI8S+rKa7wT4DgGzxdM3ipE228LdwDA0rrTuzv0RUMSzsSPieWt+hRnUdrEWD885+suUoRbkD7rkPFQKQgNFr2oDPiiq135vp6i+IO2vlX0sLwS+gsWeA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Soaking the dressing is an operation for which no single-image completion state can be determined. This action remains manually confirmed.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Rubbing and blister-breaking constraints are excluded as they are subjective/process-based. Cleanliness, material properties (non-stick, sterile, clean), and historical/procedural success (e.g., wash, soak, rinse, pat, call, use) are excluded per scope. Manual completion remains for non-visible operations.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

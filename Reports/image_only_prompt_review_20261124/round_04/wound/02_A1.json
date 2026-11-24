@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Hand washing is an operational step with no reliable single-image completion state; manual confirmation is required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 (Wash hands) is an operational action; no visual proxy for cleanliness exists in a single frame. A2 (Gloves) would verify worn status. A3 (Inspection) is an operational action; clinical assessments like red/swollen/leaking are excluded from visual criteria. A4 (Pad application) is verifiable by covering state. A6 (Seal) is verifiable by closure status. A7 (Remove gloves) is verifiable by absence. A8 (Wash hands) is an operational action."
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3269,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 255,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:32Z",
+  "updated": "2026-11-24T04:59:32Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPgxBkKvZI6VvXmDXwblYHguD/gGNbnrSCsDs7N9N7GfOq5MGKmqVaALZiNhHDeED3viR0b7B+OqiCl8PBZcDflnd2IOjuSLP1Z1jHdfTfNVGSiQIZyHhfxXTzWdQh6ULn2OE3MUR6KwiiMaklcCpVO5lOSDwcn5w1xliX5ysKwUhiBCpE2FuCkt3mGEGQjIa96fxz93m2Fg+8VFWXmzGZ2nw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_R1\",\n          \"condition\": \"The burn area is clear of the old dressing material.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Gently remove the old dressing.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Visual verification limited to the absence of the old dressing covering the burn site.\",\n        \"Excluded the 'gently' requirement as it is a subjective manner of operation not verifiable via a single image.\",\n        \"Manual completion is false as the removal state is visually verifiable.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A4 is treated as the removal step; postcondition verifies the dressing is no longer present on the burn site.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

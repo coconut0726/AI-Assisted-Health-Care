@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "The action involves inspection of clinical signs like redness, swelling, or leakage which lack reliable objective visual criteria in a single static image. Per instructions, this action is marked for manual confirmation."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Inspection action A3 is set to manual_completion_required: true due to lack of objective visual proxies for clinical appearance signs like redness, swelling, or leakage."
+  ]
+}

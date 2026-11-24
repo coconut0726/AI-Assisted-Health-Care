@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2589,
+    "total_input_tokens": 2436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 153,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2436
+  },
+  "created": "2026-11-24T05:02:47Z",
+  "updated": "2026-11-24T05:02:47Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMYPoVHRanYFLBzfC77h4lpA+TKWfbqcKvlNkYgELfOzYFcGBzg8lD6ZH6QZSpODTerKkPunvVYBfL/p8p9DpS/GYCUV9mJfjylYO9tp7oCu+MXrWgI2JnqGVREkzEjQgwllEtHicfeS7+Yy+FKxgbSrcvNzykU5hehX9nD9/OL8J6PhllKFYImPLmu2DogvzovsNnLMxTeAVq7+VxXtFQBXQ==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A8\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is a process that cannot be verified by a single static image; manual confirmation is required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Washing hands is an activity that does not leave a persistent visual state identifiable by a single image; manual completion required for A1 and A8.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

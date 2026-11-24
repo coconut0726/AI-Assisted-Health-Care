@@ -1,0 +1,20 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Rinsing is an operation with no verifiable static postcondition in a single RGB image.",
+        "Rubbing and blister-breaking are qualitative/interval-based constraints and are excluded from the rubric."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A5 represents an operation (rinse) that lacks a verifiable, stable visible end state in a single image.",
+    "Excluded rub/blister constraints as per instruction to omit qualitative or interval-based rules."
+  ]
+}

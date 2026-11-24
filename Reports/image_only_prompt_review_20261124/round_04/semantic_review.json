@@ -1,0 +1,9 @@
+{
+  "graphs_accepted": true,
+  "requirements_accepted": false,
+  "findings": [
+    "Burn A8 duplicated pad coverage in an error criterion; A10 duplicated and strengthened tape placement.",
+    "Shared-rule replies returned Action updates instead of the required empty array.",
+    "Image-scope manual flags and most simple visual states improved; final data not selected."
+  ]
+}

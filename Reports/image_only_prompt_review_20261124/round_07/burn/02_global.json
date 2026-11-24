@@ -1,0 +1,7 @@
+{
+  "action_updates": [],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "All Action checks are now correctly localized to individual Actions. Procedure-level checks were removed as they were either redundant or covered whole-interval processes that cannot be verified by a single-image capture. A1, A3, A5, A6, and A11 require manual completion due to lack of image-visible end states."
+  ]
+}

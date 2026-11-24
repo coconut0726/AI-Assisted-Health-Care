@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3096,
+    "total_input_tokens": 2953,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2953
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 143,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2953
+  },
+  "created": "2026-11-24T05:13:15Z",
+  "updated": "2026-11-24T05:13:15Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNDxOzqmLUjg8XVnWCCkWiqJ6o7hDXaMuv88dI1sdgHqL62Jvi39Do1808ZbEcr/2UGVVB3KQ6Kue92MIis70PCs1b6ivVC3Ju+4C74bykRTKkPPoVZg32rrvQbA3WNrNaSe4aSJfV12SNuGPyjptjP9kkq9KoIZT25TUc/o9LHwjIpyJJekJ/jTj5tzgu11Yw9eEZKxuuFsBuIxJ2yHs7jpw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A8\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is an operational task with no reliable single-image completion state; manual completion required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A8 (wash hands) excluded from automatic verification per scope requirements regarding operational/history-based tasks.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

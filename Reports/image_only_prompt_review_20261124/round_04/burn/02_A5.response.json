@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3623,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 1413,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1413
+      }
+    ],
+    "total_output_tokens": 187,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:46Z",
+  "updated": "2026-11-24T05:06:46Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMX5ppfOsCOrzMP73f/qhjqxy76QFuY32QC5SXHaQ5IJIZwzY9u5mlQ2j2EDq69IvGcUr9GRjaNbXHIAPTI/5HhjIixvkMj3NFIdNH/2M2VzXQ2bO78hJjhBPIAqivkm1Oanp2SV0vmdhfVKVbXq2BKnl2ozM68+LltsnXk0tSSWCYzwsWFS7JaEfunp3YSM/pcziIH+iLqIyUzwskf1sKang==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Rinsing is an operation with no verifiable static postcondition in a single RGB image.\",\n        \"Rubbing and blister-breaking are qualitative/interval-based constraints and are excluded from the rubric.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A5 represents an operation (rinse) that lacks a verifiable, stable visible end state in a single image.\",\n    \"Excluded rub/blister constraints as per instruction to omit qualitative or interval-based rules.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -16,7 +16,7 @@ namespace HomeCare.Procedures.Actions
             var a = session.CurrentAction;
             var context = new
             {
-                request_id = ticket.RequestId, run_id = session.RunId,
+                request_id = ticket.RequestId, run_id = session.RunId, verification_scope = "single_current_image",
                 task_goal = string.IsNullOrWhiteSpace(session.Procedure.task_goal) ? session.Procedure.procedure_title : session.Procedure.task_goal,
                 current_step = new { step_id = ticket.StepId, title = session.CurrentStep.step_name, description = session.CurrentStep.step_description },
                 current_action = new { action_id = a.action_id, instruction = a.instruction, applicability_condition = a.applicability_condition },
@@ -25,7 +25,7 @@ namespace HomeCare.Procedures.Actions
                 current_requirements = ticket.Checks,
                 dependency_history = session.DependencySummary(),
                 confirmed_step_history = session.History.Where(h => h.run_id == session.RunId &&
-                    (h.event_type == "action_finished" || h.event_type == "precondition_confirmed" || h.event_type == "requirement_confirmed" || h.event_type == "applicability_confirmed" || h.event_type == "rule_violation"))
+                    (h.event_type == "action_finished" || h.event_type == "action_completion_confirmed" || h.event_type == "precondition_confirmed" || h.event_type == "requirement_confirmed" || h.event_type == "applicability_confirmed" || h.event_type == "rule_violation"))
                     .Reverse().Take(12).Reverse().ToArray(),
                 task_outline = session.Procedure.steps.Select(s => new { step_id = s.step_id, title = s.step_name, action_ids = s.actions.Select(x => x.action_id).ToArray() }).ToArray(),
                 current_frame = new { captured_at_utc = capturedAtUtc, kind = "single_current_rgb_frame" }

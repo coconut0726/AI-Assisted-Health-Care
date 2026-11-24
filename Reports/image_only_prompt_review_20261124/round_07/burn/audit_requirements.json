@@ -1,0 +1,16 @@
+{
+  "case": "burn",
+  "phase": "requirements",
+  "steps": 5,
+  "actions": 11,
+  "image_predicates": 7,
+  "manual_actions": [
+    "A1",
+    "A3",
+    "A5",
+    "A6",
+    "A11"
+  ],
+  "structural_and_scope_findings": [],
+  "note": "Automated screening supplements, and does not replace, semantic review of the source and output."
+}

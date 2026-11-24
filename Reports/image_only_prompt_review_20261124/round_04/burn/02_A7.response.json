@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3682,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 1413,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1413
+      }
+    ],
+    "total_output_tokens": 246,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:50Z",
+  "updated": "2026-11-24T05:06:50Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPqanP6+mwRK3KXb1HQyMpE61JUOOO21rR0fEQuXnJ3HgQh/ZMi6ii2SKgkPwHp0A93MroZQYV/d8d9EvPeQj9NeerNHzeBMrZgNE+nrS7S5E++4bX13JZAndXCCsaXAYl7fSCtIawQPSPoNjO9YW95RRtCwd1Hd4dkoiNXvDnol/BEk/cbVB84wOLYL74w/A16Bc+x2ZjZ/vvE4vnxYjxiUQ==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_P1\",\n          \"condition\": \"a layer of ointment is visible on the burn\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"apply a thin layer of burn ointment to the burn\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Instruction to 'apply a thin layer' and 'use a cotton swab' omitted from conditions due to qualitative/history scope constraints. Condition checks only the visible presence of applied ointment on the target.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Rubric generated only for requested A7. Other steps in the graph remain unchanged in the system but were not processed for this update.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

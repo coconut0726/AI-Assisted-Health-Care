@@ -1,0 +1,26 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A8",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A8_P1",
+          "condition": "a non-stick pad covers the burn area",
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Visual coverage of the burn by the pad is the verifiable state for this instruction. Non-stick properties are excluded per instructions."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Only A8 updated as requested."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Take off the gloves is an operation that cannot be verified by a single static image state.",
+        "Gloves being off is a negative state (absence of object) that cannot reliably be confirmed from a single view without prior history."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A7 manual_completion_required set to true due to lack of verifiable postconditions in scope."
+  ]
+}

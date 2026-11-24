@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3733,
+    "total_input_tokens": 3570,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3570
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 163,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3570
+  },
+  "created": "2026-11-24T05:10:35Z",
+  "updated": "2026-11-24T05:10:35Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPdsHN7mgdVSMXfX4309sOBDa5T0OvwJAYqZ7b0zJD5AFjDGuUqn1Pa81gEPDanr8bNGoP1uBDXm5Ghx7CeavPIMli5+s4LD5WlgDeBNHKKKS8xA39sOO2zO8wTA8ux1/DbtZhL2HdamM/h/sA+gf3sBw6smJLlKyTdcPF1UMQgZQbOCDpImyqjAsPZpF/6MtePrIT8+7W9uw1qxfN/z3gHkA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"A4 is a dressing removal operation with no reliable single-image completion state (e.g., confirming total dressing absence or that no particles remain). It is flagged for manual completion.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A4 requires manual completion as it is a removal operation without a verifiable final visual state suitable for single-image analysis.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

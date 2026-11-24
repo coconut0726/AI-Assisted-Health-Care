@@ -1,0 +1,27 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_R1",
+          "condition": "A pad covers the whole cut on the skin pad.",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Retained explicit constraint: WHOLE coverage.",
+        "Omitted non-stick property as per instructions."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "No global or procedure-level error criteria required for this request."
+  ]
+}

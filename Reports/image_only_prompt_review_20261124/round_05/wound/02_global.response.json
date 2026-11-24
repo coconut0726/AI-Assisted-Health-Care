@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3152,
+    "total_input_tokens": 2950,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2950
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 202,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2950
+  },
+  "created": "2026-11-24T05:13:17Z",
+  "updated": "2026-11-24T05:13:17Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNHdIHVvCSvrkI/9DDmVQFGO+VX89U5i7gaqWn/GlsXyYplb4P/5DoE1MVa/xl/qVAIj9vOTcjVJvsuhSUiynhqNcFSVILmk00ulQOXOXM4e2hCN/gdKkyJAvQdLH3u4TbKMlqnwqLRnF1pwzkzjiubswIeo5yn+r13KYFi/GY8YUFDs2mvFsJ1FtZFxliFab0CK1BCJR1qlmzYgRxtJ5f5FA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1, A8 (hand washing), A3 (inspection of cut), A7 (removing gloves) are excluded from single-image verification as they lack reliable visual indicators of completion state in this scope. Inspection criteria (red/swollen/leaking) are clinical assessments excluded per instructions.\",\n    \"A2 (put on gloves) is verified by the state of gloves worn on hands.\",\n    \"A4 (pad placement) is verified by the state of the pad covering the target cut.\",\n    \"A5 (wrapper disposal) is verified by the visible containment of the wrapper inside the bag.\",\n    \"A6 (sealing) is verified by a visibly closed bag interface.\",\n    \"All constraints involving cleanliness, sterility, or clinical redness/swelling/leaking are omitted per scope.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

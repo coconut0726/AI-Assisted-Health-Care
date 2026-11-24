@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A6",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Operation patting dry is excluded from single-image verification as it is a process-oriented instruction without a reliable visual completion state. Verification cannot verify the patting process or confirm the towel is clean."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A6 patting dry is an operation that cannot be verified by a static single image. The instruction is marked for manual completion."
+  ]
+}

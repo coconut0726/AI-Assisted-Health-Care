@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "A3 is an operational/procedural step describing a technique for removing a stuck dressing; no reliable, observable state-based verification exists in a single frame."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A3 is excluded from visual verification per scope constraints regarding operational claims such as soaking and inspection-based removals."
+  ]
+}

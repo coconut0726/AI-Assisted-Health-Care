@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3094,
+    "total_input_tokens": 2953,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2953
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 141,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2953
+  },
+  "created": "2026-11-24T05:12:21Z",
+  "updated": "2026-11-24T05:12:21Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROhb+CustdpZ/uJLgN9QOiJWmg4k84tYTKc5y54DRnZga1GksGKyFfmSI4R6ZgOmnrFmEigYWoYbBnUL0QSvFlOERNuwOY943KL1JctzJWDYK9zWgAvSm4ZhR5gyjCk91bErdVpU02seqMq06cvgu14vXpJPc2/SrtEP7svT+SSGcGGvEnWzZFOV6pR7xR0cDvuCT5BMXEA/xdaNcxMh5m3Fg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is an operation claim with no reliable single-image completion state; visual proxies for cleanliness are excluded.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 represents a hand washing operation; excluded from visual verification per scope requirements.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

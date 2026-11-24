@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3738,
+    "total_input_tokens": 3570,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3570
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 168,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3570
+  },
+  "created": "2026-11-24T05:10:57Z",
+  "updated": "2026-11-24T05:10:57Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRN1z6pZE7XPqwjo7Ci9gEtoRdKFrGg5nFzzW7tJFnzmPzjqjNpzraYGJyjr2t8qZUsa5LCWn9ui+215NS/mxSn2BlaNrPTLIOdAWvEhEXwFiDY3g0Wjpey0y2wPaOn3iZs5QFvMxHtxHun9CkSStTMcQ/Wm0EYPApwezL+boUt/XBkMJH8B623PExmuPY2wgaXDIhwOLtyvDiXpEzm/o/ohXw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Operation patting dry is excluded from single-image verification as it is a process-oriented instruction without a reliable visual completion state. Verification cannot verify the patting process or confirm the towel is clean.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A6 patting dry is an operation that cannot be verified by a static single image. The instruction is marked for manual completion.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

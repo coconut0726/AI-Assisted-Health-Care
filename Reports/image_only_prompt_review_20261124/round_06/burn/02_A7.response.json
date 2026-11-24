@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3322,
+    "total_input_tokens": 3123,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3123
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 199,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3123
+  },
+  "created": "2026-11-24T05:15:36Z",
+  "updated": "2026-11-24T05:15:36Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPrb5y0SYz1EIldgU5/sWEJ4Fc4vTod1NuDtLV1fWV6Jnuc+lXaj2kF1toVyPRPf8akkQehUjosZVCPIX33qwMVwkzVY/ZCI0luGvVO9u9Dhd5WUy5ArHG3VtqjCRTqvhSdRS/MIXNrGMw8NFmDqIihjq6IgkXGSjfIp8bvw7K3F1wEHLnyIQVFpQBmRKxYp9JOU3XFPjxcp8zxwoTKB1SNkA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_P1\",\n          \"condition\": \"A visible applied layer of burn ointment is present on the burn.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Use a cotton swab to apply a thin layer of burn ointment to the burn.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Omitted swab use, thickness, and rubbing/blister constraints as per instructions.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2717,
+    "total_input_tokens": 2506,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2506
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 211,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2506
+  },
+  "created": "2026-11-24T05:18:52Z",
+  "updated": "2026-11-24T05:18:52Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPmLx+wOcHU23mR0//JEHMMPgpyjRLP1jGGCdG8HFIEhzt4u2RfBfjEFsaTYeiqKXCqHK1b1ip5H4m8rOy6KjA2abvwtO+uLSiWP0K8PfVggAm2GqnoHuHcNmKM/auGdW4B+mPz37dvXir0fC9d0XqIwwTo8IYveqRSVRwzHJL07RkJv3Q57Ubx2T01Ry5ddak3D6JyDAVup0QE/gAQuh/SgA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"R_A7_1\",\n          \"condition\": \"The gloves are no longer worn on the hands.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"take off the gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Removed the requirement to 'take off' which is an operation; checked instead for the visible state of absence from the hands.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A7 represents the visible end state of glove removal.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

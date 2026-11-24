@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3704,
+    "total_input_tokens": 3571,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3571
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 133,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3571
+  },
+  "created": "2026-11-24T05:11:58Z",
+  "updated": "2026-11-24T05:11:58Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRN3U/BFKvsDTgmTa4v3ZhZAaP/EHAV2Un923I0i1M1PzgqgdJBz8U648U4PaDaz2fF5uw06o9A3puZHbmpOXRMlSa795GH0t61CsxNSzLCuRTG7l8Rlhe2+TEYbxjYdydhFPBBoi+BkkF46eoISb7TjbhHHX+nNGUsHiOdWzINWgjCXZtoZv2qONUGu5BxJKpFFswmxRRgMnYhfdi88ZV9Vqg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A11\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Operation: Call nurse is not visually verifiable through a single-image interface.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A11 call operation excluded due to scope limitations on verifiable image states.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

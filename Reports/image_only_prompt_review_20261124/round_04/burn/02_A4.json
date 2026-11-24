@@ -1,0 +1,29 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_R1",
+          "condition": "the old dressing is absent from the target area",
+          "source": "explicit_instruction",
+          "source_reference": "remove the old dressing",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Instruction to remove gently is an excluded operation quality.",
+        "Postcondition verifies the state of removal; does not assume or verify how it was removed."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Rubbing/blister-breaking constraints excluded as operation/history claims.",
+    "Operations (wash/soak/rinse/pat/call) omitted from postconditions per scope guidelines.",
+    "No explicit error criteria defined for removal status based on single-image scope."
+  ]
+}

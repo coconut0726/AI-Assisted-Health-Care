@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2638,
+    "total_input_tokens": 2503,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2503
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 135,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2503
+  },
+  "created": "2026-11-24T05:19:00Z",
+  "updated": "2026-11-24T05:19:00Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROyq5P9VOmvse5e8bvcOOkrlnrSCMLutazabLcirfUywfm6Q5vd2vX6Y2f7tzThSzyqIjdLP9dW0yLlAGLyAc7CS6/9UGuu7T1gLMhR4oYGNM16LiPgQEgSucyIVhbBLrDGdpVpkPrEtE8DYUlykGM4AuweCO9sg3icJQfskchQhcqjhjQrrVmLBK/Zh2kRVLw7zQ7YGPmYJAJ5R0mXWj0e3w==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    ],\n  \"procedure_error_criteria\": [\n    ],\n  \"review_notes\": [\n    \"Washing hands (A1, A8) and inspection (A3) excluded from image verification due to lack of visual end-state indicators.\",\n    \"A2: Clean condition omitted.\",\n    \"A4: Non-stick property omitted.\",\n    \"A6: Airtight/sealed effectiveness omitted; check is for closed closure mechanism.\",\n    \"A3: Clinical markers (red, swollen, leaking) excluded as subjective/clinical judgements.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A11",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Call nurse requires expert review or human judgment; manual completion requested."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A11 is a non-visual notification task requiring manual confirmation."
+  ]
+}

@@ -4,17 +4,13 @@ This project explores an AI-assisted augmented reality system for home healthcar
 
 # Start Preperation
 
-The main workflow is **VRGuidanceDemo + Quest Link + local Qwen**. Follow steps 1–4 below using the reviewed procedure already assigned to the scene. The launcher prepares missing local-model dependencies automatically; Unity and Quest Link must already be installed.
+The main workflow is **VRGuidanceDemo + Quest Link + local Qwen/API**. Follow steps 1–3 below using the reviewed procedure already assigned to the scene. The launcher prepares missing local-model dependencies automatically; Unity and Quest Link must already be installed.
 
-### 1. Connect the local VLM
+### 1. Connect the local VLM or API
 
 1. Open **AHC → VLM Backend** in Unity.
-2. Select **Qwen** (`qwen3-vl:4b-instruct`) and click **Apply & Start**.
+2. Select **Qwen** (`qwen3-vl:4b-instruct`) / select **Gemini** (enter your model ID and API key) and click **Apply & Start**.
 3. Wait for **Applied** and confirm **Running** shows `ollama / qwen3-vl:4b-instruct`. Unity is now connected to the local model.
-
-First use requires internet access to download missing dependencies and model files automatically.
-
-To use Gemini instead, select **Gemini**, enter your model ID and API key, and click **Apply & Start**.
 
 ### 2. Connect the headset through Quest Link
 
@@ -22,25 +18,21 @@ Start a working Quest Link session on the same PC. Use OpenXR for the real heads
 
 ### 3. generate a custom procedure
 
-This is a preparation workflow. Skip it when using the procedure already assigned to the scene. Start the selected backend using step 1 before generating.
-
-1. Exit Play mode, open **AHC → Requirements Prototype**, and click **Legacy requirements editor…** for this original demo.
-2. In **1. Author**, enter the nurse's instruction, keep **ProjectBackend** selected to follow the VLM Backend window, and click **Generate step requirements**. Explicit Gemini/Claude/LocalOllama overrides remain available.
+1. Exit Play mode, open **AHC → Requirement Generation**, and click **Legacy requirements editor…** for this original demo.
+2. In **Author**, enter the nurse's instruction, keep **ProjectBackend** selected to follow the VLM Backend window, and click **Generate step requirements**. Explicit Gemini/Claude/LocalOllama overrides remain available.
 3. Review the steps, requirements, VQA questions, evidence scopes, and source quotations. In **3. Edit JSON**, apply any corrections with **Validate and apply JSON**.
 4. Return to **1. Author** and click **Save requirements**. Save under `Assets/_Project/Content/Procedures/` so Unity imports the JSON as a TextAsset.
 
-# V3: Periodical Sampling with LocalVLM (`VRGuidanceDemoActions.unity`)
+# V3: Periodical Sampling with LocalVLM (`VRGuidanceDemo_V3.unity`)
 
 V3 adds **periodical sampling** and **Action-level verification**. 
 
 1. In **AHC → VLM Backend**, select **Qwen** and click **Apply & Start**.
-2. Open **AHC → Open Action Requirements Demo**, or `Assets/_Project/Scenes/VRGuidanceDemoActions.unity`, then Play and **Begin**.
+2. Open **AHC → Open V3 Demo**, or `Assets/_Project/Scenes/VRGuidanceDemoActions.unity`, then Play and **Begin**.
 3. The app first checks the current Action's applicability and preconditions, then checks its completion requirements and applicable execution rules together. New polling slots occur every **1 second**; a busy request skips slots without a queue. Model inference can take much longer than one second.
 4. **Next Action** requires all active checks confirmed and graph prerequisites resolved. Unknown never passes. Checks continue until Next; a failed fresh check removes an earlier model pass. Recorded execution-rule violations remain blocked until an explicit retry, and global violations require a new procedure run.
 
-**Current verification logic:** Current Action → preconditions satisfied → postconditions and error criteria checked together → Next Action. Conditional Actions first require applicability confirmation; Actions without preconditions enter postcondition/error checks directly. The Session maintains the current Action rather than recognizing it from the image. Passed preconditions are recorded and are not continuously rechecked in the next phase.
-
-Current verification request contains: task goal, current Step and Action, current phase and its active requirements, one current RGB frame, confirmed history from this run (last 12 relevant records), graph prerequisite states, a compact task outline, and request/action/phase IDs.
+**Current verification logic:** Current Action → preconditions satisfied → postconditions and error criteria checked together → Next Action. Conditional Actions first require applicability confirmation; Actions without preconditions enter postcondition/error checks directly. The Session maintains the current Action rather than recognizing it from the image. Passed preconditions are recorded and are not continuously rechecked in the next phase. Actions with no image postcondition use **Confirm Action completed** before **Next Action**; they never pass automatically because their check list is empty. Current verification request contains: task goal, current Step and Action, current phase and its active requirements, one current RGB frame, confirmed history from this run (last 12 relevant records), graph prerequisite states, a compact task outline, and request/action/phase IDs.
 
 # V2: Hands-only care guidance (`VRGuidanceDemo_V2.unity`)
 
@@ -67,13 +59,13 @@ On the headset, start the local bridge with USB forwarding before using **Comple
 
 The caregiver flow uses the reviewed procedure assigned to `RealCareSession` (the saved scene currently uses the 4-step simple wound dressing case), camera-based requirement verification, and a session report. The nurse flow is still the scripted walkthrough. The saved scene is already configured; no setup menu is needed.
 
-1. Double-click **Start-LocalVlm.cmd** for local Ollama + Editor/Quest Link (for an Android build over USB, run `Tools/Start-LocalVlm.ps1 -Usb`). Connect Quest Link and open `Assets/_Project/Scenes/VRGuidanceDemo.unity`, then enter Play mode. Choose **Caregiver / patient**.
+1. In **AHC → VLM Backend**, choose **Qwen** for LocalVLM or **Gemini**, then click **Apply & Start**. The demo follows this shared selection; it has no separate scene-level model choice. Connect Quest Link and open `Assets/_Project/Scenes/VRGuidanceDemo.unity`, then enter Play mode. Choose **Caregiver / patient**.
 2. **Supplies on the table**: automatic supply detection is off in the saved scene. **Look again** runs it on demand; **Start** begins the procedure without waiting for it.
-3. Each step: read the instruction and perform it with the work area in view. After 5 seconds, and at subsequent 5-second polling slots, the app captures a fresh image and sends the current step's requirements for verification. Pass / Not met / Not sure are shown per requirement. A failed, uncertain or failed-network check is retried at later slots. A running capture, verification or object search skips the slot; requests are never stacked to catch up. Model latency therefore determines the actual result frequency.
-4. Once every requirement passes, automatic checking stops and **Next** / **Finish** unlocks. Advancing starts a fresh interval for the new step. **Check step** / **Check again** still performs a manual check with the existing photo countdown. **Skip** remains a presenter override and is recorded as skipped. Home, application pause and disabling the component cancel step work; old replies cannot update a new step or restarted session. Resuming waits a fresh interval.
+3. Each step: read the instruction and perform it with the work area in view. After 1 second, and at subsequent 1-second polling slots by default, the app captures a fresh image and sends only the current step's postconditions for verification. Pass / Not met / Not sure are shown per condition. Preconditions and execution constraints remain in the source procedure but are outside this demo's runtime checks. A step without any postconditions is rejected on load. A failed, uncertain or failed-network check is retried at later slots. A running capture, verification or object search skips the slot; requests are never stacked to catch up. Model latency therefore determines the actual result frequency.
+4. Once every current postcondition passes in one check, the attempt is saved and the app automatically advances the UI and speaks the next instruction once. The new step starts a fresh polling interval; the final pass opens the completion screen and stops polling. Automatic retry feedback appears on screen without interrupting the step's spoken instruction. **Check step** / **Check again** still performs a manual check with the existing photo countdown and spoken feedback; a manual pass also advances automatically. **Skip** remains a presenter override and is recorded as skipped. Home, application pause and disabling the component cancel step work; old replies cannot update a new step or restarted session. Resuming waits a fresh interval.
 5. The completion screen shows the care note and report path (`persistentDataPath/HomeCareSessions/<session>/session_report.md`). Each completed verification attempt records its image, requirement results, `trigger` (`automatic_poll` / `manual`), and `duration_ms` (capture/countdown through result processing).
 
-On **AHC VR Demo → RealCareSession**, **Auto Verify** enables polling and **Verification Interval** defaults to 5 seconds. The saved scene uses the real passthrough camera over Link (`AfterStepCamera.captureViewCameraInEditor = false`) and hides placeholder props. To test without a headset, explicitly assign **Editor Test Image** or enable **Capture View Camera In Editor**. Automatic supply detection, per-step object detection and touch-triggered relocalization are off for this baseline; **Look again** / **Find items** remain available manually.
+On **AHC VR Demo → RealCareSession**, **Auto Verify** enables polling and **Verification Interval** is exposed in the Inspector, defaults to **1 second**, and accepts values of **0.1 seconds or more**. Researchers can change it before or during Play; changing it during Play restarts the polling timer using the new interval. Select Gemini or LocalVLM in **AHC → VLM Backend**; the shared bridge chooses the actual provider/model and the verification reports record the returned provenance. The saved scene uses the real passthrough camera over Link (`AfterStepCamera.captureViewCameraInEditor = false`) and hides placeholder props. To test without a headset, explicitly assign **Editor Test Image** or enable **Capture View Camera In Editor**. Automatic supply detection, per-step object detection and touch-triggered relocalization are off for this baseline; **Look again** / **Find items** remain available manually.
 
 This baseline borrows the periodic decision cadence from [RegulAR](https://arxiv.org/abs/2608.26715). RegulAR uses a 1 fps frame window and graph state in its 5-second decision cycle. Here, each check uses one fresh image with `after_step` evidence; it does not accumulate a video window or implement graph-based action recognition. `before_step`, `whole_step`, or nonvisual requirements remain unknown when the evidence is insufficient; repeated snapshots cannot establish that a technique or constraint held throughout the step.
 

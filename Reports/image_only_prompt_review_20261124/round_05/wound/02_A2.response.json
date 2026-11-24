@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3201,
+    "total_input_tokens": 2953,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2953
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 248,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2953
+  },
+  "created": "2026-11-24T05:12:24Z",
+  "updated": "2026-11-24T05:12:24Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMmC2FRnMSAn533uLvcgHM45u6fb8nNbo3nN6uk/G680CXHo30hYYapG0AsFxYqKDm2pfI1LNam7ddtGIRV0i5iSJHAho5Gr51DFfQpl0MewKTUNkTRvWFaii+HxhPWYcWZTZ9patIHx7em62/jbs4wkdZ8MJQ/ggWHuBqDJwK59M2opihEthTpuI7z7zuNqI7o1HxlKF4B9P85qw+KFUvnCg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A2\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_REQ1\",\n          \"condition\": \"gloves are worn on the hands\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Excluded the term 'clean' from the postcondition as it is an unobservable property.\",\n        \"The state check for gloves worn on hands replaces the operational instruction to put them on.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Retained Action A2 as requested.\",\n    \"Manual completion is set to false because a visible postcondition is provided.\",\n    \"Scope rules followed regarding the exclusion of cleanliness properties.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

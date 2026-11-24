@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3254,
+    "total_input_tokens": 3124,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3124
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 130,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3124
+  },
+  "created": "2026-11-24T05:16:15Z",
+  "updated": "2026-11-24T05:16:15Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNCAICewy3fF+5g7LL0mlgXpqLg7HjvdLDbMH+gIfZWXs+qDiRzH+nvNd9MBiT7j/EXqq0P+rF0yEg/5KGADETuS6EXOGqupoQk0DhNjAHuef6V5pvypMCmJU/RTAY8ccLfQiaP677YY3Qy57FX5rhImOU4G1ID6AXP9PsR8q1fUeNkBkLUaFlK7eiDLg1UpCoAv4d3f+5Tq/nNq7d1JFBVcA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A11\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Call nurse requires expert review or human judgment; manual completion requested.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A11 is a non-visual notification task requiring manual confirmation.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

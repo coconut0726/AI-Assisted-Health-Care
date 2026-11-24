@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3711,
+    "total_input_tokens": 3570,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3570
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 141,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3570
+  },
+  "created": "2026-11-24T05:10:39Z",
+  "updated": "2026-11-24T05:10:39Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROcOaZS9gq+MwnjZuHizZ1EU4ZCJ3gyj5jEddJSh5A5BS6tboGDHSzHhM8KiyUBD8oh5yRE6yvvWxpDQeFlHeNwlOm95OX/qf3gXG9UoqJOHRUvh5Y8dWztr3YV4FhkMiDMIhIJOTLwMsqydbKVt6qm2r122R4LUIOqBgThHz/Q07cSYnEKcS6c71jQusKSjPsF6g3tcq15yjR4jtOuYyByuw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Rinsing is an operation with no reliable single-image completion state or visual proxy, thus manual completion is required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A5 requires expert review because rinsing cannot be visually verified after the fact.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

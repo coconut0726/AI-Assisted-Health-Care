@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3306,
+    "total_input_tokens": 3123,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3123
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 183,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3123
+  },
+  "created": "2026-11-24T05:15:38Z",
+  "updated": "2026-11-24T05:15:38Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRN9FH9dctOTugtU+nascbreOyezImIhgWTws6SdUNjbXk7iKlzJBbZ4aBFneT2f7t9aRZly2mKPIM059So3r5PKYpdJusTb04lpV0JLZ609sFRuu2aNQdb4k5srVRLtKq91oIqmdwVW2K1tnRoqYljVzAXqisN0zAfR6RkeTNRdYomVOoT9tj79LiXJVQ052BrqOkC9sWjR2tYzex7MTuAZwg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A8\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"REQ_A8_1\",\n          \"condition\": \"A pad covers the burn on the skin.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Cover the burn with a non-stick pad\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Omitted non-stick property as per instructions.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

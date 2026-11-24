@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3652,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 1413,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1413
+      }
+    ],
+    "total_output_tokens": 216,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:56Z",
+  "updated": "2026-11-24T05:06:56Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPP7xpVY0cOB7FtQg3D0C8B5vXhisxO3NnIzOsiSRmvZsXeT6lnxNMCZoVn5bXBIcBi40lFjlUc5RVYZ7p9X2e4rbYioZMdLl5/Jca+gdDUztAvtXCEtdWAj5vsyhR/GbEMBQjr8wx1xlGyIVuSkN+Dc92m8DGs+rmb2P2nxB3c3yUT28FrJRQBzb09NieVekxrA7C5T9RIQ7bGDbaWXGngdA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A9\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"R9_1\",\n          \"condition\": \"gauze is wrapped around the target\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"wrap it loosely with a gauze roll\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Omitted loosely, as it is a qualitative standard. Omitted prior pad-application requirement as it is not a direct visual state check for the gauze itself.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A9: Checked only for visible gauze wrapping.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

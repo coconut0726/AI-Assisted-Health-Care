@@ -1,0 +1,8 @@
+{
+  "accepted": false,
+  "findings": [
+    "Step-level dependencies wrongly delay the conditional nurse call.",
+    "Source array order was over-converted to dependencies.",
+    "Wound constraint quotes not swollen/not leaking were not exact source substrings."
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3345,
+    "total_input_tokens": 3014,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3014
+      }
+    ],
+    "total_cached_tokens": 1355,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1355
+      }
+    ],
+    "total_output_tokens": 331,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3014
+  },
+  "created": "2026-11-24T04:59:34Z",
+  "updated": "2026-11-24T04:59:34Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNByp8dxXk+Q1VYOQFL0d7u41MKRDLK+gxTv1YBM+Ik+Y0ubyavYcgAjeigCCCuuO8ku5NoflKLQ4Ks2kfMwPk9/u1+pLsRFm01ro+1tfWyy2GjI1atmqVHig82MqPX1YkE1eYNi+I8MVBJfMbESx0L8dVP3/5jzcicU6yIe/zDNWrqV4BQK2IxkhZXJCilvlx3YB3CDFD4ZYk6DcaNXfHeLA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [\n        {\n          \"requirement_id\": \"A5_P1\",\n          \"condition\": \"old dressing is not present on the burn site\",\n          \"source\": \"graph_dependency\",\n          \"source_reference\": \"Gently remove the old dressing\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Excluded 'rinse', 'cool running water' properties as they represent the performance of the action, not a observable static state in a single post-action frame.\",\n        \"Excluded 'no rubbing' and 'no broken blisters' constraints as they represent negative process rules rather than observable, static post-state criteria.\",\n        \"Action is manually confirmable as rinsed state is subjective and event-based.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Excluded subjective instructions such as 'gently', 'clean', 'cool', 'loosely', and 'thin'.\",\n    \"Excluded process/history-based instructions including washing hands, duration of rinsing, patting/drying motions, and medical notification.\",\n    \"Required manual confirmation for actions where no reliable single-image post-state can be identified.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

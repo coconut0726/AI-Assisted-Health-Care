@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A8",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Washing hands is an operational task with no reliable single-image completion state; manual completion required."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A8 (wash hands) excluded from automatic verification per scope requirements regarding operational/history-based tasks."
+  ]
+}

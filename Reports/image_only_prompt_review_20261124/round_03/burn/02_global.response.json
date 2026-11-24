@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 4544,
+    "total_input_tokens": 3011,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3011
+      }
+    ],
+    "total_cached_tokens": 1354,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1354
+      }
+    ],
+    "total_output_tokens": 1533,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3011
+  },
+  "created": "2026-11-24T05:01:50Z",
+  "updated": "2026-11-24T05:01:50Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROMX0lxahisLQ1JlMfkerLBxE3gNRY+iXob2kFmrw6Ee1c3fL5ZGRs7TANAC06WZEk1638TY7GW/UCB1/8GVmKMdJtQ9O1dfgU0juNmcvSDNB288jJrcMbx19ovlBf41TV3xuRJYlxRWgBv00NVwdGQU590xWL2jQWMLhOBaL65FjZQbRjlNwft66+1yhDDOKRjj2mUUjxW3v14cDkzEk+TXA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Hand washing is a procedural history and cannot be verified via static single-image observation.\"\n      ]\n    },\n    {\n      \"action_id\": \"A2\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_1\",\n          \"condition\": \"Gloves are worn on the hands.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": []\n    },\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Soaking is a process history; static image cannot verify that the dressing was soaked.\"\n      ]\n    },\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_1\",\n          \"condition\": \"Old dressing is not covering the target burn site.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"remove the old dressing\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": []\n    },\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Rinsing is a temporal process; cannot be verified by a static single image.\",\n        \"Constraints (not rubbing/breaking blisters) are clinical assessments, not visible static states.\"\n      ]\n    },\n    {\n      \"action_id\": \"A6\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Patting dry is a temporal action; cannot verify the drying process or historical use of a specific towel.\"\n      ]\n    },\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Cannot verify the application of a thin layer of ointment or use of a specific tool via static image.\"\n      ]\n    },\n    {\n      \"action_id\": \"A8\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A8_1\",\n          \"condition\": \"Burn is covered by a pad.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Cover the burn with a non-stick pad\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Non-stick property is a material characteristic; only coverage is visually verifiable.\"\n      ]\n    },\n    {\n      \"action_id\": \"A9\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A9_1\",\n          \"condition\": \"Burn is wrapped with gauze.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"wrap it loosely with a gauze roll\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Loosely is a qualitative assessment; cannot be verified by static image.\"\n      ]\n    },\n    {\n      \"action_id\": \"A10\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A10_1\",\n          \"condition\": \"Gauze is secured with medical tape.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Secure the gauze with medical tape\",\n          \"requires_expert_review\": false\n        },\n        {\n          \"requirement_id\": \"A10_2\",\n          \"condition\": \"Tape is not touching the burned skin.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"keeping the tape off the burned skin\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [\n        {\n          \"criterion_id\": \"E10_1\",\n          \"error_type\": \"spatial_error\",\n          \"violation_condition\": \"Medical tape is observed directly on the burned skin.\",\n          \"compliance_condition\": \"Medical tape is observed only on the surrounding skin or on the gauze itself.\",\n          \"applicability_condition\": \"Tape is visible in the image.\",\n          \"related_requirement_ids\": [\n            \"A10_2\"\n          ],\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"keeping the tape off the burned skin\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"review_notes\": []\n    },\n    {\n      \"action_id\": \"A11\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Clinical assessment of redness, swelling, smell, or fever is outside the scope of static image verification.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Exclusions: Hand washing (A1), soaking (A3), rinsing (A5), drying (A6), and ointment application (A7) are temporal processes. Constraints (not rubbing/breaking blisters, thin layer, loose wrapping) involve clinical or qualitative judgments. Call nurse (A11) involves clinical assessment of symptoms.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

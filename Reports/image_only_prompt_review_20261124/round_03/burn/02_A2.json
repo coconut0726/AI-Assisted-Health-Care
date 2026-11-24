@@ -1,0 +1,27 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A2",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A2_1",
+          "condition": "The user is wearing gloves on both hands.",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Excluded the 'clean' property as cleanliness is not directly verifiable via single image state.",
+        "Verified only that gloves are present and worn."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Rubric is limited to visible state checks for gloves worn."
+  ]
+}

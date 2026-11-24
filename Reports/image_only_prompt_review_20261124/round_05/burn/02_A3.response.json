@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3727,
+    "total_input_tokens": 3570,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3570
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 157,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3570
+  },
+  "created": "2026-11-24T05:10:28Z",
+  "updated": "2026-11-24T05:10:28Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRN+5eS0XyqovgXAM31gJBVeqlDJJlTSCbAPKtw78RiK89WjcUHGMy/UrC6XJaaP9GXWZrclhzYZVLGw03HNKG+tRKB3/igxiZREykzpJzETdcPC8RnoOJj85Pon4BJFeFZCtAo00oBWx9MCHfQeszStBzQTkmf9sofEP3jR0U5YKK39ahfDVZu3W9AcrldBT5UZ1aMSWGxf+mebrU1X822EEA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"A3 is an operational/procedural step describing a technique for removing a stuck dressing; no reliable, observable state-based verification exists in a single frame.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A3 is excluded from visual verification per scope constraints regarding operational claims such as soaking and inspection-based removals.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

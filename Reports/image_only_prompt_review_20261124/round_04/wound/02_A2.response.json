@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3034,
+    "total_input_tokens": 2819,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2819
+      }
+    ],
+    "total_cached_tokens": 1324,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1324
+      }
+    ],
+    "total_output_tokens": 215,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2819
+  },
+  "created": "2026-11-24T05:07:30Z",
+  "updated": "2026-11-24T05:07:30Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMIqYVIpFJMd+fGCtwaZlzwF9XkxvwmlQI/E4TZIxTtdje4e+L5Dfu3EFNizQ2JUup1P5hXV+g5oMAXHmgG6Lu8pGYwN3xz2zpA/7lsC2JQ1LFz94ZJamj26jDKuwu9t1BPszDJRfsoz3zno6DHDcf4ibBmRN1U9eGGXzc5RrlEwm9bSqrX68nkeaXnl2jZAf5z1O3Ft27ocvWlyuGKV4ocOA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A2\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A2_P1\",\n          \"condition\": \"gloves are worn on the hands\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"put on clean gloves\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Excluded clean property per scope rules.\",\n        \"Verified visibility of gloves on hands.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Rubric generated for Action A2 only as requested.\",\n    \"Excluded non-visual attributes like sterile or clean from conditions.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

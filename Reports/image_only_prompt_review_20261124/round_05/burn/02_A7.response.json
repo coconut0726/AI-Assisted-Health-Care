@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3823,
+    "total_input_tokens": 3570,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3570
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 253,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3570
+  },
+  "created": "2026-11-24T05:11:01Z",
+  "updated": "2026-11-24T05:11:01Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfROumkJZeiHgXFujJhkOgSWtGnJsPANO4W74pNRW6Ok+lgQ9qx5cPWwIPoC+XvHw8Jxwsb7h15sN94waS8i1ohT5kX1VAFbnWxMIA8D7QRMx0IEiR9Cp/PHOqSESHirkN1w7j7x88fSBaiNq91Hp4fcYe04IGwKWayEHjX89+CjzJ4fCsqe34Xrxce0ZVyttbj+DbTRCB3GqGprfyUYb25FC6Q==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A7\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A7_P1\",\n          \"condition\": \"a visible layer is applied on the burn\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Use a cotton swab to apply a thin layer of burn ointment to the burn.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Omitted swab use history, ointment identity, and thinness as per instructions.\",\n        \"Omitted constraints regarding rubbing or blistering as they refer to prohibited techniques rather than verifiable current states.\",\n        \"Manual completion is false because a postcondition is defined.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A7 is verified only by the presence of an applied layer on the target region.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,9 @@
+{
+  "accepted": false,
+  "findings": [
+    "A7 retained burn ointment identity in a visual layer condition.",
+    "A global tape rule duplicated a local A10 postcondition.",
+    "Repeated model-local R1 IDs needed production namespace normalization."
+  ],
+  "resolved_in": "round_07: actual Gemini corrective calls for A7 and globals; production ID normalization and duplicate validation"
+}

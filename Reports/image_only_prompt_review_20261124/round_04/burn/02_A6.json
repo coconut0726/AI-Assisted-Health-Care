@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A6",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Operation claim: patting dry is excluded as it is a movement/action history, not a static image state."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A6 instruction 'pat the skin dry' is an action; no visual postcondition proxy exists that can verify this without subjective judgment or historical evidence."
+  ]
+}

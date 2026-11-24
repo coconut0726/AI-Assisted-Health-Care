@@ -1,0 +1,26 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A2",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A2_R1",
+          "condition": "gloves are worn on the hands",
+          "source": "explicit_instruction",
+          "source_reference": "put on clean gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Excluded the clean property as it is a non-visible state."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Retained only A2 based on requested_action_ids."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3265,
+    "total_input_tokens": 3123,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3123
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 142,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3123
+  },
+  "created": "2026-11-24T05:14:51Z",
+  "updated": "2026-11-24T05:14:51Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNNTk/5bXUu/tzcMWTxUU/pUj+rlx3CqRDHHInMLAlrAkkxedbeCaZzMlu+/3nCOTIvHC0JwrtNcc5M03XVmeOI1w/k57JQpmjQv0bupVr6bokpInkOB/AUqJQcDd5jDXoF7mXgiMei61NF7GhaxYRp1ZIjohLOy+VcxeRzFMRUQh4wIy63z76Hz7R5wvvFIkWiJX+tKfQRS6cmEt9imT5cgA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A3\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Soaking an object is a process-oriented activity with no independent, static visual end-state confirmable by a single RGB image.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A3 is manually completed due to lack of verifiable postconditions.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

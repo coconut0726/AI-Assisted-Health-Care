@@ -1,0 +1,11 @@
+{
+  "graphs_accepted": true,
+  "requirements_accepted": false,
+  "findings": [
+    "Scoped schema fixed shared-rule requests: action_updates is now empty.",
+    "Burn removal unnecessarily lost its observable dressing-absent end state.",
+    "Burn tape constraint was still strengthened to tape only on gauze and placed in error_criteria.",
+    "Wound whole-cut coverage was incorrectly treated as a subjective criterion and weakened."
+  ],
+  "next_revision": "Rewrite the requirements prompt with a compact positive scope, retain whole coverage and removal end state, and state exact separate tape conditions without duplicate errors."
+}

@@ -69,9 +69,11 @@ namespace AHC.VR
             Status = PhaseHint(); Save(); Changed?.Invoke();
         }
         float Interval => float.IsNaN(verificationInterval) || float.IsInfinity(verificationInterval) ? 1f : Mathf.Max(0.1f, verificationInterval);
+        bool HasImageChecks => Session != null && !Session.Completed &&
+            (Session.Phase == ActionCheckPhase.Applicability || Session.CurrentChecks.Length != 0);
         void Update()
         {
-            if (!Started || Paused || _applicationPaused || Session == null || Session.Completed || !autoVerify || Session.Applicability == ActionRequirementSession.NotApplicable)
+            if (!Started || Paused || _applicationPaused || !HasImageChecks || !autoVerify || Session.Applicability == ActionRequirementSession.NotApplicable)
             { _polling.Stop(); return; }
             double now = Time.realtimeSinceStartupAsDouble;
             if (!_polling.Running) _polling.Start(now, Interval);
@@ -79,7 +81,7 @@ namespace AHC.VR
         }
         public async void VerifyNow()
         {
-            if (!Started || Paused || _applicationPaused || InFlight || Session == null || Session.Completed || Session.Applicability == ActionRequirementSession.NotApplicable) return;
+            if (!Started || Paused || _applicationPaused || InFlight || !HasImageChecks || Session.Applicability == ActionRequirementSession.NotApplicable) return;
             var session = Session; int generation = _generation;
             _cancellation ??= new CancellationTokenSource();
             var cancellation = _cancellation.Token;
@@ -116,7 +118,8 @@ namespace AHC.VR
         string PhaseHint() => Session.HasLatchedViolation ? "A rule violation is recorded. Retry the Action; a global violation requires restarting the procedure."
             : Session.Phase == ActionCheckPhase.Applicability ? "Confirm whether this Action's condition applies. Unknown does not mean skip."
             : Session.Phase == ActionCheckPhase.Preconditions ? "Before starting the Action: waiting for its preconditions."
-            : "Perform the Action. Completion and applicable execution rules are checked together. Unknown does not pass.";
+            : Session.CurrentAction.manual_completion_required ? "This Action has no reliable single-image completion check. Perform it and use Confirm Action completed."
+            : "Perform the Action. Current visible results and spatial rules are checked together. Unknown does not pass.";
         void Cancel()
         {
             _generation++; _cancellation?.Cancel(); _cancellation?.Dispose(); _cancellation = new CancellationTokenSource();
@@ -126,6 +129,13 @@ namespace AHC.VR
         { Cancel(); Session.Confirm(id, notApplicable); Status = PhaseHint(); Save(); Changed?.Invoke(); }
         public void ConfirmApplicability(bool applies)
         { Cancel(); Session.ConfirmApplicability(applies); Status = applies ? PhaseHint() : "Condition does not apply. You may continue."; Save(); Changed?.Invoke(); }
+        public void ConfirmActionCompletion()
+        {
+            if (Paused || _applicationPaused || Session == null) return;
+            Cancel(); Session.ConfirmActionCompletion();
+            Status = Session.CanAdvance ? "Action completed by operator confirmation. Next is available." : PhaseHint();
+            Save(); Changed?.Invoke();
+        }
         public void Next()
         {
             if (Session == null || !Session.CanAdvance || Paused) return;
@@ -149,6 +159,7 @@ namespace AHC.VR
                 Directory.CreateDirectory(Path.GetDirectoryName(ReportPath));
                 File.WriteAllText(ReportPath, ActionProcedureJson.Serialize(new { procedure = Session.Procedure,
                     run_id = Session.RunId, phase = Session.Phase.ToString(), current_action_id = Session.CurrentAction.action_id,
+                    manual_completion_confirmed = Session.ActionCompletionConfirmed,
                     provider = LastProvider, history = Session.History.Where(h => h.run_id == Session.RunId).ToArray(),
                     current_results = Session.CurrentChecks.Select(q => new { q.requirement_id, q.category, q.condition,
                         result = Session.Result(q.requirement_id), human_confirmed = Session.IsHumanConfirmed(q.requirement_id) }).ToArray() }));

@@ -1,0 +1,28 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_P1",
+          "condition": "a pad covers the cut on the skin pad",
+          "source": "explicit_instruction",
+          "source_reference": "Place a non-stick pad over the whole cut on the skin pad.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Excluded non-stick property as per scope instructions.",
+        "Excluded whole-cut coverage assessment as per scope instructions on qualitative standards.",
+        "Postcondition restricted to verifiable pad coverage of the target."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A4 requires no manual completion check because a visible postcondition is provided."
+  ]
+}

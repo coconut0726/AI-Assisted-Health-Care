@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Instruction to look at, inspect, or check for redness, swelling, or leakage are operation-based clinical assessments. They lack verifiable static image states and are therefore omitted from automated checking."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A3 is marked manual_completion_required because the instruction describes a subjective visual assessment (inspecting for infection signs) which cannot be objectively validated by an image-only system per the provided constraints."
+  ]
+}

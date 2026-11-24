@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2668,
+    "total_input_tokens": 2436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2436
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 232,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2436
+  },
+  "created": "2026-11-24T05:02:10Z",
+  "updated": "2026-11-24T05:02:10Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRN3Yidjrzmsz0YSiLEvTc8PFa821q2JRoyVuA9CuzUq+UixZi9uKwub6sQ8pOm4EUkhQGTZbkkw950LSzcv5Xa4AU7mKrYhmGi1Po8KGaynvFFi8durdqsgxjGlhZ6RdW5bZuEFvHLKdH2lAT0VQAaOB6qcir3E7P42wd1MtAXpzMNk2FmENtFtViS9j3uuzkl09w2nwPwVB8oF/fHN+xvdlA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_R1\",\n          \"condition\": \"The non-stick pad is visibly covering the entire surface of the cut.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Place a non-stick pad over the whole cut on the skin pad.\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Visual verification limited to pad placement coverage over the cut. Excluded non-stick material property check.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A3 inspection criteria (redness, swelling, leakage) are clinical assessments and excluded from single-image verification.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

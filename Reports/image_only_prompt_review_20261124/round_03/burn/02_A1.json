@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A1",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Hand washing as a procedure is not a verifiable persistent visual state for a single static image and requires manual completion."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1 (Wash hands) requires manual completion as there is no single-image visual proxy for an 'already washed' state."
+  ]
+}

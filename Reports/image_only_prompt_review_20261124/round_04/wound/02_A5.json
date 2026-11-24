@@ -1,0 +1,28 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A5",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A5_R1",
+          "condition": "the pad wrapper is located inside the zip bag",
+          "source": "explicit_instruction",
+          "source_reference": "Put the pad wrapper into the zip bag",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Verified presence of the wrapper inside the zip bag based on visible containment."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A1, A3, A7, A8 are operations without verifiable single-image end states.",
+    "A2, A4, A6 require visual state checks; these are omitted per requested_action_ids constraint.",
+    "A5 is the only action requested for updates."
+  ]
+}

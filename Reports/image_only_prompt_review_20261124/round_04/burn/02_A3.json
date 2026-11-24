@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Soaking the dressing is an operation for which no single-image completion state can be determined. This action remains manually confirmed."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Rubbing and blister-breaking constraints are excluded as they are subjective/process-based. Cleanliness, material properties (non-stick, sterile, clean), and historical/procedural success (e.g., wash, soak, rinse, pat, call, use) are excluded per scope. Manual completion remains for non-visible operations."
+  ]
+}

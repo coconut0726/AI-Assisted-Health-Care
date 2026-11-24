@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3258,
+    "total_input_tokens": 3123,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3123
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 135,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3123
+  },
+  "created": "2026-11-24T05:14:21Z",
+  "updated": "2026-11-24T05:14:21Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRNY6nT+HxnMGnnBCBqV0ABqnTSx7IUHt8FtySKa5ODJSW1vfKZ+KYorncC57Bs72TXXitLnces4O2B09VISrqVZp2vfWMLzFa2Wt6aNnpU2bAbopDTVN2MZx/ndoB1yP5/a/DLGJv8ebSaJLXb9D13nU4MxbbmZ7cNdEfpuB/7iyDF3bbqiK6qgzQAQRYw95XWCRbvCmqV5CGaQ0N2zN8hZVw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A1\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Hand washing does not have an independent, reliable image end state. Manual completion required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Action A1 marked for manual completion as it lacks a visually verifiable end state.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

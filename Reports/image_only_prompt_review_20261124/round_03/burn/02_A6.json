@@ -1,0 +1,27 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A6",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A6_R1",
+          "condition": "The skin around the burn is visibly dry.",
+          "source": "explicit_instruction",
+          "source_reference": "pat the skin dry with a clean towel",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Excluded cleanliness check for towel.",
+        "Excluded rub/blister constraint as these refer to technique and history throughout the procedure."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Rubbing and blister-breaking constraints are excluded as they refer to technique and historical operation rather than a persistent visible state."
+  ]
+}

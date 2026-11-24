@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2708,
+    "total_input_tokens": 2506,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2506
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 202,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2506
+  },
+  "created": "2026-11-24T05:18:32Z",
+  "updated": "2026-11-24T05:18:32Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMJ6Jt76fligfx6ZjlSE4jSE7cEVqic8VhEDxIZ+CNy7/3uwpuvx4GEVBVNF1tjYC0bNascFTAxZ9deYV5+zrSaQ6EUZRvrsUeyv75rjBdgCTwbeHJvbtcC3lBB9WnZr7QMY0B4k3YsOJ1nKH+XB/t6am76jUl8kbRugwehIVsMFzKpQjjMF9tmV3U7X01iPxpWZQ4aReCRB0IHM5sJtd+tWg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A5\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"R1\",\n          \"condition\": \"The pad wrapper is contained inside the zip bag.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Put the pad wrapper into the zip bag\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Visual containment of the wrapper inside the zip bag is checked. The act of placing is omitted.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A5 is an atomic containment check.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

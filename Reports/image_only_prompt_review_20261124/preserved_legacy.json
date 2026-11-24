@@ -1,0 +1,12 @@
+{
+  "legacy_prompt_contents_unchanged": {
+    "Generate": true,
+    "Verify": true
+  },
+  "legacy_scenes_and_data_unchanged": {
+    "Assets/_Project/Scenes/VRGuidanceDemo.unity": true,
+    "Assets/_Project/Scenes/VRGuidanceDemo_V2.unity": true,
+    "Assets/_Project/Content/Procedures/burn_care_procedure.json": true,
+    "Assets/_Project/Content/Procedures/wound_dressing_procedure.json": true
+  }
+}

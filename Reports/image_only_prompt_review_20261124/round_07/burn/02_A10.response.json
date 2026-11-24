@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3450,
+    "total_input_tokens": 3124,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3124
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 326,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3124
+  },
+  "created": "2026-11-24T05:15:51Z",
+  "updated": "2026-11-24T05:15:51Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRPvlJvkWThNKdYsADLKNOY1xyJcWskXSyKk5FRJ/IqsygURE01fv7wGKqybjCyBQH9Hs6VCGhfzeqmvpYGZeOIkiA/dsJieapFkbOnjRJPNC/a9bKeQKyBiRDFcE9qzIBrb7c5nX395Ehy5eljcKTTKZsQfNfrPFTH3oPTvI1qiagWKAHrZzu5yFEsICS1Qx5kO8ueYTDxruAPf1UQrD0sB1w==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A10\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"R10_1\",\n          \"condition\": \"Medical tape is positioned on the gauze.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"Secure the gauze with medical tape, keeping the tape off the burned skin.\",\n          \"requires_expert_review\": false\n        },\n        {\n          \"requirement_id\": \"R10_2\",\n          \"condition\": \"Medical tape is not directly attached to the burned skin.\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"keeping the tape off the burned skin\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Constraint of keeping tape off burned skin is treated as a postcondition, not an error criterion, consistent with pattern instructions.\",\n        \"Omitted non-stick or loose properties from gauze wrapping.\",\n        \"Manual completion is false as postconditions are provided.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A10 verification focuses on tape placement on gauze and avoidance of contact with burned skin.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

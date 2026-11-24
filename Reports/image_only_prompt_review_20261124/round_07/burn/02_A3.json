@@ -1,0 +1,18 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A3",
+      "manual_completion_required": true,
+      "preconditions": [],
+      "postconditions": [],
+      "error_criteria": [],
+      "review_notes": [
+        "Soaking an object is a process-oriented activity with no independent, static visual end-state confirmable by a single RGB image."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A3 is manually completed due to lack of verifiable postconditions."
+  ]
+}

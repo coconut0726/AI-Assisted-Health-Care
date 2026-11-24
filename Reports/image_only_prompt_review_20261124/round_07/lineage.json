@@ -1,0 +1,10 @@
+{
+  "task_graph_source": "round_04 actual Gemini outputs unchanged",
+  "retained_requirements": "round_06 actual Gemini outputs, still scope-compliant; raw requests and hashes identify their exact prompt version",
+  "regenerated_requirements": [
+    "burn/A7: remove medicine identity",
+    "burn/global: omit duplicated tape rule",
+    "wound/global: validate cross-Action image scope"
+  ],
+  "not_hand_authored": true
+}

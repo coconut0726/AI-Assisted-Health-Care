@@ -19,7 +19,7 @@ namespace AHC.VR
         Transform _head;
         RectTransform _hud;
         TextMeshProUGUI _status;
-        Button _next;
+        Button _next, _completeManually, _checkNow;
         string _layoutKey;
         bool _dirty = true;
         GameObject _preview;
@@ -85,6 +85,10 @@ namespace AHC.VR
                 (Application.isEditor && _care.CameraSource.editorTestImage != null ? " · EDITOR TEST IMAGE" :
                  _care.CameraSource.captureViewCameraInEditor && Application.isEditor ? " · EDITOR VIRTUAL CAMERA" : " · HEADSET RGB");
             if (_next != null) _next.interactable = !_care.Paused && session?.CanAdvance == true;
+            if (_completeManually != null) _completeManually.interactable = !_care.Paused && !session.ActionCompletionConfirmed && session.DependenciesMet();
+            if (_checkNow != null) _checkNow.interactable = !_care.Paused && !_care.InFlight &&
+                session.Applicability != ActionRequirementSession.NotApplicable &&
+                (session.Phase == ActionCheckPhase.Applicability || session.CurrentChecks.Length > 0);
             foreach (var button in _conditionalButtons) button.interactable = !session.HasLatchedViolation;
             foreach (var pair in _labels)
             {
@@ -96,7 +100,7 @@ namespace AHC.VR
         }
         void Build()
         {
-            Ui.Clear(_hud); _labels.Clear(); _confirmationButtons.Clear(); _conditionalButtons.Clear(); _next = null;
+            Ui.Clear(_hud); _labels.Clear(); _confirmationButtons.Clear(); _conditionalButtons.Clear(); _next = _completeManually = _checkNow = null;
             var panel = Ui.Card(_hud, "Phase-aware guidance", 1020, Theme.Panel, new RectOffset(28, 28, 24, 24), 10);
             Ui.Place(panel.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, 1020);
             Ui.PillRow(panel.transform, "ACTION REQUIREMENTS · 1 s polling slots", Theme.PrimaryDark, Theme.PrimaryBg);
@@ -106,7 +110,7 @@ namespace AHC.VR
             if (!_care.Started)
             {
                 Ui.Text(panel.transform, "Task goal: " + s.Procedure.task_goal, 19, Theme.Text);
-                Ui.Text(panel.transform, "Preconditions → Action completion + execution rules. Unknown never unlocks Next. Operator confirmations are recorded separately from VLM results.", 17, Theme.Muted);
+                Ui.Text(panel.transform, "Image checks: preconditions → visible results and spatial rules. Actions without an image completion check require operator confirmation. Unknown never unlocks Next.", 17, Theme.Muted);
                 var cases = Ui.Row(panel.transform, "Examples", 8);
                 foreach (var asset in _care.examples.Where(a => a != null))
                 {
@@ -125,7 +129,7 @@ namespace AHC.VR
             {
                 Ui.Text(panel.transform, $"Step {s.StepIndex + 1}/{s.Procedure.steps.Length}: {s.CurrentStep.step_name} · Action {s.ActionIndex + 1}/{s.ActionCount}", 17, Theme.Muted);
                 Ui.Text(panel.transform, s.CurrentAction.instruction, 23, Theme.Text, true);
-                Ui.PillRow(panel.transform, s.Phase == ActionCheckPhase.Preconditions ? "BEFORE THE ACTION" : s.Phase == ActionCheckPhase.Applicability ? "DOES THE CONDITION APPLY?" : "COMPLETION + EXECUTION RULES", Theme.Lav, Theme.LavBg);
+                Ui.PillRow(panel.transform, s.Phase == ActionCheckPhase.Preconditions ? "BEFORE THE ACTION" : s.Phase == ActionCheckPhase.Applicability ? "DOES THE CONDITION APPLY?" : s.CurrentAction.manual_completion_required ? "MANUAL COMPLETION" : "VISIBLE RESULTS + SPATIAL RULES", Theme.Lav, Theme.LavBg);
                 if (s.ConditionalActions.Any(a => a.action_id != s.CurrentAction.action_id))
                 {
                     var conditional = Ui.Row(panel.transform, "Conditional Actions", 8);
@@ -158,8 +162,13 @@ namespace AHC.VR
                 }
                 if (!s.DependenciesMet() && s.Applicability != ActionRequirementSession.NotApplicable)
                     Ui.Note(panel.transform, "A graph prerequisite has not been confirmed. The session will not infer it from the goal or a missing observation.", Theme.Amber, Theme.AmberBg);
+                if (s.Phase == ActionCheckPhase.Completion && s.Applicability != ActionRequirementSession.NotApplicable && s.CurrentAction.manual_completion_required)
+                {
+                    Ui.Note(panel.transform, "No reliable completion claim can be judged from one image. Perform the instruction, then explicitly confirm completion. This is recorded as human confirmation.", Theme.Amber, Theme.AmberBg);
+                    _completeManually = Ui.Button(panel.transform, "Confirm Action completed", false, _care.ConfirmActionCompletion);
+                }
                 var controls = Ui.Row(panel.transform, "Controls", 10);
-                Ui.Button(controls.transform, "Check now", false, _care.VerifyNow);
+                _checkNow = Ui.Button(controls.transform, "Check now", false, _care.VerifyNow);
                 Ui.Button(controls.transform, "Retry Action", false, _care.Retry, "R");
                 Ui.Button(controls.transform, "Pause / resume", false, _care.TogglePause, "P");
                 _next = Ui.Button(controls.transform, "Next Action", true, _care.Next, "A");

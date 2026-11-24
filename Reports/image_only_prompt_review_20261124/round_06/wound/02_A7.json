@@ -1,0 +1,26 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "R_A7_1",
+          "condition": "The gloves are no longer worn on the hands.",
+          "source": "explicit_instruction",
+          "source_reference": "take off the gloves",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Removed the requirement to 'take off' which is an operation; checked instead for the visible state of absence from the hands."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A7 represents the visible end state of glove removal."
+  ]
+}

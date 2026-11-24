@@ -1,0 +1,4 @@
+{
+  "status": 429,
+  "detail": "{\"error\": \"A verification is already in progress\"}"
+}

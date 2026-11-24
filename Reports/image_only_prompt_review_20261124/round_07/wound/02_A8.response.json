@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 2626,
+    "total_input_tokens": 2506,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2506
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 120,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2506
+  },
+  "created": "2026-11-24T05:18:57Z",
+  "updated": "2026-11-24T05:18:57Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRMQK7boW2tUhZYCR66n5VHqrXH3gKze1XPtChIgJA1xh/HprPkLG1GOTEzT9XIPXYNwdq94W4iQM+kaRmshoMuC8Hbwfx+GmBlZBh81VGpMAH9wsiedRnhncm/tWcrpXh6SX32vuvKKNDA9fxolXj9RKtHym2Qov8Mn6z3u9ivMlodOB1fCT9dAaARsXEPIUYsSHxSqgICy5Sh668jtB5GEfg==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A8\",\n      \"manual_completion_required\": true,\n      \"preconditions\": [],\n      \"postconditions\": [],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Washing hands is a process-based activity without a reliable, persistent image-visible postcondition; manual completion required.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": []\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

@@ -1,0 +1,38 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A9",
+      "manual_completion_required": false,
+      "preconditions": [
+        {
+          "requirement_id": "A9_P1",
+          "condition": "A non-stick pad covers the burn area",
+          "source": "explicit_instruction",
+          "source_reference": "Cover the burn with a non-stick pad",
+          "requires_expert_review": false
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A9_P2",
+          "condition": "A gauze roll wraps the non-stick pad over the burn",
+          "source": "explicit_instruction",
+          "source_reference": "wrap it loosely with a gauze roll",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Visual confirmation of the gauze roll wrap is possible, though loose application is subjective and excluded.",
+        "Requirement A9_P1 ensures the previous step's object is correctly positioned.",
+        "Manual completion is false as the physical state of the wrap is verifiable."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "Rubbing constraints and blister status are excluded as they concern past/internal status.",
+    "Loose wrapping is excluded as a subjective qualitative standard.",
+    "Manual completion for A9 is set to false because the presence of the wrapping gauze is a visually verifiable state."
+  ]
+}

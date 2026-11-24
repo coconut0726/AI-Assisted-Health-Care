@@ -1,0 +1,103 @@
+{
+  "status": "completed_for_two_included_cases",
+  "backend": "Gemini via existing local bridge",
+  "selected_results": "round_07",
+  "provenance": {
+    "task_graph_source": "round_04 actual Gemini outputs unchanged",
+    "retained_requirements": "round_06 actual Gemini outputs, still scope-compliant; raw requests and hashes identify their exact prompt version",
+    "regenerated_requirements": [
+      "burn/A7: remove medicine identity",
+      "burn/global: omit duplicated tape rule",
+      "wound/global: validate cross-Action image scope"
+    ],
+    "not_hand_authored": true
+  },
+  "scope": "Single-current-image states and spatial relationships only; full instruction retained. No evidence-specification fields.",
+  "cases": [
+    {
+      "actions": 11,
+      "postconditions": 7,
+      "global_error_criteria": 0,
+      "graph_preserved": true,
+      "preconditions": 0,
+      "production_schema_matches": true,
+      "steps": 5,
+      "production_merge_parse_passed": true,
+      "manual_actions": [
+        "A1",
+        "A3",
+        "A5",
+        "A6",
+        "A11"
+      ],
+      "local_error_criteria": 0,
+      "case": "burn"
+    },
+    {
+      "actions": 8,
+      "postconditions": 5,
+      "global_error_criteria": 0,
+      "graph_preserved": true,
+      "preconditions": 0,
+      "production_schema_matches": true,
+      "steps": 5,
+      "production_merge_parse_passed": true,
+      "manual_actions": [
+        "A1",
+        "A3",
+        "A8"
+      ],
+      "local_error_criteria": 0,
+      "case": "wound"
+    }
+  ],
+  "checks": {
+    "legacy_policy_checks": 65,
+    "action_flow_checks": 90,
+    "total_policy_checks": 155,
+    "custom_csharp_syntax_checks": 63,
+    "unity_compilation": [
+      "Runtime",
+      "Editor with fresh Runtime reference",
+      "Android conditional branch"
+    ],
+    "both_conditional_branches_operator_walkthroughs": true,
+    "headset_or_unity_play_mode_e2e_exercised": false
+  },
+  "legacy_preserved": {
+    "legacy_prompt_contents_unchanged": {
+      "Generate": true,
+      "Verify": true
+    },
+    "legacy_scenes_and_data_unchanged": {
+      "Assets/_Project/Scenes/VRGuidanceDemo.unity": true,
+      "Assets/_Project/Scenes/VRGuidanceDemo_V2.unity": true,
+      "Assets/_Project/Content/Procedures/burn_care_procedure.json": true,
+      "Assets/_Project/Content/Procedures/wound_dressing_procedure.json": true
+    }
+  },
+  "runtime_behavior": [
+    "Image-supported Actions keep periodic image verification and explicit Next Action.",
+    "Actions without image postconditions require Confirm Action completed; empty lists never auto-pass.",
+    "Unknown image requirements still support explicit Confirm myself.",
+    "Generated preconditions and error arrays are empty for these two sources; their applicable image relations are represented once as postconditions."
+  ],
+  "case_files": {
+    "burn": {
+      "path": "Assets/_Project/Content/Procedures/burn_action_requirements.json",
+      "sha256": "f81504e724726b8d02027c974963aeeef6fff8aafc783549b07719aecbf3116a",
+      "original_instruction_preserved": true,
+      "model_ids": [
+        "gemini-3.1-flash-lite"
+      ]
+    },
+    "wound": {
+      "path": "Assets/_Project/Content/Procedures/wound_action_requirements.json",
+      "sha256": "97e759d02429682f5a2c41b286fd1974757457565ca1315f12b37c31047be976",
+      "original_instruction_preserved": true,
+      "model_ids": [
+        "gemini-3.1-flash-lite"
+      ]
+    }
+  }
+}

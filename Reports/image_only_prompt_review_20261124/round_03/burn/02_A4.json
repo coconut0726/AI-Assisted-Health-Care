@@ -1,0 +1,28 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A4",
+      "manual_completion_required": false,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "requirement_id": "A4_R1",
+          "condition": "The burn area is clear of the old dressing material.",
+          "source": "explicit_instruction",
+          "source_reference": "Gently remove the old dressing.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Visual verification limited to the absence of the old dressing covering the burn site.",
+        "Excluded the 'gently' requirement as it is a subjective manner of operation not verifiable via a single image.",
+        "Manual completion is false as the removal state is visually verifiable."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A4 is treated as the removal step; postcondition verifies the dressing is no longer present on the burn site."
+  ]
+}

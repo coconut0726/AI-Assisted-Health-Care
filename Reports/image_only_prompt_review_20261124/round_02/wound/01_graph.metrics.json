@@ -1,0 +1,6 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "seconds": 4.73,
+  "prompt_sha256": "a0821b0eef4c4764cb5b61e1a0102676b0b344698b8c7968c83768483b2a1d8b"
+}

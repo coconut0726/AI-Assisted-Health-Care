@@ -1,0 +1,37 @@
+{
+  "action_updates": [
+    {
+      "action_id": "A7",
+      "manual_completion_required": false,
+      "preconditions": [
+        {
+          "requirement_id": "A7_P1",
+          "condition": "cotton swab is available",
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": false
+        }
+      ],
+      "postconditions": [
+        {
+          "requirement_id": "A7_P2",
+          "condition": "burn ointment is on the burn",
+          "source": "explicit_instruction",
+          "source_reference": "Use a cotton swab to apply a thin layer of burn ointment to the burn.",
+          "requires_expert_review": false
+        }
+      ],
+      "error_criteria": [],
+      "review_notes": [
+        "Excluded 'thin layer' as a subjective qualitative standard.",
+        "Excluded 'Do not rub' and 'do not break' as prohibited action/interval claims.",
+        "Manual completion is false; visual verification of ointment application is possible."
+      ]
+    }
+  ],
+  "procedure_error_criteria": [],
+  "review_notes": [
+    "A7 specifically updated for current visible state validation.",
+    "Instruction references mapped to exact text as requested."
+  ]
+}

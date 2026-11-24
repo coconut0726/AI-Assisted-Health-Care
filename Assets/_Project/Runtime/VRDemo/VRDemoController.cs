@@ -18,8 +18,8 @@ namespace AHC.VR
     /// the demo JSON; add it to a scene with  AHC ▸ Add VR Demo to Scene.
     ///
     /// With a <see cref="RealCareSession"/> on the same object, the caregiver flow is real: the supplies are looked
-    /// for in the passthrough view, each step's items are boxed in the room, and Check step verifies the result
-    /// through the PC bridge before Next unlocks. The nurse flow stays a scripted walkthrough.
+    /// for in the passthrough view and postconditions are verified through the selected VLM backend.
+    /// Passed steps advance the UI and voice automatically. The nurse flow stays a scripted walkthrough.
     ///
     /// Controls — hands: aim the hand ray at a button and pinch, or touch it with a fingertip.
     /// Quest controllers:  A next / check step · B back (skip a step that did not pass) · X find items / repeat
@@ -101,6 +101,7 @@ namespace AHC.VR
             {
                 _care.Init(_head);
                 _care.Changed += OnCareChanged;
+                _care.Advanced += OnCareAdvanced;
                 _care.Spoke += Say;
             }
             if (TryGetComponent(out _voice) && _voice.enabled)
@@ -244,7 +245,7 @@ namespace AHC.VR
                     SetView(View.PatientStep);
                     break;
                 case View.PatientStep:
-                    if (_care.CanAdvance) { _care.Next(); AfterStepChange(); }
+                    if (_care.CanAdvance) _care.Next();
                     else _care.Verify();
                     break;
                 case View.PatientComplete: GoHome(); break;
@@ -255,10 +256,13 @@ namespace AHC.VR
         {
             if (_care.State != ProcedureSessionState.NeedsRetry) return;
             _care.Skip();
-            AfterStepChange();
         }
 
-        void AfterStepChange() => SetView(_care.Completed ? View.PatientComplete : View.PatientStep);
+        void OnCareAdvanced()
+        {
+            if (this == null || _hud == null || _view != View.PatientStep) return;
+            SetView(_care.Completed ? View.PatientComplete : View.PatientStep);
+        }
 
         // Requests finish in the background; redraw the HUD (without speaking again) when they do.
         void OnCareChanged()
@@ -381,6 +385,7 @@ namespace AHC.VR
             View.PatientStart => "Let's change your dressing together. First, check that your supplies are in view.",
             View.PatientStep when Real => _care.Completed ? "" : _care.CurrentStep.instruction,
             View.PatientStep => _data.steps[_flat[_cursor].step].actions[_flat[_cursor].action].voice,
+            View.PatientComplete when Real => "All steps are complete. Your session report has been saved.",
             View.PatientComplete => $"All done, great job! I'll share this session with {_data.nurseName}.",
             View.NurseStart => "Show me how it's done and explain each step out loud. I'll turn it into a guide.",
             View.NurseRecording => "I'm watching and listening…",
@@ -658,6 +663,7 @@ namespace AHC.VR
             if (_care.autoVerify && !_care.CanAdvance)
             {
                 Ui.Text(panel.transform, $"Auto-check every {_care.PollingInterval:0.#} s · Keep the work area in view", 15, Theme.Muted);
+                Ui.Text(panel.transform, "The next step starts automatically when all checks pass.", 15, Theme.Muted);
                 string show = string.Join(" ", step.requirements.Select(r => r.observation_hint)
                     .Where(h => !string.IsNullOrWhiteSpace(h)).Distinct());
                 if (!string.IsNullOrWhiteSpace(show)) Ui.Text(panel.transform, show, 15, Theme.Muted);

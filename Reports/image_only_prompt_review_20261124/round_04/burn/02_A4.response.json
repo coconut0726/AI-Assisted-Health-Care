@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3699,
+    "total_input_tokens": 3436,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 3436
+      }
+    ],
+    "total_cached_tokens": 1413,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 1413
+      }
+    ],
+    "total_output_tokens": 263,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 3436
+  },
+  "created": "2026-11-24T05:06:43Z",
+  "updated": "2026-11-24T05:06:43Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRODyWzFc08jCWVm8MgJolO3qyTCUWKi11BMCPA5VpFnBoA1ksAtvOt9Oda0UfUat2Wh2DADp3K0oGv+k7YBQOi9lY0hpJPRGfufo9AIxEyZ/9kJRdBdu1XRUB3guJgjaVokuznCpyL+fb9slz6tt+i6YEc3NtQGaYFzKW37wGaRDPhQrYA9I0iQ2am5URrJmGxnn8TShoXN3QZjTMBkWpXQTA==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [\n    {\n      \"action_id\": \"A4\",\n      \"manual_completion_required\": false,\n      \"preconditions\": [],\n      \"postconditions\": [\n        {\n          \"requirement_id\": \"A4_R1\",\n          \"condition\": \"the old dressing is absent from the target area\",\n          \"source\": \"explicit_instruction\",\n          \"source_reference\": \"remove the old dressing\",\n          \"requires_expert_review\": false\n        }\n      ],\n      \"error_criteria\": [],\n      \"review_notes\": [\n        \"Instruction to remove gently is an excluded operation quality.\",\n        \"Postcondition verifies the state of removal; does not assume or verify how it was removed.\"\n      ]\n    }\n  ],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"Rubbing/blister-breaking constraints excluded as operation/history claims.\",\n    \"Operations (wash/soak/rinse/pat/call) omitted from postconditions per scope guidelines.\",\n    \"No explicit error criteria defined for removal status based on single-image scope.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

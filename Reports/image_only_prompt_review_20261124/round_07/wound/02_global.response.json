@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "usage": {
+    "total_tokens": 3032,
+    "total_input_tokens": 2813,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 2813
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 219,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 2813
+  },
+  "created": "2026-11-24T05:25:18Z",
+  "updated": "2026-11-24T05:25:18Z",
+  "service_tier": "standard",
+  "steps": [
+    {
+      "signature": "EqkBCqYBAWkUfRO0UQcfCLwqCgSRTynAJJb1ubeA+6Z/PCdWdmnPu8KAAub4mWQ+eu+MRFM3eyOZQ7qoh1Kk7gx7kD6E/GA/ueOKsCE8z6xxnK+gBIpCtruKHKa4NYOAZozv5c0f1RK25rtbQ15S8st9gBLL7ZvSflcmHX/N/tFZpgXMk17WuM1hd71iOsaLjow354Cm4h5W8qvar1X7td0XxKGc0YaxkDAOzw==",
+      "type": "thought"
+    },
+    {
+      "content": [
+        {
+          "text": "{\n  \"action_updates\": [],\n  \"procedure_error_criteria\": [],\n  \"review_notes\": [\n    \"A1 and A8 require manual completion as there is no independent image end state for hand washing.\",\n    \"A3 requires manual completion as red, swollen, and leaking clinical inspections are not automatically verifiable via RGB image.\",\n    \"A2 postcondition is 'Gloves are worn on the hands.' Omitted 'clean'.\",\n    \"A4 postcondition is 'A pad covers the whole cut on the skin pad.' Omitted 'non-stick'.\",\n    \"A5 postcondition is 'The pad wrapper is contained inside the zip bag.'\",\n    \"A6 postcondition is 'The zip bag is visibly closed.' Omitted 'seal'.\",\n    \"A7 postcondition is 'The gloves are no longer worn on the hands.' Omitted 'take off'.\",\n    \"Global error criteria are not applicable; procedural checks rely on per-step verified states.\"\n  ]\n}",
+          "type": "text"
+        }
+      ],
+      "type": "model_output"
+    }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.1-flash-lite",
+  "provider": "Gemini"
+}

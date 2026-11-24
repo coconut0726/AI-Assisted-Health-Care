@@ -15,11 +15,18 @@ namespace HomeCare.Procedures
         public ProcedureStep CurrentStep => Procedure.steps[StepIndex];
         public bool CanAdvance => State == ProcedureSessionState.Passed;
 
-        public ProcedureSession(ProcedureRequirements procedure)
+        public ProcedureSession(ProcedureRequirements procedure, bool postconditionsOnly = false)
         {
             RequirementsJson.Validate(procedure);
             // Keep a snapshot, so later authoring edits cannot change an active session.
             Procedure = RequirementsJson.Parse(RequirementsJson.Serialize(procedure));
+            if (postconditionsOnly)
+                foreach (var step in Procedure.steps)
+                {
+                    step.requirements = Array.FindAll(step.requirements, r => r.category == "postcondition");
+                    if (step.requirements.Length == 0)
+                        throw new ArgumentException(step.id + " has no postconditions to verify in this demo.");
+                }
             Restart();
         }
 

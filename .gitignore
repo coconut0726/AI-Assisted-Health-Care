@@ -127,3 +127,6 @@ InitTestScene*.unity*
 # Meta Voice SDK: wit.config holds the Wit.ai Server Access Token; never commit it
 /ProjectSettings/wit.config
 /ProjectSettings/WitConfigExports/
+
+# Care-plan server database (Tools/care_plan_server.py)
+/Tools/care_plan_data/

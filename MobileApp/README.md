@@ -21,7 +21,7 @@ Browser preview on the Mac: `npx expo start --web`.
 
 Without a server, the care plan is stored on the phone and starts from the burn demo (`src/data/`). "Reset demo" on the first screen restores it.
 
-To use the care-plan server on the Windows PC, start Expo with its LAN address:
+To use the care-plan server, start it on the Windows PC (`python Tools/care_plan_server.py`, port 8770, see `docs/HANDOFF_mobile.md`), then start Expo with the PC's LAN address:
 
 ```bash
 EXPO_PUBLIC_SERVER_URL=http://192.168.1.20:8770 npx expo start

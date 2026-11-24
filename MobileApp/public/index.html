@@ -36,7 +36,8 @@
       // Offline support: see public/sw.js.
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js');
+          // The dev server (npx expo start --web) has no sw.js; offline support only matters in the built app.
+          navigator.serviceWorker.register('/sw.js').catch(function () {});
         });
       }
     </script>

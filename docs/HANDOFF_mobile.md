@@ -159,16 +159,41 @@ Built in `MobileApp/` (see its README):
 - The care plan is kept on the phone until a server exists. Setting `EXPO_PUBLIC_SERVER_URL` switches to the server.
 - Runs in Expo Go, and as an installable web app (`npm run build:web`, then Safari → Add to Home Screen).
 
-## Next on the PC: care-plan server
+## Care-plan server (built on the PC, 2026-11-24)
 
-The phone already calls this API (`MobileApp/src/api/client.ts`):
+`Tools/care_plan_server.py`: Python standard library + SQLite, next to `verification_bridge.py`. Tests: `Tools/test_care_plan_server.py`.
 
-- `GET /api/patients/:id/plan` returns the latest `PlanVersion`: `{ patient_id, version, updated_at, updated_by, plan, changed_step_ids }`.
+Start it on the PC:
+
+```bash
+python Tools/care_plan_server.py            # http://0.0.0.0:8770, seeds the demo patient "james"
+python Tools/care_plan_server.py --reset-demo   # wipe james's versions and seed the burn demo again
+```
+
+- Database: `Tools/care_plan_data/care_plan.sqlite3` (git-ignored). Every save is a new row; nothing is overwritten.
+- `GET /api/patients/:id/plan` returns the latest `PlanVersion`. `GET /api/patients/:id/plan/procedure` returns only the plan JSON, for the headset.
 - `PUT /api/patients/:id/plan` with `{ base_version, plan }`:
-  - Validates the plan with the same rules as `ActionProcedureJson.Validate`.
-  - Fills AI fields: Watch-out `error_type` and `violation_condition`, and supply `itemId` and `keywords`.
-  - Stores the plan as version + 1 and returns the new `PlanVersion`.
-  - Answers `409` when `base_version` is out of date.
-- The headset loads the latest `plan` at the start of a session. That loader is not built yet.
-- CORS must allow the phone's web app.
-- Demo patient id: `james`. Seed it from `MobileApp/src/data/demo.ts`: the burn JSON plus the demo additions.
+  - `409` when `base_version` is not the latest.
+  - Completes the plan, then validates it with a Python port of `ActionProcedureJson.Validate`. `422` with the headset's reason if it would be rejected.
+  - Completing the plan means:
+    - New Watch-out items and shared rules get `error_type` and `violation_condition` from Gemini (`GEMINI_API_KEY`, model `CARE_PLAN_MODEL`, default `gemini-3.8-flash`). Without a key, or if the call fails, a plain fallback is used, so the save still works.
+    - Missing or duplicate ids are numbered.
+    - An `inferred` item the nurse approved becomes `author_edit`.
+    - Supplies get `itemId` and `keywords`.
+    - `notify_nurse` is kept, or set on the "Call your nurse" action.
+  - Stores version + 1 with `changed_step_ids`.
+- CORS allows any origin.
+- Checked: all three case files on Kezhou's branch (burn, wound, tabletop) pass the ported validation. An end-to-end save from the Expo web app worked: Gemini classified a new Watch-out item and v2 was stored. A save with a new Watch-out item takes about 10 s because of the Gemini call.
+
+Phone → server:
+
+```bash
+EXPO_PUBLIC_SERVER_URL=http://<PC LAN IP>:8770 npx expo start
+```
+
+The iPhone must be on the same Wi‑Fi, and Windows Firewall must allow inbound TCP 8770 for Python. The user allows this themselves when Windows asks.
+
+Not built yet:
+- The headset loader: at session start, fetch `/api/patients/james/plan/procedure`, with `adb reverse tcp:8770 tcp:8770` like the bridge.
+- A patient-side "seen version" for the "Updated" banner.
+- Reports (N6–N9, P3–P4).

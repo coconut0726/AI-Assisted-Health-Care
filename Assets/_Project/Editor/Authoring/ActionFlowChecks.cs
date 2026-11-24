@@ -17,6 +17,7 @@ namespace HomeCare.Authoring
             int count = 0;
             Action<bool, string> check = (value, name) => { if (!value) throw new Exception("Action flow: " + name); count++; };
             Action<System.Action, string> rejects = (body, name) => { bool failed = false; try { body(); } catch (ArgumentException) { failed = true; } check(failed, name); };
+            Action<System.Action, string> blocks = (body, name) => { bool failed = false; try { body(); } catch (InvalidOperationException) { failed = true; } check(failed, name); };
             Func<ActionProcedure> example = () => ActionProcedureJson.Parse(File.ReadAllText(Path.Combine(directory, "tabletop_action_requirements.json")));
             foreach (var name in new[] { "tabletop", "burn", "wound" })
             {
@@ -128,14 +129,22 @@ namespace HomeCare.Authoring
             source.steps[0].actions[0].preconditions[0].condition = "mutated outside session";
             check(session.CurrentChecks[0].condition != "mutated outside session", "snapshot isolation");
             check(session.Phase == ActionCheckPhase.Preconditions && !session.CanAdvance, "starts before action");
+            PassStatus(session, ActionRequirementSession.Unknown);
+            check(session.Phase == ActionCheckPhase.Preconditions && session.CurrentChecks.All(q => q.category == "precondition"), "unknown preconditions do not expose postconditions or execution rules");
+            blocks(session.Advance, "unknown preconditions cannot advance the Action");
+            PassStatus(session, ActionRequirementSession.No);
+            check(session.Phase == ActionCheckPhase.Preconditions, "failed preconditions stay in the precondition phase");
+            blocks(session.Advance, "failed preconditions cannot advance the Action");
             var pre = session.BeginVerification(); check(session.Busy, "one request in flight");
             bool busyRejected = false; try { session.BeginVerification(); } catch (InvalidOperationException) { busyRejected = true; }
             check(busyRejected, "overlapping request rejected");
             check(session.Accept(pre, Reply(pre, ActionRequirementSession.Yes)), "matching response accepted");
             check(session.Phase == ActionCheckPhase.Completion && !session.CanAdvance, "pre success requires fresh completion check");
+            rejects(() => ActionVerificationProtocol.CreateRequest(session, pre, new byte[] { 1 }, "test"), "a precondition capture cannot be reused as completion evidence");
             check(session.CurrentChecks.All(q => q.category != "precondition"), "active phase selection");
             var completion = session.BeginVerification(); session.Accept(completion, Reply(completion, ActionRequirementSession.Unknown));
             check(!session.CanAdvance, "unknown cannot advance");
+            blocks(session.Advance, "unknown completion cannot advance the Action");
             completion = session.BeginVerification(); session.Accept(completion, Reply(completion, ActionRequirementSession.Yes));
             check(session.CanAdvance, "completion confirms action");
             session.RefreshAfterPause();
@@ -160,7 +169,9 @@ namespace HomeCare.Authoring
             check(session.CurrentChecks.Any(q => q.category == "error_compliance"), "execution rules checked with completion");
             ticket = session.BeginVerification(); var fail = Reply(ticket, ActionRequirementSession.Yes); fail.results.Last().status = ActionRequirementSession.No; session.Accept(ticket, fail);
             check(session.HasLatchedViolation && !session.CanAdvance, "rule violation blocks completion");
+            blocks(session.Advance, "a detected rule violation cannot enter the next Action");
             Pass(session); check(!session.CanAdvance, "later clean frame cannot erase violation");
+            blocks(session.Advance, "a later visual pass cannot bypass an unresolved rule violation");
             session.RetryCurrentAction(); Pass(session); check(session.CanAdvance, "explicit local retry permits a new attempt");
             session.Advance(); check(session.Completed, "procedure completes only after all actions");
 
@@ -170,12 +181,27 @@ namespace HomeCare.Authoring
             reviewSession.Confirm("A1_PRE1"); check(reviewSession.Phase == ActionCheckPhase.Completion, "explicit human confirmation tracked separately");
             check(reviewSession.History.Any(h => h.source == "human_confirmation"), "human provenance");
             string oldRun = reviewSession.RunId; reviewSession.Restart();
+            reviewSession.Confirm("A1_PRE1");
             var requestTicket = reviewSession.BeginVerification();
             var request = JObject.Parse(ActionVerificationProtocol.CreateRequest(reviewSession, requestTicket, new byte[] { 1, 2, 3 }, "2026-11-23T00:00:00Z"));
             var context = JObject.Parse((string)request["input"][0]["text"]);
-            check(context["task_goal"] != null && context["current_requirements"] != null && context["dependency_history"] != null, "request includes goal/current checks/dependencies");
-            check(!context["confirmed_step_history"].Any(h => (string)h["run_id"] == oldRun), "previous run facts not sent as current history");
-            check((string)request["input"][1]["type"] == "image", "current frame attached");
+            check(context["task_goal"] != null && context["current_step"] != null && context["current_action"] != null &&
+                context["current_requirements"] != null, "request retains the current task, Action and active checks");
+            check(context["dependency_history"] == null && context["confirmed_step_history"] == null && context["task_outline"] == null,
+                "image verification does not send graph states, confirmation history or the task outline");
+            check(reviewSession.History.Any(h => h.run_id == oldRun && h.source == "human_confirmation") &&
+                reviewSession.History.Any(h => h.run_id == reviewSession.RunId && h.event_type == "precondition_confirmed"),
+                "removing history from the prompt preserves local confirmations and run boundaries");
+            check((string)context["request_id"] == requestTicket.RequestId && (string)context["run_id"] == reviewSession.RunId &&
+                (string)context["current_step"]["step_id"] == requestTicket.StepId && (string)context["current_action"]["action_id"] == requestTicket.ActionId &&
+                (string)context["phase"] == requestTicket.Phase && (string)context["established_action_applicability"] == "applies",
+                "request retains result-matching metadata and established applicability");
+            check(context["current_requirements"].All(q => (string)q["category"] == "postcondition") &&
+                reviewSession.History.Any(h => h.event_type == "precondition_confirmed"), "passed preconditions remain local instead of being rechecked by the VLM");
+            check(request["input"].Count(i => (string)i["type"] == "image") == 1 &&
+                (string)request["input"][1]["data"] == Convert.ToBase64String(new byte[] { 1, 2, 3 }) &&
+                context["current_frame"]["captured_at_utc"].Value<DateTime>().ToUniversalTime() == new DateTime(2026, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                "exactly one current frame and its capture time are attached");
             check(!context.Descendants().OfType<JProperty>().Any(p => p.Name.StartsWith("evidence")), "no removed fields in request context");
             reviewSession.Fail(requestTicket, "end test");
 
@@ -184,8 +210,31 @@ namespace HomeCare.Authoring
             check(c.Phase == ActionCheckPhase.Applicability, "conditional applicability checked first");
             ticket = c.BeginVerification(); var unresolved = Reply(ticket, ActionRequirementSession.Unknown); unresolved.action_applicability = ActionRequirementSession.Unknown; c.Accept(ticket, unresolved);
             check(!c.CanAdvance && c.Phase == ActionCheckPhase.Applicability, "unknown condition never skips");
+            blocks(c.Advance, "unknown applicability cannot advance the Action");
             c.ConfirmApplicability(false); check(c.CanAdvance, "explicit inapplicable branch can advance");
             c.Advance(); check(c.DependenciesMet(), "inapplicable predecessor does not block dependent");
+
+            var modelConditional = new ActionRequirementSession(conditional);
+            var applicabilityTicket = modelConditional.BeginVerification();
+            var applicabilityRequest = JObject.Parse(ActionVerificationProtocol.CreateRequest(modelConditional, applicabilityTicket,
+                new byte[] { 4, 5, 6 }, "2026-11-23T00:00:00Z"));
+            var applicabilityContext = JObject.Parse((string)applicabilityRequest["input"][0]["text"]);
+            check((string)applicabilityContext["phase"] == "Applicability" &&
+                (string)applicabilityContext["current_action"]["applicability_condition"] == conditional.steps[0].actions[0].applicability_condition &&
+                !applicabilityContext["current_requirements"].Any() && (string)applicabilityRequest["input"][1]["type"] == "image",
+                "conditional applicability is a VLM verification with its trigger and current image, before pre/post/error checks");
+            var notApplicableReply = Reply(applicabilityTicket, ActionRequirementSession.Yes);
+            notApplicableReply.action_applicability = ActionRequirementSession.NotApplicable;
+            modelConditional.Accept(applicabilityTicket, notApplicableReply);
+            check(modelConditional.CurrentAction.action_id == "A1" && modelConditional.CanAdvance && modelConditional.CurrentChecks.Length == 0,
+                "VLM not_applicable exposes skip eligibility without verifying or passing the Action's conditions");
+            blocks(() => modelConditional.BeginVerification(), "a resolved inapplicable Action does not send further image checks");
+            modelConditional.Advance();
+            check(modelConditional.History.Any(h => h.event_type == "action_finished" && h.action_id == "A1" && h.status == ActionRequirementSession.NotApplicable) &&
+                !modelConditional.History.Any(h => h.action_id == "A1" && (h.event_type == "precondition_confirmed" || h.event_type == "requirement_confirmed")),
+                "skipping records not_applicable rather than fabricated successful pre/post checks");
+            check(modelConditional.CurrentAction.action_id == "A2" && modelConditional.DependenciesMet(),
+                "the same progression path reaches the dependent Action after an explicit model skip decision");
 
             var contingency = example();
             var notification = contingency.steps[1].actions[1];
@@ -200,12 +249,33 @@ namespace HomeCare.Authoring
             recheck.SelectConditionalAction("A3");
             check(recheck.Phase == ActionCheckPhase.Applicability, "conditional false can be explicitly reassessed later");
 
+            var pendingDependency = example();
+            var dependentAction = pendingDependency.steps[1].actions[1];
+            dependentAction.applicability_condition = "The supplied conditional trigger holds.";
+            var pending = new ActionRequirementSession(pendingDependency);
+            pending.SelectConditionalAction("A3"); pending.ConfirmApplicability(true); Pass(pending);
+            check(!pending.DependenciesMet() && !pending.CanAdvance, "a visible completion pass does not resolve a missing graph prerequisite");
+            blocks(pending.Advance, "local dependencies block progression without VLM graph context");
+            var prerequisite = ActionRequirementEditing.AddCondition(pendingDependency, dependentAction, true);
+            prerequisite.condition = "The yellow strap is visible.";
+            var pendingPre = new ActionRequirementSession(pendingDependency);
+            pendingPre.SelectConditionalAction("A3"); pendingPre.ConfirmApplicability(true); Pass(pendingPre);
+            check(pendingPre.Phase == ActionCheckPhase.Preconditions && pendingPre.CurrentChecks.All(q => q.category == "precondition"),
+                "a precondition pass with unresolved dependencies cannot unlock postconditions or execution rules");
+            blocks(pendingPre.Advance, "unresolved prerequisites cannot bypass precondition phase gates");
+            dependentAction.dependencies = Array.Empty<string>(); pendingDependency.steps[1].dependencies = new[] { "S1" };
+            var pendingStep = new ActionRequirementSession(pendingDependency);
+            pendingStep.SelectConditionalAction("A3"); pendingStep.ConfirmApplicability(true); Pass(pendingStep);
+            check(!pendingStep.DependenciesMet() && pendingStep.Phase == ActionCheckPhase.Preconditions,
+                "Step-level graph dependencies are also enforced locally");
+
             var global = example(); var rule = global.steps[1].actions[1].error_criteria[0];
             global.steps[1].actions[1].error_criteria = Array.Empty<ActionErrorCriterion>();
             rule.criterion_id = "P_KEEP"; rule.relevant_action_ids = new[] { "A3" }; global.procedure_error_criteria = new[] { rule };
             var g = new ActionRequirementSession(global); Pass(g); Pass(g); g.Advance(); Pass(g); g.Advance();
             ticket = g.BeginVerification(); fail = Reply(ticket, ActionRequirementSession.Yes); fail.results.Last().status = ActionRequirementSession.No; g.Accept(ticket, fail);
             g.RetryCurrentAction(); Pass(g); check(!g.CanAdvance, "global rule failure survives local retry");
+            blocks(g.Advance, "a global violation cannot advance after local retry and a fresh pass");
             g.Restart(); check(!g.HasLatchedViolation, "new run explicitly resets global latch");
 
             var authored = example(); int calls = 0;
@@ -292,6 +362,7 @@ namespace HomeCare.Authoring
         static ActionVerificationReply Reply(ActionVerificationTicket t, string status) => new()
         { request_id = t.RequestId, step_id = t.StepId, action_id = t.ActionId, phase = t.Phase, action_applicability = "applies",
             results = t.Checks.Select(q => new ActionCheckResult { requirement_id = q.requirement_id, status = status, reason = "Test observation for " + q.requirement_id }).ToArray() };
-        static void Pass(ActionRequirementSession s) { var t = s.BeginVerification(); s.Accept(t, Reply(t, ActionRequirementSession.Yes)); }
+        static void PassStatus(ActionRequirementSession s, string status) { var t = s.BeginVerification(); s.Accept(t, Reply(t, status)); }
+        static void Pass(ActionRequirementSession s) => PassStatus(s, ActionRequirementSession.Yes);
     }
 }

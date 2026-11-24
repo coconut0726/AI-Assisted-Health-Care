@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -23,11 +22,7 @@ namespace HomeCare.Procedures.Actions
                 phase = ticket.Phase,
                 established_action_applicability = session.Applicability,
                 current_requirements = ticket.Checks,
-                dependency_history = session.DependencySummary(),
-                confirmed_step_history = session.History.Where(h => h.run_id == session.RunId &&
-                    (h.event_type == "action_finished" || h.event_type == "action_completion_confirmed" || h.event_type == "precondition_confirmed" || h.event_type == "requirement_confirmed" || h.event_type == "applicability_confirmed" || h.event_type == "rule_violation"))
-                    .Reverse().Take(12).Reverse().ToArray(),
-                task_outline = session.Procedure.steps.Select(s => new { step_id = s.step_id, title = s.step_name, action_ids = s.actions.Select(x => x.action_id).ToArray() }).ToArray(),
+                // History and graph gates remain in the session; they are not evidence for this image check.
                 current_frame = new { captured_at_utc = capturedAtUtc, kind = "single_current_rgb_frame" }
             };
             return new JObject

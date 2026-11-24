@@ -78,7 +78,7 @@ namespace AHC.VR
         {
             _dirty = false;
             var session = _care.Session;
-            string key = session == null ? _care.LoadError : session.RunId + ":" + session.ActionIndex + ":" + session.Phase + ":" + _care.Started + ":" + session.Applicability;
+            string key = session == null ? _care.LoadError : session.RunId + ":" + session.ActionIndex + ":" + session.Phase + ":" + _care.Started + ":" + session.Applicability + ":" + _care.SkippedActionNotice + ":" + _care.autoSkipNotApplicable;
             if (key != _layoutKey || _status == null) { _layoutKey = key; Build(); }
             if (_status == null) return;
             _status.text = (_care.Paused ? "PAUSED · " : "") + _care.Status + "\n" + (_care.LastProvider ?? "Qwen / selected project backend") +
@@ -107,6 +107,8 @@ namespace AHC.VR
             if (_care.Session == null) { _status = Ui.Text(panel.transform, _care.LoadError, 20, Theme.Red); return; }
             var s = _care.Session;
             Ui.Text(panel.transform, s.Procedure.procedure_title, 26, Theme.Text, true);
+            if (!string.IsNullOrEmpty(_care.SkippedActionNotice))
+                Ui.Note(panel.transform, _care.SkippedActionNotice, Theme.PrimaryDark, Theme.PrimaryBg);
             if (!_care.Started)
             {
                 Ui.Text(panel.transform, "Task goal: " + s.Procedure.task_goal, 19, Theme.Text);
@@ -129,7 +131,11 @@ namespace AHC.VR
             {
                 Ui.Text(panel.transform, $"Step {s.StepIndex + 1}/{s.Procedure.steps.Length}: {s.CurrentStep.step_name} · Action {s.ActionIndex + 1}/{s.ActionCount}", 17, Theme.Muted);
                 Ui.Text(panel.transform, s.CurrentAction.instruction, 23, Theme.Text, true);
-                Ui.PillRow(panel.transform, s.Phase == ActionCheckPhase.Preconditions ? "BEFORE THE ACTION" : s.Phase == ActionCheckPhase.Applicability ? "DOES THE CONDITION APPLY?" : s.CurrentAction.manual_completion_required ? "MANUAL COMPLETION" : "VISIBLE RESULTS + SPATIAL RULES", Theme.Lav, Theme.LavBg);
+                bool notApplicable = s.Applicability == ActionRequirementSession.NotApplicable;
+                Ui.PillRow(panel.transform, notApplicable ? "NOT APPLICABLE" : s.Phase == ActionCheckPhase.Preconditions ? "BEFORE THE ACTION" : s.Phase == ActionCheckPhase.Applicability ? "DOES THE CONDITION APPLY?" : s.CurrentAction.manual_completion_required ? "MANUAL COMPLETION" : "VISIBLE RESULTS + SPATIAL RULES", Theme.Lav, Theme.LavBg);
+                if (notApplicable)
+                    Ui.Note(panel.transform, "This conditional Action does not apply: " + s.CurrentAction.applicability_condition +
+                        (_care.autoSkipNotApplicable ? "\nIt will be skipped automatically when progression is allowed." : "\nYou can skip this Action. Select Skip Action to continue."), Theme.PrimaryDark, Theme.PrimaryBg);
                 if (s.ConditionalActions.Any(a => a.action_id != s.CurrentAction.action_id))
                 {
                     var conditional = Ui.Row(panel.transform, "Conditional Actions", 8);
@@ -168,10 +174,10 @@ namespace AHC.VR
                     _completeManually = Ui.Button(panel.transform, "Confirm Action completed", false, _care.ConfirmActionCompletion);
                 }
                 var controls = Ui.Row(panel.transform, "Controls", 10);
-                _checkNow = Ui.Button(controls.transform, "Check now", false, _care.VerifyNow);
-                Ui.Button(controls.transform, "Retry Action", false, _care.Retry, "R");
+                if (!notApplicable) _checkNow = Ui.Button(controls.transform, "Check now", false, _care.VerifyNow);
+                Ui.Button(controls.transform, notApplicable ? "Recheck condition" : "Retry Action", false, _care.Retry, "R");
                 Ui.Button(controls.transform, "Pause / resume", false, _care.TogglePause, "P");
-                _next = Ui.Button(controls.transform, "Next Action", true, _care.Next, "A");
+                _next = Ui.Button(controls.transform, notApplicable ? "Skip Action" : "Next Action", true, _care.Next, "A");
                 Ui.Button(panel.transform, "Restart procedure", false, _care.Restart);
                 if (Application.isEditor && _care.CameraSource.captureViewCameraInEditor && s.Procedure.procedure_title == "Tabletop requirement flow")
                     Ui.Button(panel.transform, "Editor: simulate current Action (camera must still verify)", false, Simulate);

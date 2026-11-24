@@ -12,6 +12,9 @@ import type { ActionProcedure, PlanVersion } from '@/model/types';
 //   PUT /api/patients/:id/plan  { base_version, plan } -> PlanVersion (new version, or 409 if base_version is old)
 
 export const SERVER_URL = (process.env.EXPO_PUBLIC_SERVER_URL ?? '').replace(/\/$/, '');
+// Shared access token for the cloud server (CARE_PLAN_TOKEN there). It ships inside the app bundle,
+// so it only keeps strangers out of a demo; real patient data needs per-user sign-in.
+const SERVER_TOKEN = process.env.EXPO_PUBLIC_SERVER_TOKEN ?? '';
 
 export class ConflictError extends Error {}
 
@@ -27,7 +30,9 @@ class ServerApi implements PlanApi {
   constructor(private readonly base: string) {}
 
   private async request<T>(path: string, init?: RequestInit): Promise<T> {
-    const res = await fetch(this.base + path, { ...init, headers: { 'Content-Type': 'application/json', ...init?.headers } });
+    const auth: Record<string, string> = SERVER_TOKEN ? { Authorization: `Bearer ${SERVER_TOKEN}` } : {};
+    const res = await fetch(this.base + path, { ...init, headers: { 'Content-Type': 'application/json', ...auth, ...init?.headers } });
+    if (res.status === 401) throw new Error('The server refused the access token. Check EXPO_PUBLIC_SERVER_TOKEN.');
     if (res.status === 409) throw new ConflictError('The plan was changed somewhere else. Reload and try again.');
     if (!res.ok) throw new Error(`Server error ${res.status}: ${await res.text()}`);
     return (await res.json()) as T;

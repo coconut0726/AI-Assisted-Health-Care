@@ -4,7 +4,7 @@ import json
 import threading
 import unittest
 
-from care_plan_server import PlanError, PlanStore, create_server, demo_plan, prepare_plan, validate_plan
+from care_plan_server import PlanError, SqliteStore, create_server, demo_plan, prepare_plan, validate_plan
 
 
 def find_action(plan, action_id):
@@ -90,7 +90,7 @@ class PrepareTests(unittest.TestCase):
 
 class ServerTests(unittest.TestCase):
     def setUp(self):
-        self.store = PlanStore(":memory:")
+        self.store = SqliteStore(":memory:")
         self.store.seed("james", demo_plan())
         self.server = create_server("127.0.0.1", 0, self.store, lambda items: {})
         self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
@@ -100,12 +100,15 @@ class ServerTests(unittest.TestCase):
         self.server.shutdown()
         self.server.server_close()
         self.thread.join(1)
-        self.store.db.close()
+        self.store.close()
 
-    def call(self, method, path, body=None):
+    def call(self, method, path, body=None, headers=None):
         conn = http.client.HTTPConnection("127.0.0.1", self.server.server_address[1], timeout=5)
         data = None if body is None else json.dumps(body).encode()
-        conn.request(method, path, body=data, headers={"Content-Type": "application/json"} if data else {})
+        sent = dict(headers or {})
+        if data:
+            sent["Content-Type"] = "application/json"
+        conn.request(method, path, body=data, headers=sent)
         res = conn.getresponse()
         raw = res.read()
         headers = dict(res.getheaders())
@@ -143,6 +146,27 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(self.call("PUT", "/api/patients/james/plan", {"plan": {}})[0], 400)
         self.assertEqual(self.call("OPTIONS", "/api/patients/james/plan")[0], 204)
         self.assertEqual(self.call("GET", "/health")[1], {"ok": True})
+
+
+class TokenTests(ServerTests):
+    def setUp(self):
+        self.store = SqliteStore(":memory:")
+        self.store.seed("james", demo_plan())
+        self.server = create_server("127.0.0.1", 0, self.store, lambda items: {}, token="test-token")
+        self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+        self.thread.start()
+
+    def call(self, method, path, body=None, headers=None, auth=True):
+        sent = dict(headers or {})
+        if auth:
+            sent["Authorization"] = "Bearer test-token"
+        return super().call(method, path, body, sent)
+
+    def test_token_required(self):
+        self.assertEqual(self.call("GET", "/api/patients/james/plan", auth=False)[0], 401)
+        self.assertEqual(self.call("GET", "/api/patients/james/plan", headers={"Authorization": "Bearer nope"}, auth=False)[0], 401)
+        self.assertEqual(self.call("GET", "/health", auth=False)[0], 200)
+        self.assertEqual(self.call("OPTIONS", "/api/patients/james/plan", auth=False)[0], 204)
 
 
 if __name__ == "__main__":

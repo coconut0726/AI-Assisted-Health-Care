@@ -159,41 +159,40 @@ Built in `MobileApp/` (see its README):
 - The care plan is kept on the phone until a server exists. Setting `EXPO_PUBLIC_SERVER_URL` switches to the server.
 - Runs in Expo Go, and as an installable web app (`npm run build:web`, then Safari → Add to Home Screen).
 
-## Care-plan server (built on the PC, 2026-11-24)
+## Care-plan server
 
-`Tools/care_plan_server.py`: Python standard library + SQLite, next to `verification_bridge.py`. Tests: `Tools/test_care_plan_server.py`.
+`CarePlanServer/` (see its README). The same code runs in two places:
 
-Start it on the PC:
+- **Cloud:** Google Cloud Run + Firestore. This is the real cloud the phone and the headset use.
+  - Deployed 2026-11-24.
+  - Project `gen-lang-client-0884010516`, region `us-east1`, service `care-plan`, URL `https://care-plan-751280443418.us-east1.run.app`.
+  - The Gemini key and the access token are Secret Manager secrets `gemini-api-key` and `care-plan-token`. Read the token with `gcloud secrets versions access latest --secret=care-plan-token`.
+  - Checked end to end on the cloud: 401 without the token, read, save with Gemini fill (v2, Watch-out on A9), 409 on a stale save, and the Expo web app loading from the cloud.
+- **Local:** SQLite in `CarePlanServer/data/`, for development and tests.
 
-```bash
-python Tools/care_plan_server.py            # http://0.0.0.0:8770, seeds the demo patient "james"
-python Tools/care_plan_server.py --reset-demo   # wipe james's versions and seed the burn demo again
-```
-
-- Database: `Tools/care_plan_data/care_plan.sqlite3` (git-ignored). Every save is a new row; nothing is overwritten.
 - `GET /api/patients/:id/plan` returns the latest `PlanVersion`. `GET /api/patients/:id/plan/procedure` returns only the plan JSON, for the headset.
 - `PUT /api/patients/:id/plan` with `{ base_version, plan }`:
   - `409` when `base_version` is not the latest.
   - Completes the plan, then validates it with a Python port of `ActionProcedureJson.Validate`. `422` with the headset's reason if it would be rejected.
   - Completing the plan means:
-    - New Watch-out items and shared rules get `error_type` and `violation_condition` from Gemini (`GEMINI_API_KEY`, model `CARE_PLAN_MODEL`, default `gemini-3.8-flash`). Without a key, or if the call fails, a plain fallback is used, so the save still works.
+    - New Watch-out items and shared rules get `error_type` and `violation_condition` from Gemini, with a plain fallback if Gemini is unavailable.
     - Missing or duplicate ids are numbered.
     - An `inferred` item the nurse approved becomes `author_edit`.
     - Supplies get `itemId` and `keywords`.
     - `notify_nurse` is kept, or set on the "Call your nurse" action.
-  - Stores version + 1 with `changed_step_ids`.
-- CORS allows any origin.
-- Checked: all three case files on Kezhou's branch (burn, wound, tabletop) pass the ported validation. An end-to-end save from the Expo web app worked: Gemini classified a new Watch-out item and v2 was stored. A save with a new Watch-out item takes about 10 s because of the Gemini call.
+  - Stores version + 1 with `changed_step_ids`. Every version is kept.
+- Access: when `CARE_PLAN_TOKEN` is set, `/api` needs `Authorization: Bearer <token>`. The app sends `EXPO_PUBLIC_SERVER_TOKEN`.
+- Checked: all three case files on Kezhou's branch pass the ported validation. An end-to-end save from the Expo web app against the local server worked. A save with a new Watch-out item takes about 10 s because of Gemini.
 
 Phone → server:
 
 ```bash
-EXPO_PUBLIC_SERVER_URL=http://<PC LAN IP>:8770 npx expo start
+EXPO_PUBLIC_SERVER_URL=<Cloud Run URL> EXPO_PUBLIC_SERVER_TOKEN=<token> npx expo start
 ```
 
-The iPhone must be on the same Wi‑Fi, and Windows Firewall must allow inbound TCP 8770 for Python. The user allows this themselves when Windows asks.
+Use the Cloud Run URL for the real cloud, or `http://<PC LAN IP>:8770` (no token) for the local server.
 
 Not built yet:
-- The headset loader: at session start, fetch `/api/patients/james/plan/procedure`, with `adb reverse tcp:8770 tcp:8770` like the bridge.
+- The headset loader: at session start, fetch `/api/patients/james/plan/procedure` from the Cloud Run URL with the token.
 - A patient-side "seen version" for the "Updated" banner.
 - Reports (N6–N9, P3–P4).

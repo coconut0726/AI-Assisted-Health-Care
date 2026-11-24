@@ -1,0 +1,2 @@
+# Only needed with CARE_PLAN_STORE=firestore (Cloud Run). Locally the server runs on the standard library.
+google-cloud-firestore==2.19.0

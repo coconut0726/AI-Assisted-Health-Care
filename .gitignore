@@ -128,5 +128,5 @@ InitTestScene*.unity*
 /ProjectSettings/wit.config
 /ProjectSettings/WitConfigExports/
 
-# Care-plan server database (Tools/care_plan_server.py)
-/Tools/care_plan_data/
+# Care-plan server database (CarePlanServer/)
+/CarePlanServer/data/

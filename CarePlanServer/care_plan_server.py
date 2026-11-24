@@ -1,6 +1,6 @@
-"""Care-plan server: stands in for the cloud between the headset and the mobile app.
+"""Care-plan server: the cloud between the headset and the mobile app.
 
-Stores every version of each patient's plan (action_requirements_v1 JSON, stored as is) in SQLite.
+Stores every version of each patient's plan (action_requirements_v1 JSON, stored as is).
 See docs/SCHEMA_mobile.md for the API and the save rules.
 
     GET  /health
@@ -8,11 +8,14 @@ See docs/SCHEMA_mobile.md for the API and the save rules.
     PUT  /api/patients/<id>/plan            {base_version, plan} -> new PlanVersion, 409 if stale, 422 if invalid
     GET  /api/patients/<id>/plan/procedure  latest plan only (what the headset loads)
 
-Uses only the Python standard library. New "Watch out" items get error_type / violation_condition from
-Gemini when GEMINI_API_KEY is set; otherwise a plain fallback is used and the plan still saves.
+Storage: CARE_PLAN_STORE=firestore on Google Cloud Run (needs google-cloud-firestore), otherwise a local
+SQLite file (standard library only). When CARE_PLAN_TOKEN is set, /api requests need
+"Authorization: Bearer <token>". New "Watch out" items get error_type / violation_condition from Gemini
+when GEMINI_API_KEY is set; otherwise a plain fallback is used and the plan still saves.
 """
 import argparse
 import copy
+import hmac
 import json
 import os
 import re
@@ -25,8 +28,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_DB = HERE / "care_plan_data" / "care_plan.sqlite3"
-SEED_JSON = HERE.parent / "MobileApp" / "src" / "data" / "burn_action_requirements.json"
+DEFAULT_DB = HERE / "data" / "care_plan.sqlite3"
+SEED_JSON = HERE / "seed" / "burn_action_requirements.json"  # copy of the burn case from feature/periodical-sampling-with-localVLM
 GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/interactions"
 DEFAULT_MODEL = "gemini-3.8-flash"
 MAX_REQUEST_BYTES = 2 * 1024 * 1024
@@ -413,7 +416,41 @@ def now_iso():
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
-class PlanStore:
+def make_record(patient_id, version, updated_by, plan, changed):
+    return {"patient_id": patient_id, "version": version, "updated_at": now_iso(), "updated_by": updated_by,
+            "plan": plan, "changed_step_ids": changed}
+
+
+class BaseStore:
+    """Save flow shared by both backends. A backend implements latest(), _commit() and _seed()."""
+
+    def save(self, patient_id, base_version, plan, fill):
+        """Returns (status, payload). status: 200, 404, 409 or 422."""
+        current = self.latest(patient_id)
+        if current is None:
+            return 404, {"error": "Unknown patient: " + patient_id}
+        if base_version != current["version"]:
+            return 409, {"error": "The plan was changed somewhere else.", "latest_version": current["version"]}
+        # The AI call happens outside any lock or transaction; _commit re-checks the version.
+        prepared, notes = prepare_plan(plan, current["plan"], fill)
+        try:
+            validate_plan(prepared)
+        except PlanError as exc:
+            return 422, {"error": str(exc)}
+        record = make_record(patient_id, current["version"] + 1, "nurse", prepared, changed_step_ids(current["plan"], prepared))
+        if not self._commit(patient_id, current["version"], record):
+            latest = self.latest(patient_id)
+            return 409, {"error": "The plan was changed somewhere else.", "latest_version": latest and latest["version"]}
+        if notes:
+            print(f"{patient_id} v{record['version']}: " + "; ".join(notes), flush=True)
+        return 200, record
+
+    def seed(self, patient_id, plan, reset=False):
+        validate_plan(plan)
+        self._seed(patient_id, make_record(patient_id, 1, "ai", plan, []), reset)
+
+
+class SqliteStore(BaseStore):
     def __init__(self, path):
         self.path = str(path)
         if self.path != ":memory:":
@@ -424,6 +461,9 @@ class PlanStore:
             patient_id TEXT NOT NULL, version INTEGER NOT NULL, updated_at TEXT NOT NULL, updated_by TEXT NOT NULL,
             plan_json TEXT NOT NULL, changed_step_ids TEXT NOT NULL, PRIMARY KEY (patient_id, version))""")
         self.db.commit()
+
+    def close(self):
+        self.db.close()
 
     def latest(self, patient_id):
         with self.lock:
@@ -437,48 +477,92 @@ class PlanStore:
         return {"patient_id": row[0], "version": row[1], "updated_at": row[2], "updated_by": row[3],
                 "plan": json.loads(row[4]), "changed_step_ids": json.loads(row[5])}
 
-    def insert(self, patient_id, version, updated_by, plan, changed):
-        record = {"patient_id": patient_id, "version": version, "updated_at": now_iso(), "updated_by": updated_by,
-                  "plan": plan, "changed_step_ids": changed}
+    def _insert(self, r):
         self.db.execute("INSERT INTO plan_versions VALUES (?, ?, ?, ?, ?, ?)",
-                        (patient_id, version, record["updated_at"], updated_by, json.dumps(plan, ensure_ascii=False), json.dumps(changed)))
+                        (r["patient_id"], r["version"], r["updated_at"], r["updated_by"],
+                         json.dumps(r["plan"], ensure_ascii=False), json.dumps(r["changed_step_ids"])))
         self.db.commit()
-        return record
 
-    def save(self, patient_id, base_version, plan, fill):
-        """Returns (status, payload). status: 200, 404, 409 or 422."""
+    def _commit(self, patient_id, expected_version, record):
         with self.lock:
             current = self._latest(patient_id)
-            if current is None:
-                return 404, {"error": "Unknown patient: " + patient_id}
-            if base_version != current["version"]:
-                return 409, {"error": "The plan was changed somewhere else.", "latest_version": current["version"]}
-            prepared, notes = prepare_plan(plan, current["plan"], fill)
-            try:
-                validate_plan(prepared)
-            except PlanError as exc:
-                return 422, {"error": str(exc)}
-            record = self.insert(patient_id, current["version"] + 1, "nurse", prepared,
-                                 changed_step_ids(current["plan"], prepared))
-        if notes:
-            print(f"{patient_id} v{record['version']}: " + "; ".join(notes), flush=True)
-        return 200, record
+            if current is None or current["version"] != expected_version:
+                return False
+            self._insert(record)
+            return True
 
-    def seed(self, patient_id, plan, reset=False):
-        validate_plan(plan)
+    def _seed(self, patient_id, record, reset):
         with self.lock:
             if reset:
                 self.db.execute("DELETE FROM plan_versions WHERE patient_id = ?", (patient_id,))
                 self.db.commit()
-            exists = self.db.execute("SELECT 1 FROM plan_versions WHERE patient_id = ?", (patient_id,)).fetchone()
-            if not exists:
-                self.insert(patient_id, 1, "ai", plan, [])
+            if self._latest(patient_id) is None:
+                self._insert(record)
+
+
+class FirestoreStore(BaseStore):
+    """patients/<id> holds latest_version; patients/<id>/versions/<n> holds each version.
+
+    The plan is stored as a JSON string so it round-trips byte-for-byte (key order, nested arrays)."""
+
+    def __init__(self, client=None):
+        if client is None:
+            from google.cloud import firestore  # only needed on Cloud Run
+            client = firestore.Client()
+        self.client = client
+
+    def _patient(self, patient_id):
+        return self.client.collection("patients").document(patient_id)
+
+    @staticmethod
+    def _to_doc(r):
+        return {"patient_id": r["patient_id"], "version": r["version"], "updated_at": r["updated_at"],
+                "updated_by": r["updated_by"], "plan_json": json.dumps(r["plan"], ensure_ascii=False),
+                "changed_step_ids": r["changed_step_ids"]}
+
+    @staticmethod
+    def _from_doc(d):
+        return {"patient_id": d["patient_id"], "version": d["version"], "updated_at": d["updated_at"],
+                "updated_by": d["updated_by"], "plan": json.loads(d["plan_json"]), "changed_step_ids": list(d["changed_step_ids"])}
+
+    def latest(self, patient_id):
+        head = self._patient(patient_id).get()
+        if not head.exists:
+            return None
+        doc = self._patient(patient_id).collection("versions").document(str(head.get("latest_version"))).get()
+        return self._from_doc(doc.to_dict()) if doc.exists else None
+
+    def _commit(self, patient_id, expected_version, record):
+        from google.cloud import firestore
+        patient = self._patient(patient_id)
+
+        @firestore.transactional
+        def write(transaction):
+            head = patient.get(transaction=transaction)
+            if not head.exists or head.get("latest_version") != expected_version:
+                return False
+            transaction.set(patient.collection("versions").document(str(record["version"])), self._to_doc(record))
+            transaction.update(patient, {"latest_version": record["version"], "updated_at": record["updated_at"]})
+            return True
+
+        return write(self.client.transaction())
+
+    def _seed(self, patient_id, record, reset):
+        patient = self._patient(patient_id)
+        if reset:
+            for doc in patient.collection("versions").stream():
+                doc.reference.delete()
+            patient.delete()
+        if patient.get().exists:
+            return
+        patient.collection("versions").document("1").set(self._to_doc(record))
+        patient.set({"latest_version": 1, "updated_at": record["updated_at"]})
 
 
 # ---------------------------------------------------------------------------
 # HTTP
 
-def create_server(host, port, store, fill):
+def create_server(host, port, store, fill, token=""):
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, format, *args):  # keep plans out of the console
             pass
@@ -495,13 +579,22 @@ def create_server(host, port, store, fill):
         def cors(self):
             self.send_header("Access-Control-Allow-Origin", "*")
             self.send_header("Access-Control-Allow-Methods", "GET, PUT, OPTIONS")
-            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
         def route(self):
             parts = [p for p in self.path.split("?")[0].split("/") if p]
             if len(parts) >= 4 and parts[0] == "api" and parts[1] == "patients" and parts[3] == "plan" and PATIENT_ID.match(parts[2]):
                 return parts[2], parts[4:]
             return None, None
+
+        def authorized(self):
+            if not token:
+                return True
+            given = self.headers.get("Authorization", "")
+            if hmac.compare_digest(given.encode(), ("Bearer " + token).encode()):
+                return True
+            self.reply(401, {"error": "Missing or wrong access token"})
+            return False
 
         def do_OPTIONS(self):
             self.send_response(204)
@@ -511,6 +604,8 @@ def create_server(host, port, store, fill):
         def do_GET(self):
             if self.path.split("?")[0] == "/health":
                 return self.reply(200, {"ok": True})
+            if not self.authorized():
+                return
             patient_id, rest = self.route()
             if patient_id is None or rest not in ([], ["procedure"]):
                 return self.reply(404, {"error": "Not found"})
@@ -520,6 +615,8 @@ def create_server(host, port, store, fill):
             self.reply(200, record["plan"] if rest else record)
 
         def do_PUT(self):
+            if not self.authorized():
+                return
             patient_id, rest = self.route()
             if patient_id is None or rest:
                 return self.reply(404, {"error": "Not found"})
@@ -545,18 +642,21 @@ def create_server(host, port, store, fill):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--host", default="0.0.0.0", help="0.0.0.0 lets the iPhone reach it on the LAN")
-    parser.add_argument("--port", type=int, default=8770)
-    parser.add_argument("--db", default=str(DEFAULT_DB))
+    parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8770")), help="Cloud Run sets PORT")
+    parser.add_argument("--store", choices=["sqlite", "firestore"], default=os.environ.get("CARE_PLAN_STORE", "sqlite"))
+    parser.add_argument("--db", default=str(DEFAULT_DB), help="SQLite file (--store sqlite)")
     parser.add_argument("--reset-demo", action="store_true", help="delete all versions of 'james' and seed the burn demo again")
     args = parser.parse_args()
 
-    store = PlanStore(args.db)
+    store = FirestoreStore() if args.store == "firestore" else SqliteStore(args.db)
     store.seed("james", demo_plan(), reset=args.reset_demo)
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     model = os.environ.get("CARE_PLAN_MODEL", DEFAULT_MODEL).strip()
+    token = os.environ.get("CARE_PLAN_TOKEN", "").strip()
     fill = (lambda items: gemini_fill(items, api_key, model)) if api_key else (lambda items: {})
-    server = create_server(args.host, args.port, store, fill)
-    print(f"Care-plan server: http://{args.host}:{args.port}/api/patients/james/plan", flush=True)
+    server = create_server(args.host, args.port, store, fill, token)
+    print(f"Care-plan server on port {args.port}, storage: {args.store}", flush=True)
+    print("Access token: " + ("required" if token else "off (CARE_PLAN_TOKEN not set)"), flush=True)
     print("AI fill for Watch-out items: " + (model if api_key else "off (GEMINI_API_KEY not set, plain fallback)"), flush=True)
     try:
         server.serve_forever()

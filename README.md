@@ -34,6 +34,14 @@ V3 adds **periodical sampling** and **Action-level verification**.
 
 Conditional applicability uses its own VLM verification request: the Action's trigger and one current image are sent with `phase = Applicability`, before any pre/postcondition or error checks. If the result is `not_applicable`, the UI shows **NOT APPLICABLE**, displays the trigger and offers **Skip Action** or **Recheck condition**. On `ActionGuidanceSession`, enable **Auto Skip Not Applicable** to advance automatically once the normal progression gate permits it; it is off by default. Manual and automatic skipping use the same progression path, record `not_applicable` rather than a successful condition check, and leave a notice naming the skipped Action. 
 
+**Care plan from the cloud.** At start, V3 loads the latest plan the nurse saved on the phone from the care-plan server on Google Cloud Run (`CarePlanServer/` on branch `mobile/shared-schema`).
+- Set it on **ActionGuidanceSession**: **Load From Cloud**, **Cloud Url**, **Patient Id** (default `james`).
+- Once per machine, set the access token with **AHC → Cloud Plan → Set Access Token…** ("Read with gcloud", then Save). It goes into git-ignored `Assets/_Project/Config/Resources/`, so rebuild the APK afterwards.
+- The panel shows the source: "Cloud plan vN", "· offline copy", or "Bundled: …".
+- Until the cloud reply arrives, or when the server and the offline copy (`persistentDataPath/CarePlanCache/`) are both unavailable, the assigned procedure JSON is used.
+- **Cloud plan** reloads it before Begin, and **New run** picks up the nurse's latest edits.
+- The report records `plan_source`.
+
 **Current verification logic:** Current Action → preconditions satisfied → postconditions and error criteria checked together → Next Action. Conditional Actions first require applicability confirmation; Actions without preconditions enter postcondition/error checks directly. The Session maintains the current Action rather than recognizing it from the image. Passed preconditions are recorded and are not continuously rechecked in the next phase. Actions with no image postcondition use **Confirm Action completed** before **Next Action**; they never pass automatically because their check list is empty. Each verification request contains the task goal, current Step and Action, current phase and its active requirements, the established Action applicability, one current RGB frame with its capture time, and run/request/Step/Action identifiers. 
 
 # V2: Hands-only care guidance (`VRGuidanceDemo_V2.unity`)

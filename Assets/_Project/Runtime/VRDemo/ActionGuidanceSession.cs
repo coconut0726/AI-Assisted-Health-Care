@@ -22,11 +22,20 @@ namespace AHC.VR
         [Tooltip("Automatically skip a conditional Action once it is explicitly not applicable and progression is allowed. Unknown never skips.")]
         public bool autoSkipNotApplicable;
         public Material lineMaterial;
+        [Header("Care plan from the cloud")]
+        [Tooltip("Load the latest plan the nurse saved on the phone. The procedure JSON above is used until it arrives, and when the server and the offline copy are both unavailable.")]
+        public bool loadFromCloud = true;
+        public string cloudUrl = "https://care-plan-751280443418.us-east1.run.app";
+        public string patientId = "james";
         public ActionRequirementSession Session { get; private set; }
         public AfterStepCamera CameraSource { get; private set; }
         public string Status { get; private set; }
         public string LoadError { get; private set; }
         public string LastProvider { get; private set; }
+        /// <summary>Where the current plan came from, for the panel ("Cloud plan v3", "Bundled: …").</summary>
+        public string PlanSource { get; private set; }
+        public string CloudError { get; private set; }
+        public bool CloudLoading { get; private set; }
         public string ReportPath { get; private set; }
         public string SkippedActionNotice { get; private set; }
         public bool Started { get; private set; }
@@ -38,7 +47,12 @@ namespace AHC.VR
         int _generation;
         bool _applicationPaused;
 
-        void Awake() { CameraSource = GetComponent<AfterStepCamera>(); Load(procedureJson); }
+        void Awake()
+        {
+            CameraSource = GetComponent<AfterStepCamera>();
+            Load(procedureJson);
+            if (loadFromCloud) ReloadFromCloud();
+        }
         void OnDisable() { Cancel(); Session?.RefreshAfterPause(); _polling.Stop(); Save(); }
         void OnDestroy() { _cancellation?.Cancel(); _cancellation?.Dispose(); }
         void OnApplicationPause(bool paused)
@@ -52,16 +66,50 @@ namespace AHC.VR
         }
         public void Load(TextAsset asset)
         {
-            Cancel(); procedureJson = asset; Started = false; Paused = false; _polling.Stop();
-            Session = null; LoadError = null; ReportPath = null; SkippedActionNotice = null;
+            procedureJson = asset;
+            _cloudRequest++; // a pending cloud reply must not replace a case picked by hand
+            LoadText(asset == null ? null : asset.text, asset == null ? null : "Bundled: " + asset.name);
+        }
+
+        void LoadText(string json, string source)
+        {
+            Cancel(); Started = false; Paused = false; _polling.Stop();
+            Session = null; LoadError = null; ReportPath = null; SkippedActionNotice = null; PlanSource = source;
             try
             {
-                if (asset == null) throw new ArgumentException("Assign an Action-flow procedure JSON.");
-                Session = new ActionRequirementSession(ActionProcedureJson.Parse(asset.text));
+                if (json == null) throw new ArgumentException("Assign an Action-flow procedure JSON.");
+                Session = new ActionRequirementSession(ActionProcedureJson.Parse(json));
                 Status = "Ready. Begin the procedure to start phase-aware checks.";
             }
             catch (Exception e) { LoadError = e.Message; Status = "Could not load the Action procedure: " + e.Message; }
             Changed?.Invoke();
+        }
+
+        int _cloudRequest;
+
+        /// <summary>Fetches the latest plan from the care-plan server and uses it if no session has started yet.</summary>
+        public async void ReloadFromCloud()
+        {
+            if (Started) return;
+            int request = ++_cloudRequest;
+            CloudLoading = true; CloudError = null; Changed?.Invoke();
+            try
+            {
+                var plan = await CarePlanCloud.FetchAsync(cloudUrl, patientId, CarePlanCloud.LoadToken(), destroyCancellationToken);
+                if (request != _cloudRequest || Started || this == null) return;
+                LoadText(plan.ProcedureJson, plan.Label);
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception e)
+            {
+                if (request != _cloudRequest || this == null) return;
+                CloudError = e.Message;
+                Debug.LogWarning("Could not load the care plan from the cloud: " + e.Message);
+            }
+            finally
+            {
+                if (request == _cloudRequest && this != null) { CloudLoading = false; Changed?.Invoke(); }
+            }
         }
         public void Begin()
         {
@@ -164,7 +212,10 @@ namespace AHC.VR
         public void SelectConditionalAction(string id)
         { Cancel(); Session.SelectConditionalAction(id); SkippedActionNotice = null; Status = PhaseHint(); Save(); Changed?.Invoke(); }
         public void Restart()
-        { Save(); Cancel(); Session.Restart(); Started = false; Paused = false; ReportPath = null; SkippedActionNotice = null; _polling.Stop(); Status = "New run ready."; Changed?.Invoke(); }
+        {
+            Save(); Cancel(); Session.Restart(); Started = false; Paused = false; ReportPath = null; SkippedActionNotice = null; _polling.Stop(); Status = "New run ready."; Changed?.Invoke();
+            if (loadFromCloud && PlanSource != null && PlanSource.StartsWith("Cloud")) ReloadFromCloud(); // pick up the nurse's latest edits
+        }
         public void TogglePause()
         { Cancel(); Paused = !Paused; if (Paused) Session.RefreshAfterPause(); _polling.Stop(); Status = Paused ? "Paused." : PhaseHint(); Changed?.Invoke(); }
         public void Save()
@@ -173,7 +224,7 @@ namespace AHC.VR
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(ReportPath));
-                File.WriteAllText(ReportPath, ActionProcedureJson.Serialize(new { procedure = Session.Procedure,
+                File.WriteAllText(ReportPath, ActionProcedureJson.Serialize(new { procedure = Session.Procedure, plan_source = PlanSource,
                     run_id = Session.RunId, phase = Session.Phase.ToString(), current_action_id = Session.CurrentAction.action_id,
                     manual_completion_confirmed = Session.ActionCompletionConfirmed,
                     provider = LastProvider, history = Session.History.Where(h => h.run_id == Session.RunId).ToArray(),

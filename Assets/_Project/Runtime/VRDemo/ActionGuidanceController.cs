@@ -111,6 +111,9 @@ namespace AHC.VR
                 Ui.Note(panel.transform, _care.SkippedActionNotice, Theme.PrimaryDark, Theme.PrimaryBg);
             if (!_care.Started)
             {
+                Ui.Text(panel.transform, (_care.PlanSource ?? "") + (_care.CloudLoading ? " · checking the cloud…" : ""), 15, Theme.Muted);
+                if (!string.IsNullOrEmpty(_care.CloudError))
+                    Ui.Note(panel.transform, "Cloud plan unavailable, using the bundled plan: " + _care.CloudError, Theme.Amber, Theme.AmberBg);
                 Ui.Text(panel.transform, "Task goal: " + s.Procedure.task_goal, 19, Theme.Text);
                 Ui.Text(panel.transform, "Image checks: preconditions → visible results and spatial rules. Actions without an image completion check require operator confirmation. Unknown never unlocks Next.", 17, Theme.Muted);
                 var cases = Ui.Row(panel.transform, "Examples", 8);
@@ -119,6 +122,7 @@ namespace AHC.VR
                     var local = asset;
                     Ui.Button(cases.transform, asset.name.Replace("_action_requirements", "").Replace("_", " "), false, () => _care.Load(local));
                 }
+                if (_care.loadFromCloud) Ui.Button(cases.transform, "Cloud plan", false, _care.ReloadFromCloud);
                 Ui.Button(panel.transform, "Begin", true, _care.Begin, "A");
             }
             else if (s.Completed)

@@ -134,3 +134,7 @@ InitTestScene*.unity*
 
 # Ignore Understanding assets
 /Assets/Understanding/
+
+# Care-plan cloud access token (AHC > Cloud Plan > Set Access Token), never commit
+/Assets/_Project/Config/Resources/
+/Assets/_Project/Config/Resources.meta
